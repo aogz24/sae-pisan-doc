@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>sip-sae.view.components.ComputeVariableDialog API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sip-sae.view.components.ComputeVariableDialog</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog"><code class="flex name class">
+<span>class <span class="ident">ComputeVariableDialog</span></span>
+<span>(</span><span>parent=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ComputeVariableDialog(QDialog):
+    &#34;&#34;&#34;
+    A dialog for computing new variables based on user-defined templates and R scripts.
+    Attributes:
+        parent (QWidget): The parent widget.
+        model (QAbstractTableModel): The data model from the parent.
+        column_names (list): List of column names from the model.
+        templates (dict): Dictionary of templates loaded from a file.
+    Methods:
+        __init__(parent=None):
+            Initializes the dialog with the given parent.
+        load_templates():
+            Loads templates from a file and returns them as a dictionary.
+        save_template():
+            Saves the current script as a new template.
+        init_ui():
+            Initializes the user interface components of the dialog.
+        update_script_input(index):
+            Updates the script input field based on the selected template and variables.
+        set_model(model):
+            Sets the data model and updates the column names.
+        get_script():
+            Returns the current script from the script input field.
+        accept():
+            Validates the input, computes the new variable, and updates the model.
+    &#34;&#34;&#34;
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.parent = parent
+        self.model = parent.model1
+        self.column_names = self.model.get_data().columns
+        self.templates = self.load_templates()
+
+        self.setWindowTitle(&#34;Compute New Variable&#34;)
+        self.init_ui()
+
+    def load_templates(self):
+        templates = {}
+        template_file = os.path.join(self.parent.path, &#39;file-data&#39;, &#39;template.dat&#39;)
+        with open(template_file, &#39;r&#39;) as file:
+            lines = file.readlines()
+            for line in lines:
+                name, script = line.strip().split(&#39;=&#39;, 1)
+                templates[name] = script
+        return templates
+
+    def save_template(self):
+        self.save_template_button.setText(&#34;Saving...&#34;)
+        self.save_template_button.setEnabled(False)
+        template_name, ok = QInputDialog.getText(self, &#34;Save Template&#34;, &#34;Enter template name:&#34;)
+        if ok and template_name:
+            script = self.get_script()
+            self.templates[template_name] = script
+            template_file = os.path.join(self.parent.path, &#39;file-data&#39;, &#39;template.dat&#39;)
+            with open(template_file, &#39;a&#39;) as file:
+                file.write(f&#34;{template_name}={script}\n&#34;)
+            self.template_selection.addItem(template_name)
+            QMessageBox.information(self, &#34;Success&#34;, &#34;Template saved successfully!&#34;)
+
+    def init_ui(self):
+        self.layout = QVBoxLayout()
+
+        self.column_label = QLabel(&#34;Enter new column name:&#34;)
+        self.layout.addWidget(self.column_label)
+        self.column_name_input = QLineEdit()
+        self.column_name_input.setPlaceholderText(&#34;Enter column name here&#34;)
+        self.layout.addWidget(self.column_name_input)
+
+        self.template_label = QLabel(&#34;Select template:&#34;)
+        self.layout.addWidget(self.template_label)
+        self.template_selection = QComboBox()
+        self.template_selection.addItems(self.templates.keys())
+        self.template_selection.setCurrentIndex(0)
+        self.layout.addWidget(self.template_selection)
+
+        self.variable1_label = QLabel(&#34;Select Nominator:&#34;)
+        self.variable1_label.setVisible(False)
+        self.layout.addWidget(self.variable1_label)
+        self.variable1_selection = QComboBox()
+        self.variable1_selection.addItems(self.column_names)
+        self.variable1_selection.setVisible(False)
+        self.layout.addWidget(self.variable1_selection)
+
+        self.variable2_label = QLabel(&#34;Select Denominator:&#34;)
+        self.variable2_label.setVisible(False)
+        self.layout.addWidget(self.variable2_label)
+        self.variable2_selection = QComboBox()
+        self.variable2_selection.addItems(self.column_names)
+        self.variable2_selection.setVisible(False)
+        self.layout.addWidget(self.variable2_selection)
+
+        self.script_label = QLabel(&#34;R Script:&#34;)
+
+        self.icon_label = QLabel()
+        self.icon_label.setPixmap(QIcon(&#34;assets/running.svg&#34;).pixmap(QSize(16, 30)))
+        self.icon_label.setFixedSize(16, 30)
+        self.icon_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop)
+        self.icon_label.setVisible(False)
+
+        # Create a horizontal layout to place the script_label and icon_label in one row
+        script_layout = QHBoxLayout()
+        script_layout.addWidget(self.script_label)
+        script_layout.addWidget(self.icon_label)
+
+        self.layout.addLayout(script_layout)
+        self.script_input = QTextEdit()
+        self.script_input.setPlaceholderText(&#34;Write r script here...&#34;)
+        self.layout.addWidget(self.script_input)
+
+        # Tombol OK dan Cancel
+        self.button_layout = QHBoxLayout()
+        self.ok_button = QPushButton(&#34;OK&#34;)
+        self.ok_button.clicked.connect(self.accept)
+        self.button_layout.addWidget(self.ok_button)
+        self.save_template_button = QPushButton(&#34;Save Template&#34;)
+        self.save_template_button.clicked.connect(self.save_template)
+        self.button_layout.addWidget(self.save_template_button)
+
+        self.layout.addLayout(self.button_layout)
+        self.setLayout(self.layout)
+
+        # Event handler untuk perubahan template
+        self.template_selection.currentIndexChanged.connect(self.update_script_input)
+        self.variable1_selection.currentIndexChanged.connect(self.update_script_input)
+        self.variable2_selection.currentIndexChanged.connect(self.update_script_input)
+
+        # Initialize script input with the first template
+        self.update_script_input(0)
+
+    def update_script_input(self, index):
+        template_name = self.template_selection.currentText()
+        script = self.templates.get(template_name, &#34;&#34;)
+        if template_name == &#34;Compute RSE&#34;:
+            self.variable1_label.setVisible(True)
+            self.variable1_selection.setVisible(True)
+            self.variable2_label.setVisible(True)
+            self.variable2_selection.setVisible(True)
+            variable1 = self.variable1_selection.currentText()
+            variable2 = self.variable2_selection.currentText()
+            script = script.replace(&#34;{variable1}&#34;, variable1).replace(&#34;{variable2}&#34;, variable2)
+        else:
+            self.variable1_label.setVisible(False)
+            self.variable1_selection.setVisible(False)
+            self.variable2_label.setVisible(False)
+            self.variable2_selection.setVisible(False)
+        self.script_input.setPlainText(script)
+
+    def set_model(self, model):
+        self.model = model
+        self.column_names = [col.replace(&#34; &#34;, &#34;_&#34;) for col in self.model.get_data().columns]
+        self.variable1_selection.clear()
+        self.variable1_selection.addItems(self.column_names)
+        self.variable2_selection.clear()
+        self.variable2_selection.addItems(self.column_names)
+
+    def get_script(self):
+        return self.script_input.toPlainText()
+
+    def accept(self):
+        if self.column_name_input.text() == &#34;&#34;:
+            QMessageBox.warning(self, &#34;Error&#34;, &#34;Column name cannot be empty!&#34;)
+            return
+        self.ok_button.setText(&#34;Computing...&#34;)
+        self.ok_button.setEnabled(False)
+        self.icon_label.setVisible(True)
+        df = self.model.get_data()
+        new_column_series = run_compute(self)
+        self.model.set_data(df.with_columns(new_column_series))
+        self.parent.update_table(1, self.model)
+        self.icon_label.setVisible(False)
+        self.ok_button.setText(&#34;OK&#34;)
+        self.ok_button.setEnabled(True)
+        super().accept()</code></pre>
+</details>
+<div class="desc"><p>A dialog for computing new variables based on user-defined templates and R scripts.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>parent</code></strong> :&ensp;<code>QWidget</code></dt>
+<dd>The parent widget.</dd>
+<dt><strong><code>model</code></strong> :&ensp;<code>QAbstractTableModel</code></dt>
+<dd>The data model from the parent.</dd>
+<dt><strong><code>column_names</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of column names from the model.</dd>
+<dt><strong><code>templates</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary of templates loaded from a file.</dd>
+</dl>
+<h2 id="methods">Methods</h2>
+<p><strong>init</strong>(parent=None):
+Initializes the dialog with the given parent.
+load_templates():
+Loads templates from a file and returns them as a dictionary.
+save_template():
+Saves the current script as a new template.
+init_ui():
+Initializes the user interface components of the dialog.
+update_script_input(index):
+Updates the script input field based on the selected template and variables.
+set_model(model):
+Sets the data model and updates the column names.
+get_script():
+Returns the current script from the script input field.
+accept():
+Validates the input, computes the new variable, and updates the model.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PyQt6.QtWidgets.QDialog</li>
+<li>PyQt6.QtWidgets.QWidget</li>
+<li>PyQt6.QtCore.QObject</li>
+<li>PyQt6.sip.wrapper</li>
+<li>PyQt6.QtGui.QPaintDevice</li>
+<li>PyQt6.sip.simplewrapper</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.accept"><code class="name flex">
+<span>def <span class="ident">accept</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def accept(self):
+    if self.column_name_input.text() == &#34;&#34;:
+        QMessageBox.warning(self, &#34;Error&#34;, &#34;Column name cannot be empty!&#34;)
+        return
+    self.ok_button.setText(&#34;Computing...&#34;)
+    self.ok_button.setEnabled(False)
+    self.icon_label.setVisible(True)
+    df = self.model.get_data()
+    new_column_series = run_compute(self)
+    self.model.set_data(df.with_columns(new_column_series))
+    self.parent.update_table(1, self.model)
+    self.icon_label.setVisible(False)
+    self.ok_button.setText(&#34;OK&#34;)
+    self.ok_button.setEnabled(True)
+    super().accept()</code></pre>
+</details>
+<div class="desc"><p>accept(self)</p></div>
+</dd>
+<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.get_script"><code class="name flex">
+<span>def <span class="ident">get_script</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_script(self):
+    return self.script_input.toPlainText()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.init_ui"><code class="name flex">
+<span>def <span class="ident">init_ui</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def init_ui(self):
+    self.layout = QVBoxLayout()
+
+    self.column_label = QLabel(&#34;Enter new column name:&#34;)
+    self.layout.addWidget(self.column_label)
+    self.column_name_input = QLineEdit()
+    self.column_name_input.setPlaceholderText(&#34;Enter column name here&#34;)
+    self.layout.addWidget(self.column_name_input)
+
+    self.template_label = QLabel(&#34;Select template:&#34;)
+    self.layout.addWidget(self.template_label)
+    self.template_selection = QComboBox()
+    self.template_selection.addItems(self.templates.keys())
+    self.template_selection.setCurrentIndex(0)
+    self.layout.addWidget(self.template_selection)
+
+    self.variable1_label = QLabel(&#34;Select Nominator:&#34;)
+    self.variable1_label.setVisible(False)
+    self.layout.addWidget(self.variable1_label)
+    self.variable1_selection = QComboBox()
+    self.variable1_selection.addItems(self.column_names)
+    self.variable1_selection.setVisible(False)
+    self.layout.addWidget(self.variable1_selection)
+
+    self.variable2_label = QLabel(&#34;Select Denominator:&#34;)
+    self.variable2_label.setVisible(False)
+    self.layout.addWidget(self.variable2_label)
+    self.variable2_selection = QComboBox()
+    self.variable2_selection.addItems(self.column_names)
+    self.variable2_selection.setVisible(False)
+    self.layout.addWidget(self.variable2_selection)
+
+    self.script_label = QLabel(&#34;R Script:&#34;)
+
+    self.icon_label = QLabel()
+    self.icon_label.setPixmap(QIcon(&#34;assets/running.svg&#34;).pixmap(QSize(16, 30)))
+    self.icon_label.setFixedSize(16, 30)
+    self.icon_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop)
+    self.icon_label.setVisible(False)
+
+    # Create a horizontal layout to place the script_label and icon_label in one row
+    script_layout = QHBoxLayout()
+    script_layout.addWidget(self.script_label)
+    script_layout.addWidget(self.icon_label)
+
+    self.layout.addLayout(script_layout)
+    self.script_input = QTextEdit()
+    self.script_input.setPlaceholderText(&#34;Write r script here...&#34;)
+    self.layout.addWidget(self.script_input)
+
+    # Tombol OK dan Cancel
+    self.button_layout = QHBoxLayout()
+    self.ok_button = QPushButton(&#34;OK&#34;)
+    self.ok_button.clicked.connect(self.accept)
+    self.button_layout.addWidget(self.ok_button)
+    self.save_template_button = QPushButton(&#34;Save Template&#34;)
+    self.save_template_button.clicked.connect(self.save_template)
+    self.button_layout.addWidget(self.save_template_button)
+
+    self.layout.addLayout(self.button_layout)
+    self.setLayout(self.layout)
+
+    # Event handler untuk perubahan template
+    self.template_selection.currentIndexChanged.connect(self.update_script_input)
+    self.variable1_selection.currentIndexChanged.connect(self.update_script_input)
+    self.variable2_selection.currentIndexChanged.connect(self.update_script_input)
+
+    # Initialize script input with the first template
+    self.update_script_input(0)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.load_templates"><code class="name flex">
+<span>def <span class="ident">load_templates</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_templates(self):
+    templates = {}
+    template_file = os.path.join(self.parent.path, &#39;file-data&#39;, &#39;template.dat&#39;)
+    with open(template_file, &#39;r&#39;) as file:
+        lines = file.readlines()
+        for line in lines:
+            name, script = line.strip().split(&#39;=&#39;, 1)
+            templates[name] = script
+    return templates</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.save_template"><code class="name flex">
+<span>def <span class="ident">save_template</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_template(self):
+    self.save_template_button.setText(&#34;Saving...&#34;)
+    self.save_template_button.setEnabled(False)
+    template_name, ok = QInputDialog.getText(self, &#34;Save Template&#34;, &#34;Enter template name:&#34;)
+    if ok and template_name:
+        script = self.get_script()
+        self.templates[template_name] = script
+        template_file = os.path.join(self.parent.path, &#39;file-data&#39;, &#39;template.dat&#39;)
+        with open(template_file, &#39;a&#39;) as file:
+            file.write(f&#34;{template_name}={script}\n&#34;)
+        self.template_selection.addItem(template_name)
+        QMessageBox.information(self, &#34;Success&#34;, &#34;Template saved successfully!&#34;)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.set_model"><code class="name flex">
+<span>def <span class="ident">set_model</span></span>(<span>self, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_model(self, model):
+    self.model = model
+    self.column_names = [col.replace(&#34; &#34;, &#34;_&#34;) for col in self.model.get_data().columns]
+    self.variable1_selection.clear()
+    self.variable1_selection.addItems(self.column_names)
+    self.variable2_selection.clear()
+    self.variable2_selection.addItems(self.column_names)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.update_script_input"><code class="name flex">
+<span>def <span class="ident">update_script_input</span></span>(<span>self, index)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_script_input(self, index):
+    template_name = self.template_selection.currentText()
+    script = self.templates.get(template_name, &#34;&#34;)
+    if template_name == &#34;Compute RSE&#34;:
+        self.variable1_label.setVisible(True)
+        self.variable1_selection.setVisible(True)
+        self.variable2_label.setVisible(True)
+        self.variable2_selection.setVisible(True)
+        variable1 = self.variable1_selection.currentText()
+        variable2 = self.variable2_selection.currentText()
+        script = script.replace(&#34;{variable1}&#34;, variable1).replace(&#34;{variable2}&#34;, variable2)
+    else:
+        self.variable1_label.setVisible(False)
+        self.variable1_selection.setVisible(False)
+        self.variable2_label.setVisible(False)
+        self.variable2_selection.setVisible(False)
+    self.script_input.setPlainText(script)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sip-sae.view.components" href="index.html">sip-sae.view.components</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog">ComputeVariableDialog</a></code></h4>
+<ul class="two-column">
+<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.accept" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.accept">accept</a></code></li>
+<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.get_script" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.get_script">get_script</a></code></li>
+<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.init_ui" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.init_ui">init_ui</a></code></li>
+<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.load_templates" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.load_templates">load_templates</a></code></li>
+<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.save_template" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.save_template">save_template</a></code></li>
+<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.set_model" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.set_model">set_model</a></code></li>
+<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.update_script_input" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.update_script_input">update_script_input</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>sip-sae.service.modelling.SaeEblupUnit API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sip-sae.service.modelling.SaeEblupUnit</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.assign_as_factor"><code class="name flex">
+<span>def <span class="ident">assign_as_factor</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_as_factor(parent):
+    &#34;&#34;&#34;
+    Assigns selected variables as factors and updates the parent object&#39;s factor list and model.
+    Args:
+        parent: An object that contains the following attributes:
+            - variables_list: A QListView or similar object with a method selectedIndexes() that returns a list of selected indexes.
+            - as_factor_var: A list of variables that are currently assigned as factors.
+            - as_factor_model: A QStringListModel or similar object with a method setStringList() to update the list of factor variables.
+    The function performs the following steps:
+        1. Retrieves the selected indexes from the variables_list.
+        2. Extracts the data from each selected index and appends it to a new list of variables.
+        3. Updates the as_factor_var list by adding new variables, ensuring no duplicates.
+        4. Updates the as_factor_model with the new list of factor variables.
+        5. Removes the selected variables from the variables_list.
+        6. Calls the show_r_script function to update the R script display.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        new_vars = []
+        for index in selected_indexes:
+            new_vars.append(index.data())
+        parent.as_factor_var = list(set(parent.as_factor_var + new_vars))  # Add new variables if they are different
+        parent.as_factor_model.setStringList(parent.as_factor_var)
+        for index in sorted(selected_indexes, reverse=True):
+            parent.variables_list.model().removeRow(index.row())  # Remove from variables list
+        show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Assigns selected variables as factors and updates the parent object's factor list and model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>An object that contains the following attributes:
+- variables_list: A QListView or similar object with a method selectedIndexes() that returns a list of selected indexes.
+- as_factor_var: A list of variables that are currently assigned as factors.
+- as_factor_model: A QStringListModel or similar object with a method setStringList() to update the list of factor variables.</dd>
+</dl>
+<p>The function performs the following steps:
+1. Retrieves the selected indexes from the variables_list.
+2. Extracts the data from each selected index and appends it to a new list of variables.
+3. Updates the as_factor_var list by adding new variables, ensuring no duplicates.
+4. Updates the as_factor_model with the new list of factor variables.
+5. Removes the selected variables from the variables_list.
+6. Calls the show_r_script function to update the R script display.</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.assign_aux_mean"><code class="name flex">
+<span>def <span class="ident">assign_aux_mean</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_aux_mean(parent):
+    &#34;&#34;&#34;
+    Assigns auxiliary mean variables from the selected indexes in the parent object&#39;s variables list.
+    This function performs the following steps:
+    1. Retrieves the selected indexes from the parent object&#39;s variables list.
+    2. Filters out non-numeric variables from the selected indexes.
+    3. If no valid numeric variables are selected, displays a warning message.
+    4. Adds the new numeric variables to the parent object&#39;s auxiliary mean variables list.
+    5. Updates the auxiliary mean model with the new list of variables.
+    6. Removes the selected variables from the parent object&#39;s variables list.
+    7. Calls the show_r_script function to update the R script display.
+    Args:
+        parent: The parent object containing the variables list, auxiliary mean variables list, 
+                and auxiliary mean model.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        new_vars = []
+        for index in selected_indexes:
+            type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
+            if type_of_var != &#34;String&#34;:
+                new_vars.append(index.data())
+        if not new_vars:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setText(&#34;No valid numeric variables selected. Please select at least one numeric variable.&#34;)
+            msg.setWindowTitle(&#34;Warning&#34;)
+            msg.exec()
+            return
+        parent.aux_mean_vars = list(set(parent.aux_mean_vars + new_vars))  # Add new variables if they are different
+        parent.aux_mean_model.setStringList(parent.aux_mean_vars)
+        for index in sorted(selected_indexes, reverse=True):
+            parent.variables_list.model().removeRow(index.row())  # Remove from variables list
+        show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Assigns auxiliary mean variables from the selected indexes in the parent object's variables list.
+This function performs the following steps:
+1. Retrieves the selected indexes from the parent object's variables list.
+2. Filters out non-numeric variables from the selected indexes.
+3. If no valid numeric variables are selected, displays a warning message.
+4. Adds the new numeric variables to the parent object's auxiliary mean variables list.
+5. Updates the auxiliary mean model with the new list of variables.
+6. Removes the selected variables from the parent object's variables list.
+7. Calls the show_r_script function to update the R script display.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object containing the variables list, auxiliary mean variables list,
+and auxiliary mean model.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.assign_auxilary"><code class="name flex">
+<span>def <span class="ident">assign_auxilary</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_auxilary(parent):
+    &#34;&#34;&#34;
+    Assigns auxiliary variables from the selected indexes in the parent object&#39;s variables list.
+    This function performs the following steps:
+    1. Retrieves the selected indexes from the parent object&#39;s variables list.
+    2. Filters out non-numeric variables from the selected indexes.
+    3. If no valid numeric variables are selected, displays a warning message and exits.
+    4. Adds the new numeric variables to the parent object&#39;s auxiliary variables list.
+    5. Updates the auxiliary model with the new list of auxiliary variables.
+    6. Removes the selected variables from the parent object&#39;s variables list.
+    7. Calls the show_r_script function with the parent object.
+    Args:
+        parent (object): The parent object containing the variables list, auxiliary variables list, and auxiliary model.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        new_vars = []
+        for index in selected_indexes:
+            type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
+            if type_of_var != &#34;String&#34;:
+                new_vars.append(index.data())
+        if not new_vars:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setText(&#34;No valid numeric variables selected. Please select at least one numeric variable.&#34;)
+            msg.setWindowTitle(&#34;Warning&#34;)
+            msg.exec()
+            return
+        parent.auxilary_vars = list(set(parent.auxilary_vars + new_vars))  # Add new variables if they are different
+        parent.auxilary_model.setStringList(parent.auxilary_vars)
+        for index in sorted(selected_indexes, reverse=True):
+            parent.variables_list.model().removeRow(index.row())  # Remove from variables list
+        show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Assigns auxiliary variables from the selected indexes in the parent object's variables list.
+This function performs the following steps:
+1. Retrieves the selected indexes from the parent object's variables list.
+2. Filters out non-numeric variables from the selected indexes.
+3. If no valid numeric variables are selected, displays a warning message and exits.
+4. Adds the new numeric variables to the parent object's auxiliary variables list.
+5. Updates the auxiliary model with the new list of auxiliary variables.
+6. Removes the selected variables from the parent object's variables list.
+7. Calls the show_r_script function with the parent object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong> :&ensp;<code>object</code></dt>
+<dd>The parent object containing the variables list, auxiliary variables list, and auxiliary model.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.assign_domains"><code class="name flex">
+<span>def <span class="ident">assign_domains</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_domains(parent):
+    &#34;&#34;&#34;
+    Assigns the selected domain variable from the variables list to the domain model of the parent object.
+    Parameters:
+    parent (object): The parent object that contains the variables list and domain model.
+    The function performs the following steps:
+    1. Retrieves the selected indexes from the parent&#39;s variables list.
+    2. If there are selected indexes, it assigns the first selected variable to the parent&#39;s domain variable.
+    3. Updates the parent&#39;s domain model with the selected domain variable.
+    4. Removes the selected variable from the parent&#39;s variables list.
+    5. Calls the show_r_script function with the parent object as an argument.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        parent.domain_var = [selected_indexes[0].data()]  # Only one variable
+        parent.domain_model.setStringList(parent.domain_var)
+        parent.variables_list.model().removeRow(selected_indexes[0].row())  # Remove from variables list
+        show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Assigns the selected domain variable from the variables list to the domain model of the parent object.
+Parameters:
+parent (object): The parent object that contains the variables list and domain model.
+The function performs the following steps:
+1. Retrieves the selected indexes from the parent's variables list.
+2. If there are selected indexes, it assigns the first selected variable to the parent's domain variable.
+3. Updates the parent's domain model with the selected domain variable.
+4. Removes the selected variable from the parent's variables list.
+5. Calls the show_r_script function with the parent object as an argument.</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.assign_index"><code class="name flex">
+<span>def <span class="ident">assign_index</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_index(parent):
+    &#34;&#34;&#34;
+    Assigns the selected index from the variables list to the parent&#39;s index variable and updates the index model.
+    Parameters:
+    parent (object): The parent object that contains the variables list, index variable, and index model.
+    The function performs the following steps:
+    1. Retrieves the selected indexes from the parent&#39;s variables list.
+    2. If there are selected indexes, it iterates through them.
+    3. Assigns the data of the first selected index to the parent&#39;s index variable.
+    4. Updates the parent&#39;s index model with the new index variable.
+    5. Removes the selected index from the variables list.
+    6. Calls the show_r_script function with the parent object.
+    7. Breaks the loop after processing the first selected index.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        for index in selected_indexes:
+            parent.index_var = [index.data()]
+            parent.index_model.setStringList(parent.index_var)
+            parent.variables_list.model().removeRow(selected_indexes[-1].row())  # Remove from variables list
+            show_r_script(parent)
+            break</code></pre>
+</details>
+<div class="desc"><p>Assigns the selected index from the variables list to the parent's index variable and updates the index model.
+Parameters:
+parent (object): The parent object that contains the variables list, index variable, and index model.
+The function performs the following steps:
+1. Retrieves the selected indexes from the parent's variables list.
+2. If there are selected indexes, it iterates through them.
+3. Assigns the data of the first selected index to the parent's index variable.
+4. Updates the parent's index model with the new index variable.
+5. Removes the selected index from the variables list.
+6. Calls the show_r_script function with the parent object.
+7. Breaks the loop after processing the first selected index.</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.assign_of_interest"><code class="name flex">
+<span>def <span class="ident">assign_of_interest</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_of_interest(parent):
+    &#34;&#34;&#34;
+    Assigns a variable of interest from the selected indexes in the variables list.
+    This function checks the selected indexes in the `variables_list` of the `parent` object.
+    If any of the selected variables is not of type &#34;String&#34;, it assigns that variable as the
+    variable of interest, updates the `of_interest_model` with this variable, removes the variable
+    from the `variables_list`, and calls the `show_r_script` function. If all selected variables
+    are of type &#34;String&#34;, it shows a warning message indicating that the variable of interest must
+    be of type Numeric.
+    Args:
+        parent: The parent object containing the `variables_list`, `of_interest_var`, `of_interest_model`,
+                and the `show_r_script` function.
+    Raises:
+        None
+    Displays:
+        QMessageBox: A warning message if all selected variables are of type &#34;String&#34;.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        all_string = True
+        for index in selected_indexes:
+            type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
+            if type_of_var != &#34;String&#34;:
+                all_string = False
+                parent.of_interest_var = [index.data()]
+                parent.of_interest_model.setStringList(parent.of_interest_var)
+                parent.variables_list.model().removeRow(selected_indexes[-1].row())  # Remove from variables list
+                show_r_script(parent)
+                break
+        if all_string:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setText(&#34;All selected variables are of type String. Variable of interest must be of type Numeric.&#34;)
+            msg.setWindowTitle(&#34;Warning&#34;)
+            msg.exec()</code></pre>
+</details>
+<div class="desc"><p>Assigns a variable of interest from the selected indexes in the variables list.
+This function checks the selected indexes in the <code>variables_list</code> of the <code>parent</code> object.
+If any of the selected variables is not of type "String", it assigns that variable as the
+variable of interest, updates the <code>of_interest_model</code> with this variable, removes the variable
+from the <code>variables_list</code>, and calls the <code><a title="sip-sae.service.modelling.SaeEblupUnit.show_r_script" href="#sip-sae.service.modelling.SaeEblupUnit.show_r_script">show_r_script()</a></code> function. If all selected variables
+are of type "String", it shows a warning message indicating that the variable of interest must
+be of type Numeric.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object containing the <code>variables_list</code>, <code>of_interest_var</code>, <code>of_interest_model</code>,
+and the <code><a title="sip-sae.service.modelling.SaeEblupUnit.show_r_script" href="#sip-sae.service.modelling.SaeEblupUnit.show_r_script">show_r_script()</a></code> function.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<p>None</p>
+<h2 id="displays">Displays</h2>
+<p>QMessageBox: A warning message if all selected variables are of type "String".</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.assign_population_sample_size"><code class="name flex">
+<span>def <span class="ident">assign_population_sample_size</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_population_sample_size(parent):
+    &#34;&#34;&#34;
+    Assigns the population sample size based on the selected index from the variables list.
+    Args:
+        parent: The parent object that contains the variables list and other related attributes.
+    This function performs the following steps:
+    1. Retrieves the selected indexes from the parent&#39;s variables list.
+    2. If there are selected indexes, it assigns the first selected index&#39;s data to the parent&#39;s population_sample_size_var.
+    3. Updates the parent&#39;s population_sample_size_model with the new population sample size.
+    4. Removes the selected index from the variables list.
+    5. Calls the show_r_script function with the parent object.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        parent.population_sample_size_var = [selected_indexes[0].data()]  # Only one variable
+        parent.population_sample_size_model.setStringList(parent.population_sample_size_var)
+        parent.variables_list.model().removeRow(selected_indexes[0].row())  # Remove from variables list
+        show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Assigns the population sample size based on the selected index from the variables list.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object that contains the variables list and other related attributes.</dd>
+</dl>
+<p>This function performs the following steps:
+1. Retrieves the selected indexes from the parent's variables list.
+2. If there are selected indexes, it assigns the first selected index's data to the parent's population_sample_size_var.
+3. Updates the parent's population_sample_size_model with the new population sample size.
+4. Removes the selected index from the variables list.
+5. Calls the show_r_script function with the parent object.</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.generate_r_script"><code class="name flex">
+<span>def <span class="ident">generate_r_script</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_r_script(parent):
+    &#34;&#34;&#34;
+    Generates an R script for statistical modeling based on the provided parent object.
+    Args:
+        parent (object): An object containing the following attributes:
+            - of_interest_var (list): A list containing the variable of interest.
+            - auxilary_vars (list): A list of auxiliary variables.
+            - as_factor_var (list): A list of variables to be treated as factors.
+            - index_var (list): A list containing the index variable.
+            - aux_mean_vars (list): A list of auxiliary mean variables.
+            - population_sample_size_var (list): A list containing the population sample size variable.
+            - domain_var (list): A list containing the domain variable.
+            - selection_method (str): The method for variable selection (e.g., &#34;Stepwise&#34;, &#34;None&#34;).
+            - bootstrap (int): The number of bootstrap samples.
+            - method (str): The method to be used in the pbmseBHF function.
+    Returns:
+        str: The generated R script as a string.
+    &#34;&#34;&#34;
+    
+    of_interest_var = f&#39;{parent.of_interest_var[0].split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)}&#39; if parent.of_interest_var else &#39;&#34;&#34;&#39;
+    auxilary_vars = &#34; + &#34;.join([var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;) for var in parent.auxilary_vars]) if parent.auxilary_vars else &#39;&#34;&#34;&#39;
+    as_factor_var = &#34; + &#34;.join([f&#39;as.factor({var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)})&#39; for var in parent.as_factor_var]) if parent.as_factor_var else &#39;&#34;&#34;&#39;
+    index_var = f&#39;{parent.index_var[0].split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)}&#39; if parent.index_var else &#39;&#34;&#34;&#39;
+    aux_mean_vars = &#34;,&#34;.join([f&#39;{var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)}&#39; for var in parent.aux_mean_vars]) if parent.aux_mean_vars else &#39;&#34;&#34;&#39;
+    population_sample_size_var = f&#39;{parent.population_sample_size_var[0].split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)}&#39; if parent.population_sample_size_var else &#39;&#34;&#34;&#39;
+    domain_var = f&#39;{parent.domain_var[0].split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)}&#39; if parent.domain_var else &#39;&#34;&#34;&#39;
+    
+    if (auxilary_vars==&#39;&#34;&#34;&#39; or auxilary_vars is None) and as_factor_var==&#39;&#34;&#34;&#39;:
+        formula = f&#39;{of_interest_var} ~ 1&#39;
+    elif as_factor_var==&#39;&#34;&#34;&#39;:
+        formula = f&#39;{of_interest_var} ~ {auxilary_vars}&#39;
+    elif auxilary_vars==&#39;&#34;&#34;&#39;:
+        formula = f&#39;{of_interest_var} ~ {as_factor_var}&#39;
+    else:
+        formula = f&#39;{of_interest_var} ~ {auxilary_vars} + {as_factor_var}&#39;
+
+    r_script = f&#39;names(data) &lt;- gsub(&#34; &#34;, &#34;_&#34;, names(data)); #Replace space with underscore\n&#39;
+    r_script += f&#39;formula &lt;- {formula}\n&#39;
+    r_script += f&#39;Xmeans &lt;- with(data, data.frame({index_var},{aux_mean_vars}))\n&#39;
+    r_script += f&#39;Popn &lt;- with(data, data.frame({index_var},{population_sample_size_var}))\n&#39;
+    r_script += f&#39;Xmeans &lt;- na.omit(Xmeans)\n&#39;
+    r_script += f&#39;Popn &lt;- na.omit(Popn)\n&#39;
+    r_script += f&#39;Popn &lt;- Popn[complete.cases(Popn), ]\n&#39;
+    r_script += f&#39;Xmeans &lt;- Xmeans[complete.cases(Xmeans), ]\n&#39;
+    r_script += f&#39;domains=Xmeans[,1]\n&#39;
+    
+    if parent.selection_method==&#34;Stepwise&#34;:
+        parent.selection_method = &#34;both&#34;
+    if parent.selection_method and parent.selection_method != &#34;None&#34; and auxilary_vars:
+        r_script += f&#39;stepwise_model &lt;- step(formula, direction=&#34;{parent.selection_method.lower()}&#34;)\n&#39;
+        r_script += f&#39;final_formula &lt;- formula(stepwise_model)\n&#39;
+        r_script += f&#39;model&lt;-pbmseBHF(final_formula, dom={domain_var}, selectdom=domains, meanxpop=Xmeans, popnsize=Popn, B={parent.bootstrap}, method = &#34;{parent.method}&#34;, data=data)&#39;
+    else:
+        r_script += f&#39;model&lt;-pbmseBHF(formula,dom={domain_var}, selectdom=domains, meanxpop=Xmeans, popnsize=Popn, B={parent.bootstrap}, method = &#34;{parent.method}&#34;, data=data)&#39;
+    return r_script</code></pre>
+</details>
+<div class="desc"><p>Generates an R script for statistical modeling based on the provided parent object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong> :&ensp;<code>object</code></dt>
+<dd>An object containing the following attributes:
+- of_interest_var (list): A list containing the variable of interest.
+- auxilary_vars (list): A list of auxiliary variables.
+- as_factor_var (list): A list of variables to be treated as factors.
+- index_var (list): A list containing the index variable.
+- aux_mean_vars (list): A list of auxiliary mean variables.
+- population_sample_size_var (list): A list containing the population sample size variable.
+- domain_var (list): A list containing the domain variable.
+- selection_method (str): The method for variable selection (e.g., "Stepwise", "None").
+- bootstrap (int): The number of bootstrap samples.
+- method (str): The method to be used in the pbmseBHF function.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The generated R script as a string.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.get_script"><code class="name flex">
+<span>def <span class="ident">get_script</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_script(parent):
+    &#34;&#34;&#34;
+    Retrieves the text content from the r_script_edit attribute of the parent object.
+    Args:
+        parent: An object that contains an attribute r_script_edit, which is expected to have a method toPlainText().
+    Returns:
+        str: The text content of the r_script_edit attribute.
+    &#34;&#34;&#34;
+    
+    return parent.r_script_edit.toPlainText()  </code></pre>
+</details>
+<div class="desc"><p>Retrieves the text content from the r_script_edit attribute of the parent object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>An object that contains an attribute r_script_edit, which is expected to have a method toPlainText().</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The text content of the r_script_edit attribute.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.get_selected_variables"><code class="name flex">
+<span>def <span class="ident">get_selected_variables</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_selected_variables(parent):
+    &#34;&#34;&#34;
+    Retrieve selected variables from the parent object.
+    Args:
+        parent (object): The parent object containing the variables of interest.
+    Returns:
+        tuple: A tuple containing the following elements:
+            - of_interest_var: The variable of interest.
+            - auxilary_vars: The auxiliary variables.
+            - vardir_var: The variable directory.
+            - as_factor_var: The factor variable.
+    &#34;&#34;&#34;
+    
+    return parent.of_interest_var, parent.auxilary_vars, parent.vardir_var, parent.as_factor_var</code></pre>
+</details>
+<div class="desc"><p>Retrieve selected variables from the parent object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong> :&ensp;<code>object</code></dt>
+<dd>The parent object containing the variables of interest.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>A tuple containing the following elements:
+- of_interest_var: The variable of interest.
+- auxilary_vars: The auxiliary variables.
+- vardir_var: The variable directory.
+- as_factor_var: The factor variable.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.set_selection_method"><code class="name flex">
+<span>def <span class="ident">set_selection_method</span></span>(<span>parent, dialog)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_selection_method(parent, dialog):
+    &#34;&#34;&#34;
+    Sets the selection method and bootstrap value for the parent object and accepts the dialog.
+    Args:
+        parent: The parent object that contains the method_selection and bootstrap_edit widgets.
+        dialog: The dialog object that will be accepted after setting the selection method and bootstrap value.
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    # parent.selection_method = parent.method_combo.currentText()
+    parent.method = parent.method_selection.currentText()
+    parent.bootstrap = parent.bootstrap_edit.text()
+    dialog.accept()
+    show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Sets the selection method and bootstrap value for the parent object and accepts the dialog.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object that contains the method_selection and bootstrap_edit widgets.</dd>
+<dt><strong><code>dialog</code></strong></dt>
+<dd>The dialog object that will be accepted after setting the selection method and bootstrap value.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.show_options"><code class="name flex">
+<span>def <span class="ident">show_options</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_options(parent):
+    &#34;&#34;&#34;
+    Displays a dialog window with options for method selection and bootstrap settings.
+    Parameters:
+    parent (QWidget): The parent widget to which the dialog belongs.
+    The dialog allows the user to select a method from a combo box and set the number of bootstrap iterations.
+    The available methods are &#34;ML&#34;, &#34;REML&#34;, and &#34;FH&#34;, with &#34;REML&#34; set as the default.
+    The bootstrap iterations input is validated to accept only integer values, with a default value of 50.
+    The dialog contains &#34;OK&#34; and &#34;Cancel&#34; buttons. Clicking &#34;OK&#34; will apply the selected options by calling
+    the set_selection_method function, while clicking &#34;Cancel&#34; will close the dialog without applying changes.
+    &#34;&#34;&#34;
+    
+    options_dialog = QDialog(parent)
+    options_dialog.setWindowTitle(&#34;Options&#34;)
+
+    layout = QVBoxLayout()
+
+    # method_label = QLabel(&#34;Stepwise Selection Method:&#34;)
+    # layout.addWidget(method_label)
+
+    # parent.method_combo = QComboBox()
+    # parent.method_combo.addItems([&#34;None&#34;, &#34;Stepwise&#34;, &#34;Forward&#34;, &#34;Backward&#34;])
+    # layout.addWidget(parent.method_combo)
+
+    method_label = QLabel(&#34;Method:&#34;)
+    layout.addWidget(method_label)
+
+    parent.method_selection = QComboBox()
+    parent.method_selection.addItems([&#34;ML&#34;, &#34;REML&#34;, &#34;FH&#34;])
+    parent.method_selection.setCurrentText(&#34;REML&#34;)
+    layout.addWidget(parent.method_selection)
+    
+    bootstrap_label = QLabel(&#34;Bootstrap:&#34;)
+    layout.addWidget(bootstrap_label)
+    
+    parent.bootstrap_edit = QLineEdit()
+    parent.bootstrap_edit.setValidator(QIntValidator())
+    parent.bootstrap_edit.setText(&#34;50&#34;)
+    layout.addWidget(parent.bootstrap_edit)
+    
+
+    button_layout = QHBoxLayout()
+    ok_button = QPushButton(&#34;OK&#34;)
+    cancel_button = QPushButton(&#34;Cancel&#34;)
+    button_layout.addWidget(ok_button)
+    button_layout.addWidget(cancel_button)
+
+    layout.addLayout(button_layout)
+
+    options_dialog.setLayout(layout)
+
+    ok_button.clicked.connect(lambda: set_selection_method(parent, options_dialog))
+    cancel_button.clicked.connect(options_dialog.reject)
+
+    options_dialog.exec()</code></pre>
+</details>
+<div class="desc"><p>Displays a dialog window with options for method selection and bootstrap settings.
+Parameters:
+parent (QWidget): The parent widget to which the dialog belongs.
+The dialog allows the user to select a method from a combo box and set the number of bootstrap iterations.
+The available methods are "ML", "REML", and "FH", with "REML" set as the default.
+The bootstrap iterations input is validated to accept only integer values, with a default value of 50.
+The dialog contains "OK" and "Cancel" buttons. Clicking "OK" will apply the selected options by calling
+the set_selection_method function, while clicking "Cancel" will close the dialog without applying changes.</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.show_r_script"><code class="name flex">
+<span>def <span class="ident">show_r_script</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_r_script(parent):
+    &#34;&#34;&#34;
+    Generates an R script using the given parent object and sets the text of the parent&#39;s r_script_edit widget to the generated script.
+    Args:
+        parent: The parent object that contains the r_script_edit widget and is used to generate the R script.
+    &#34;&#34;&#34;
+    
+    r_script = generate_r_script(parent)
+    parent.r_script_edit.setText(r_script)</code></pre>
+</details>
+<div class="desc"><p>Generates an R script using the given parent object and sets the text of the parent's r_script_edit widget to the generated script.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object that contains the r_script_edit widget and is used to generate the R script.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeEblupUnit.unassign_variable"><code class="name flex">
+<span>def <span class="ident">unassign_variable</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unassign_variable(parent):
+    &#34;&#34;&#34;
+    Unassigns selected variables from various lists in the parent object and adds them back to the main variables list.
+    This function checks for selected items in several lists within the parent object, removes the selected items from
+    their respective lists, and then adds them back to the main variables list. It also updates the corresponding models
+    and triggers the `show_r_script` function to reflect the changes.
+    Args:
+        parent: The parent object containing the lists and models. It is expected to have the following attributes:
+            - of_interest_list
+            - of_interest_var
+            - of_interest_model
+            - auxilary_list
+            - auxilary_vars
+            - auxilary_model
+            - index_list
+            - index_var
+            - index_model
+            - as_factor_list
+            - as_factor_var
+            - as_factor_model
+            - domain_list
+            - domain_var
+            - domain_model
+            - auxilary_vars_mean_list
+            - aux_mean_vars
+            - aux_mean_model
+            - population_sample_size_list
+            - population_sample_size_var
+            - population_sample_size_model
+            - variables_list
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.of_interest_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.of_interest_var = [var for var in parent.of_interest_var if var not in selected_items]
+        parent.of_interest_model.setStringList(parent.of_interest_var)
+        for item in selected_items:
+            parent.variables_list.model().insertRow(0)  # Add back to variables list
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script(parent)
+        return
+
+    selected_indexes = parent.auxilary_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.auxilary_vars = [var for var in parent.auxilary_vars if var not in selected_items]
+        parent.auxilary_model.setStringList(parent.auxilary_vars)
+        for item in selected_items:
+            parent.variables_list.model().insertRow(0)  # Add back to variables list
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script(parent)
+        return
+
+    selected_indexes = parent.index_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.index_var = [var for var in parent.index_var if var not in selected_items]
+        parent.index_model.setStringList(parent.index_var)
+        for item in selected_items:
+            parent.variables_list.model().insertRow(0)  # Add back to variables list
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script(parent)
+        return
+
+    selected_indexes = parent.as_factor_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.as_factor_var = [var for var in parent.as_factor_var if var not in selected_items]
+        parent.as_factor_model.setStringList(parent.as_factor_var)
+        for item in selected_items:
+            parent.variables_list.model().insertRow(0)  # Add back to variables list
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script(parent)
+        return
+
+    selected_indexes = parent.domain_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.domain_var = [var for var in parent.domain_var if var not in selected_items]
+        parent.domain_model.setStringList(parent.domain_var)
+        for item in selected_items:
+            parent.variables_list.model().insertRow(0)  # Add back to variables list
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script(parent)
+        return
+
+    selected_indexes = parent.auxilary_vars_mean_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.aux_mean_vars = [var for var in parent.aux_mean_vars if var not in selected_items]
+        parent.aux_mean_model.setStringList(parent.aux_mean_vars)
+        for item in selected_items:
+            parent.variables_list.model().insertRow(0)  # Add back to variables list
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script(parent)
+        return
+
+    selected_indexes = parent.population_sample_size_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.population_sample_size_var = [var for var in parent.population_sample_size_var if var not in selected_items]
+        parent.population_sample_size_model.setStringList(parent.population_sample_size_var)
+        for item in selected_items:
+            parent.variables_list.model().insertRow(0)  # Add back to variables list
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Unassigns selected variables from various lists in the parent object and adds them back to the main variables list.
+This function checks for selected items in several lists within the parent object, removes the selected items from
+their respective lists, and then adds them back to the main variables list. It also updates the corresponding models
+and triggers the <code><a title="sip-sae.service.modelling.SaeEblupUnit.show_r_script" href="#sip-sae.service.modelling.SaeEblupUnit.show_r_script">show_r_script()</a></code> function to reflect the changes.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object containing the lists and models. It is expected to have the following attributes:
+- of_interest_list
+- of_interest_var
+- of_interest_model
+- auxilary_list
+- auxilary_vars
+- auxilary_model
+- index_list
+- index_var
+- index_model
+- as_factor_list
+- as_factor_var
+- as_factor_model
+- domain_list
+- domain_var
+- domain_model
+- auxilary_vars_mean_list
+- aux_mean_vars
+- aux_mean_model
+- population_sample_size_list
+- population_sample_size_var
+- population_sample_size_model
+- variables_list</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sip-sae.service.modelling" href="index.html">sip-sae.service.modelling</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.assign_as_factor" href="#sip-sae.service.modelling.SaeEblupUnit.assign_as_factor">assign_as_factor</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.assign_aux_mean" href="#sip-sae.service.modelling.SaeEblupUnit.assign_aux_mean">assign_aux_mean</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.assign_auxilary" href="#sip-sae.service.modelling.SaeEblupUnit.assign_auxilary">assign_auxilary</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.assign_domains" href="#sip-sae.service.modelling.SaeEblupUnit.assign_domains">assign_domains</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.assign_index" href="#sip-sae.service.modelling.SaeEblupUnit.assign_index">assign_index</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.assign_of_interest" href="#sip-sae.service.modelling.SaeEblupUnit.assign_of_interest">assign_of_interest</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.assign_population_sample_size" href="#sip-sae.service.modelling.SaeEblupUnit.assign_population_sample_size">assign_population_sample_size</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.generate_r_script" href="#sip-sae.service.modelling.SaeEblupUnit.generate_r_script">generate_r_script</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.get_script" href="#sip-sae.service.modelling.SaeEblupUnit.get_script">get_script</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.get_selected_variables" href="#sip-sae.service.modelling.SaeEblupUnit.get_selected_variables">get_selected_variables</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.set_selection_method" href="#sip-sae.service.modelling.SaeEblupUnit.set_selection_method">set_selection_method</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.show_options" href="#sip-sae.service.modelling.SaeEblupUnit.show_options">show_options</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.show_r_script" href="#sip-sae.service.modelling.SaeEblupUnit.show_r_script">show_r_script</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeEblupUnit.unassign_variable" href="#sip-sae.service.modelling.SaeEblupUnit.unassign_variable">unassign_variable</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>

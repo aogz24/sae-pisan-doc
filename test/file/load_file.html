@@ -1,0 +1,1815 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>sip-sae.test.file.load_file API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sip-sae.test.file.load_file</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sip-sae.test.file.load_file.CSVOptionsDialog"><code class="flex name class">
+<span>class <span class="ident">CSVOptionsDialog</span></span>
+<span>(</span><span>parent=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CSVOptionsDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(&#34;CSV Options&#34;)
+
+        self.file_path = None
+        self.separator = &#34;,&#34;
+        self.header = True
+
+        self.init_ui()
+
+    def init_ui(self):
+        layout = QVBoxLayout()
+
+        # File picker
+        self.file_label = QLabel(&#34;No file selected&#34;)
+        layout.addWidget(self.file_label)
+        self.file_button = QPushButton(&#34;Select File&#34;)
+        self.file_button.clicked.connect(self.select_file)
+        layout.addWidget(self.file_button)
+
+        # Separator input
+        layout.addWidget(QLabel(&#34;Separator (e.g., , or ;)&#34;))
+        self.separator_input = QLineEdit(&#34;,&#34;)
+        self.separator_input.textChanged.connect(self.update_preview)
+        layout.addWidget(self.separator_input)
+
+        # Header checkbox
+        self.header_checkbox = QCheckBox(&#34;First row as header&#34;)
+        self.header_checkbox.setChecked(True)  # Default header True
+        self.header_checkbox.toggled.connect(self.update_preview)
+        layout.addWidget(self.header_checkbox)
+
+        # Preview Table
+        self.preview_label = QLabel(&#34;Preview&#34;)
+        layout.addWidget(self.preview_label)
+        self.preview_table = QTableView()
+        layout.addWidget(self.preview_table)
+
+        # OK/Cancel buttons
+        self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        self.buttons.accepted.connect(self.accept)
+        self.buttons.rejected.connect(self.reject)
+        layout.addWidget(self.buttons)
+
+        self.setLayout(layout)
+
+    def select_file(self):
+        &#34;&#34;&#34;File picker untuk memilih file CSV.&#34;&#34;&#34;
+        file_path, _ = QFileDialog.getOpenFileName(self, &#34;Open CSV File&#34;, &#34;&#34;, &#34;CSV Files (*.csv)&#34;)
+        if file_path:
+            self.file_path = file_path
+            self.file_label.setText(f&#34;Selected: {file_path}&#34;)
+            self.update_preview()
+
+    def update_preview(self):
+        &#34;&#34;&#34;Perbarui preview tabel berdasarkan input.&#34;&#34;&#34;
+        if not self.file_path:
+            self.preview_table.setModel(None)
+            return
+
+        sep = self.separator_input.text()
+        hdr = True if self.header_checkbox.isChecked() else False
+        try:
+            preview_data = pl.read_csv(self.file_path, separator=sep, has_header=hdr).head(10)
+            model = QStandardItemModel()
+            
+            if not self.header_checkbox.isChecked():
+                preview_data.columns = [f&#34;Column {i+1}&#34; for i in range(preview_data.shape[1])]
+            
+            model.setHorizontalHeaderLabels(preview_data.columns)
+
+            for row in preview_data.to_numpy():
+                items = [QStandardItem(str(cell)) for cell in row]
+                model.appendRow(items)
+
+            self.preview_table.setModel(model)
+        except Exception as e:
+            print(f&#34;Error: {e}&#34;)
+            self.preview_table.setModel(None)
+
+    def get_csv_options(self):
+        &#34;&#34;&#34;Mengembalikan opsi CSV jika dialog diterima.&#34;&#34;&#34;
+        if self.exec() == QDialog.DialogCode.Accepted and self.file_path:
+            return self.file_path, self.separator_input.text(), self.header_checkbox.isChecked()
+        return None, None, None</code></pre>
+</details>
+<div class="desc"><p>QDialog(parent: Optional[QWidget] = None, flags: Qt.WindowType = Qt.WindowFlags())</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PyQt6.QtWidgets.QDialog</li>
+<li>PyQt6.QtWidgets.QWidget</li>
+<li>PyQt6.QtCore.QObject</li>
+<li>PyQt6.sip.wrapper</li>
+<li>PyQt6.QtGui.QPaintDevice</li>
+<li>PyQt6.sip.simplewrapper</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="sip-sae.test.file.load_file.CSVOptionsDialog.get_csv_options"><code class="name flex">
+<span>def <span class="ident">get_csv_options</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_csv_options(self):
+    &#34;&#34;&#34;Mengembalikan opsi CSV jika dialog diterima.&#34;&#34;&#34;
+    if self.exec() == QDialog.DialogCode.Accepted and self.file_path:
+        return self.file_path, self.separator_input.text(), self.header_checkbox.isChecked()
+    return None, None, None</code></pre>
+</details>
+<div class="desc"><p>Mengembalikan opsi CSV jika dialog diterima.</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.CSVOptionsDialog.init_ui"><code class="name flex">
+<span>def <span class="ident">init_ui</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def init_ui(self):
+    layout = QVBoxLayout()
+
+    # File picker
+    self.file_label = QLabel(&#34;No file selected&#34;)
+    layout.addWidget(self.file_label)
+    self.file_button = QPushButton(&#34;Select File&#34;)
+    self.file_button.clicked.connect(self.select_file)
+    layout.addWidget(self.file_button)
+
+    # Separator input
+    layout.addWidget(QLabel(&#34;Separator (e.g., , or ;)&#34;))
+    self.separator_input = QLineEdit(&#34;,&#34;)
+    self.separator_input.textChanged.connect(self.update_preview)
+    layout.addWidget(self.separator_input)
+
+    # Header checkbox
+    self.header_checkbox = QCheckBox(&#34;First row as header&#34;)
+    self.header_checkbox.setChecked(True)  # Default header True
+    self.header_checkbox.toggled.connect(self.update_preview)
+    layout.addWidget(self.header_checkbox)
+
+    # Preview Table
+    self.preview_label = QLabel(&#34;Preview&#34;)
+    layout.addWidget(self.preview_label)
+    self.preview_table = QTableView()
+    layout.addWidget(self.preview_table)
+
+    # OK/Cancel buttons
+    self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+    self.buttons.accepted.connect(self.accept)
+    self.buttons.rejected.connect(self.reject)
+    layout.addWidget(self.buttons)
+
+    self.setLayout(layout)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.CSVOptionsDialog.select_file"><code class="name flex">
+<span>def <span class="ident">select_file</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def select_file(self):
+    &#34;&#34;&#34;File picker untuk memilih file CSV.&#34;&#34;&#34;
+    file_path, _ = QFileDialog.getOpenFileName(self, &#34;Open CSV File&#34;, &#34;&#34;, &#34;CSV Files (*.csv)&#34;)
+    if file_path:
+        self.file_path = file_path
+        self.file_label.setText(f&#34;Selected: {file_path}&#34;)
+        self.update_preview()</code></pre>
+</details>
+<div class="desc"><p>File picker untuk memilih file CSV.</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.CSVOptionsDialog.update_preview"><code class="name flex">
+<span>def <span class="ident">update_preview</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_preview(self):
+    &#34;&#34;&#34;Perbarui preview tabel berdasarkan input.&#34;&#34;&#34;
+    if not self.file_path:
+        self.preview_table.setModel(None)
+        return
+
+    sep = self.separator_input.text()
+    hdr = True if self.header_checkbox.isChecked() else False
+    try:
+        preview_data = pl.read_csv(self.file_path, separator=sep, has_header=hdr).head(10)
+        model = QStandardItemModel()
+        
+        if not self.header_checkbox.isChecked():
+            preview_data.columns = [f&#34;Column {i+1}&#34; for i in range(preview_data.shape[1])]
+        
+        model.setHorizontalHeaderLabels(preview_data.columns)
+
+        for row in preview_data.to_numpy():
+            items = [QStandardItem(str(cell)) for cell in row]
+            model.appendRow(items)
+
+        self.preview_table.setModel(model)
+    except Exception as e:
+        print(f&#34;Error: {e}&#34;)
+        self.preview_table.setModel(None)</code></pre>
+</details>
+<div class="desc"><p>Perbarui preview tabel berdasarkan input.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="sip-sae.test.file.load_file.FileController"><code class="flex name class">
+<span>class <span class="ident">FileController</span></span>
+<span>(</span><span>model1, model2, view)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FileController:
+    def __init__(self, model1, model2, view):
+        self.model1 = model1
+        self.model2 = model2
+        self.view = view
+
+    def load_file(self):
+        &#34;&#34;&#34;Muat file CSV atau Excel ke model pertama.&#34;&#34;&#34;
+        file_path, selected_filter = QFileDialog.getOpenFileName(
+            self.view, &#34;Open File&#34;, &#34;&#34;,
+            &#34;CSV Files (*.csv);;Excel Files (*.xlsx)&#34;
+        )
+
+        if not file_path:  # Jika file tidak dipilih
+            return
+
+        try:
+            if selected_filter == &#34;CSV Files (*.csv)&#34;:
+                dialog = CSVOptionsDialog(self.view)
+                dialog.file_path = file_path
+                dialog.file_label.setText(f&#34;Selected: {file_path}&#34;)
+                dialog.update_preview()
+                file_path, separator, header = dialog.get_csv_options()
+
+                if not file_path:  # Jika file tidak dipilih
+                    return
+
+                # Baca data dari CSV dengan atau tanpa header
+                if header:
+                    data = pl.read_csv(file_path, separator=separator, has_header=True, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;])
+                else:
+                    data = pl.read_csv(file_path, separator=separator, has_header=False, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;])
+                    data.columns = [f&#34;Column {i+1}&#34; for i in range(data.shape[1])]
+            elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                import pandas as pd
+                sheet_names = pd.ExcelFile(file_path).sheet_names
+                sheet_name, ok = QInputDialog.getItem(self.view, &#34;Select Sheet&#34;, &#34;Sheet:&#34;, sheet_names, 0, False)
+                if not ok:
+                    return
+                data = pl.read_excel(file_path, sheet_name=sheet_name)
+
+            self.model1.set_data(data)
+            self.view.update_table(1, self.model1)
+        except Exception as e:
+            QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to load file: {str(e)}&#34;)
+
+    def save_data(self):
+        &#34;&#34;&#34;Simpan data dari model pertama (Sheet 1).&#34;&#34;&#34;
+        file_path, selected_filter = QFileDialog.getSaveFileName(
+            self.view, &#34;Save File&#34;, &#34;&#34;,
+            &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
+        )
+        
+        if file_path:
+
+            try:
+                if selected_filter == &#34;CSV Files (*.csv)&#34;:
+                    self.save_as_csv(file_path, self.model1)
+                elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                    self.save_as_excel(file_path, self.model1)
+                elif selected_filter == &#34;JSON Files (*.json)&#34;:
+                    self.save_as_json(file_path, self.model1)
+                elif selected_filter == &#34;Text Files (*.txt)&#34;:
+                    self.save_as_txt(file_path, self.model1)
+
+                QMessageBox.information(self.view, &#34;Success&#34;, &#34;File saved successfully!&#34;)
+            except Exception as e:
+                QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)
+
+    def save_data_output(self):
+        &#34;&#34;&#34;Simpan data dari model kedua (Sheet 2).&#34;&#34;&#34;
+        file_path, selected_filter = QFileDialog.getSaveFileName(
+            self.view, &#34;Save Output Data&#34;, &#34;&#34;,
+            &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
+        )
+        
+        if file_path:
+
+            try:
+                if selected_filter == &#34;CSV Files (*.csv)&#34;:
+                    self.save_as_csv(file_path, self.model2)
+                elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                    self.save_as_excel(file_path, self.model2)
+                elif selected_filter == &#34;JSON Files (*.json)&#34;:
+                    self.save_as_json(file_path, self.model2)
+                elif selected_filter == &#34;Text Files (*.txt)&#34;:
+                    self.save_as_txt(file_path, self.model2)
+
+                QMessageBox.information(self.view, &#34;Success&#34;, &#34;Output file saved successfully!&#34;)
+            except Exception as e:
+                QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)
+
+    def save_as_csv(self, file_path, model):
+        &#34;&#34;&#34;Simpan data sebagai CSV.&#34;&#34;&#34;
+        data = model.get_data()
+        data.write_csv(file_path)
+
+    def save_as_excel(self, file_path, model):
+        &#34;&#34;&#34;Simpan data sebagai Excel.&#34;&#34;&#34;
+        data = model.get_data()
+        data.write_excel(file_path)
+
+    def save_as_json(self, file_path, model):
+        &#34;&#34;&#34;Simpan data sebagai JSON.&#34;&#34;&#34;
+        data = model.get_data()
+        data.write_json(file_path, orient=&#34;records&#34;, lines=True)
+
+    def save_as_txt(self, file_path, model):
+        &#34;&#34;&#34;Simpan data sebagai file teks.&#34;&#34;&#34;
+        data = model.get_data()
+        data.write_csv(file_path, separator=&#34;\t&#34;)
+    
+    def export_output_to_pdf(self):
+        &#34;&#34;&#34;Export the content of all widgets in the output layout to a PDF file.&#34;&#34;&#34;
+        file_path, _ = QFileDialog.getSaveFileName(
+            self.view, &#34;Save PDF&#34;, &#34;&#34;, &#34;PDF Files (*.pdf)&#34;
+        )
+
+        if not file_path:
+            return
+
+        pdf_writer = QPdfWriter(file_path)
+        painter = QPainter(pdf_writer)
+
+        # Convert cm to points (1 cm = 28.3465 points)
+        top_margin = 4 * 28.3465
+        side_margin = 3 * 28.3465
+
+        y_offset = top_margin
+        page_height = pdf_writer.height()
+        page_width = pdf_writer.width()
+
+        def draw_text_multiline(text, y_offset):
+            &#34;&#34;&#34;Helper function to split text and draw it across multiple pages if needed.&#34;&#34;&#34;
+            font_metrics = painter.fontMetrics()
+            line_height = font_metrics.lineSpacing()
+            lines = text.splitlines()
+            for line in lines:
+                if y_offset + line_height &gt; page_height - top_margin:
+                    pdf_writer.newPage()
+                    y_offset = top_margin
+                painter.drawText(QRectF(side_margin, y_offset, page_width - 2 * side_margin, line_height),
+                                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, line)
+                y_offset += line_height
+            return y_offset
+
+        for i in range(self.view.output_layout.count()):
+            widget = self.view.output_layout.itemAt(i).widget()
+            if isinstance(widget, QFrame):
+                for j in range(widget.layout().count()):
+                    sub_widget = widget.layout().itemAt(j).widget()
+                    if isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Script R:&lt;/b&gt;&#34; in sub_widget.text():
+                        script_box = widget.layout().itemAt(j + 1).widget()
+                        text = script_box.toPlainText()
+                        y_offset = draw_text_multiline(text, y_offset)
+                    elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Output:&lt;/b&gt;&#34; in sub_widget.text():
+                        result_box = widget.layout().itemAt(j + 1).widget()
+                        text = result_box.toPlainText()
+                        y_offset = draw_text_multiline(text, y_offset)
+                    elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Plot:&lt;/b&gt;&#34; in sub_widget.text():
+                        for k in range(j + 1, widget.layout().count()):
+                            plot_label = widget.layout().itemAt(k).widget()
+                            if isinstance(plot_label, QLabel):
+                                image = plot_label.pixmap().toImage()
+                                image_height = image.height() * (page_width - 2 * side_margin) / image.width()
+                                if y_offset + image_height &gt; page_height - top_margin:
+                                    pdf_writer.newPage()
+                                    y_offset = top_margin
+                                rect = QRectF(side_margin, y_offset, page_width - 2 * side_margin, image_height)
+                                painter.drawImage(rect, image)
+                                y_offset += image_height
+
+            # Check if y_offset exceeds page height for next widget
+            if y_offset &gt; page_height - top_margin:
+                pdf_writer.newPage()
+                y_offset = top_margin
+
+        painter.end()
+
+        QMessageBox.information(self.view, &#34;Success&#34;, &#34;PDF exported successfully!&#34;)</code></pre>
+</details>
+<div class="desc"></div>
+<h3>Methods</h3>
+<dl>
+<dt id="sip-sae.test.file.load_file.FileController.export_output_to_pdf"><code class="name flex">
+<span>def <span class="ident">export_output_to_pdf</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def export_output_to_pdf(self):
+    &#34;&#34;&#34;Export the content of all widgets in the output layout to a PDF file.&#34;&#34;&#34;
+    file_path, _ = QFileDialog.getSaveFileName(
+        self.view, &#34;Save PDF&#34;, &#34;&#34;, &#34;PDF Files (*.pdf)&#34;
+    )
+
+    if not file_path:
+        return
+
+    pdf_writer = QPdfWriter(file_path)
+    painter = QPainter(pdf_writer)
+
+    # Convert cm to points (1 cm = 28.3465 points)
+    top_margin = 4 * 28.3465
+    side_margin = 3 * 28.3465
+
+    y_offset = top_margin
+    page_height = pdf_writer.height()
+    page_width = pdf_writer.width()
+
+    def draw_text_multiline(text, y_offset):
+        &#34;&#34;&#34;Helper function to split text and draw it across multiple pages if needed.&#34;&#34;&#34;
+        font_metrics = painter.fontMetrics()
+        line_height = font_metrics.lineSpacing()
+        lines = text.splitlines()
+        for line in lines:
+            if y_offset + line_height &gt; page_height - top_margin:
+                pdf_writer.newPage()
+                y_offset = top_margin
+            painter.drawText(QRectF(side_margin, y_offset, page_width - 2 * side_margin, line_height),
+                            Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, line)
+            y_offset += line_height
+        return y_offset
+
+    for i in range(self.view.output_layout.count()):
+        widget = self.view.output_layout.itemAt(i).widget()
+        if isinstance(widget, QFrame):
+            for j in range(widget.layout().count()):
+                sub_widget = widget.layout().itemAt(j).widget()
+                if isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Script R:&lt;/b&gt;&#34; in sub_widget.text():
+                    script_box = widget.layout().itemAt(j + 1).widget()
+                    text = script_box.toPlainText()
+                    y_offset = draw_text_multiline(text, y_offset)
+                elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Output:&lt;/b&gt;&#34; in sub_widget.text():
+                    result_box = widget.layout().itemAt(j + 1).widget()
+                    text = result_box.toPlainText()
+                    y_offset = draw_text_multiline(text, y_offset)
+                elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Plot:&lt;/b&gt;&#34; in sub_widget.text():
+                    for k in range(j + 1, widget.layout().count()):
+                        plot_label = widget.layout().itemAt(k).widget()
+                        if isinstance(plot_label, QLabel):
+                            image = plot_label.pixmap().toImage()
+                            image_height = image.height() * (page_width - 2 * side_margin) / image.width()
+                            if y_offset + image_height &gt; page_height - top_margin:
+                                pdf_writer.newPage()
+                                y_offset = top_margin
+                            rect = QRectF(side_margin, y_offset, page_width - 2 * side_margin, image_height)
+                            painter.drawImage(rect, image)
+                            y_offset += image_height
+
+        # Check if y_offset exceeds page height for next widget
+        if y_offset &gt; page_height - top_margin:
+            pdf_writer.newPage()
+            y_offset = top_margin
+
+    painter.end()
+
+    QMessageBox.information(self.view, &#34;Success&#34;, &#34;PDF exported successfully!&#34;)</code></pre>
+</details>
+<div class="desc"><p>Export the content of all widgets in the output layout to a PDF file.</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.FileController.load_file"><code class="name flex">
+<span>def <span class="ident">load_file</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_file(self):
+    &#34;&#34;&#34;Muat file CSV atau Excel ke model pertama.&#34;&#34;&#34;
+    file_path, selected_filter = QFileDialog.getOpenFileName(
+        self.view, &#34;Open File&#34;, &#34;&#34;,
+        &#34;CSV Files (*.csv);;Excel Files (*.xlsx)&#34;
+    )
+
+    if not file_path:  # Jika file tidak dipilih
+        return
+
+    try:
+        if selected_filter == &#34;CSV Files (*.csv)&#34;:
+            dialog = CSVOptionsDialog(self.view)
+            dialog.file_path = file_path
+            dialog.file_label.setText(f&#34;Selected: {file_path}&#34;)
+            dialog.update_preview()
+            file_path, separator, header = dialog.get_csv_options()
+
+            if not file_path:  # Jika file tidak dipilih
+                return
+
+            # Baca data dari CSV dengan atau tanpa header
+            if header:
+                data = pl.read_csv(file_path, separator=separator, has_header=True, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;])
+            else:
+                data = pl.read_csv(file_path, separator=separator, has_header=False, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;])
+                data.columns = [f&#34;Column {i+1}&#34; for i in range(data.shape[1])]
+        elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+            import pandas as pd
+            sheet_names = pd.ExcelFile(file_path).sheet_names
+            sheet_name, ok = QInputDialog.getItem(self.view, &#34;Select Sheet&#34;, &#34;Sheet:&#34;, sheet_names, 0, False)
+            if not ok:
+                return
+            data = pl.read_excel(file_path, sheet_name=sheet_name)
+
+        self.model1.set_data(data)
+        self.view.update_table(1, self.model1)
+    except Exception as e:
+        QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to load file: {str(e)}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Muat file CSV atau Excel ke model pertama.</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.FileController.save_as_csv"><code class="name flex">
+<span>def <span class="ident">save_as_csv</span></span>(<span>self, file_path, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_as_csv(self, file_path, model):
+    &#34;&#34;&#34;Simpan data sebagai CSV.&#34;&#34;&#34;
+    data = model.get_data()
+    data.write_csv(file_path)</code></pre>
+</details>
+<div class="desc"><p>Simpan data sebagai CSV.</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.FileController.save_as_excel"><code class="name flex">
+<span>def <span class="ident">save_as_excel</span></span>(<span>self, file_path, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_as_excel(self, file_path, model):
+    &#34;&#34;&#34;Simpan data sebagai Excel.&#34;&#34;&#34;
+    data = model.get_data()
+    data.write_excel(file_path)</code></pre>
+</details>
+<div class="desc"><p>Simpan data sebagai Excel.</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.FileController.save_as_json"><code class="name flex">
+<span>def <span class="ident">save_as_json</span></span>(<span>self, file_path, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_as_json(self, file_path, model):
+    &#34;&#34;&#34;Simpan data sebagai JSON.&#34;&#34;&#34;
+    data = model.get_data()
+    data.write_json(file_path, orient=&#34;records&#34;, lines=True)</code></pre>
+</details>
+<div class="desc"><p>Simpan data sebagai JSON.</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.FileController.save_as_txt"><code class="name flex">
+<span>def <span class="ident">save_as_txt</span></span>(<span>self, file_path, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_as_txt(self, file_path, model):
+    &#34;&#34;&#34;Simpan data sebagai file teks.&#34;&#34;&#34;
+    data = model.get_data()
+    data.write_csv(file_path, separator=&#34;\t&#34;)</code></pre>
+</details>
+<div class="desc"><p>Simpan data sebagai file teks.</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.FileController.save_data"><code class="name flex">
+<span>def <span class="ident">save_data</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_data(self):
+    &#34;&#34;&#34;Simpan data dari model pertama (Sheet 1).&#34;&#34;&#34;
+    file_path, selected_filter = QFileDialog.getSaveFileName(
+        self.view, &#34;Save File&#34;, &#34;&#34;,
+        &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
+    )
+    
+    if file_path:
+
+        try:
+            if selected_filter == &#34;CSV Files (*.csv)&#34;:
+                self.save_as_csv(file_path, self.model1)
+            elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                self.save_as_excel(file_path, self.model1)
+            elif selected_filter == &#34;JSON Files (*.json)&#34;:
+                self.save_as_json(file_path, self.model1)
+            elif selected_filter == &#34;Text Files (*.txt)&#34;:
+                self.save_as_txt(file_path, self.model1)
+
+            QMessageBox.information(self.view, &#34;Success&#34;, &#34;File saved successfully!&#34;)
+        except Exception as e:
+            QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Simpan data dari model pertama (Sheet 1).</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.FileController.save_data_output"><code class="name flex">
+<span>def <span class="ident">save_data_output</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_data_output(self):
+    &#34;&#34;&#34;Simpan data dari model kedua (Sheet 2).&#34;&#34;&#34;
+    file_path, selected_filter = QFileDialog.getSaveFileName(
+        self.view, &#34;Save Output Data&#34;, &#34;&#34;,
+        &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
+    )
+    
+    if file_path:
+
+        try:
+            if selected_filter == &#34;CSV Files (*.csv)&#34;:
+                self.save_as_csv(file_path, self.model2)
+            elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                self.save_as_excel(file_path, self.model2)
+            elif selected_filter == &#34;JSON Files (*.json)&#34;:
+                self.save_as_json(file_path, self.model2)
+            elif selected_filter == &#34;Text Files (*.txt)&#34;:
+                self.save_as_txt(file_path, self.model2)
+
+            QMessageBox.information(self.view, &#34;Success&#34;, &#34;Output file saved successfully!&#34;)
+        except Exception as e:
+            QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Simpan data dari model kedua (Sheet 2).</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="sip-sae.test.file.load_file.MainWindow"><code class="flex name class">
+<span>class <span class="ident">MainWindow</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle(&#34;SAE Pisan: Small Area Estimation Programming for Statistical Analysis v0.1.1&#34;)
+        columns = [f&#34;Column {i+1}&#34; for i in range(100)]
+        self.data1 = pl.DataFrame({col: [&#34;&#34;] * 100 for col in columns})
+        self.data2 = pl.DataFrame({
+            &#34;Estimated Value&#34;: [&#34;&#34;] * 100,
+            &#34;Standar Error&#34;: [&#34;&#34;] * 100,
+            &#34;CV&#34;: [&#34;&#34;] * 100
+        })
+
+        # Model untuk Sheet 2
+        self.model1 = TableModel(self.data1)
+        self.model2 = TableModel(self.data2)
+        self.path = os.path.join(os.path.dirname(__file__), &#39;..&#39;)
+
+        # Inisialisasi UI
+        self.init_ui()
+        self.showMaximized()
+
+    def init_ui(self):
+        # Membuat splitter utama untuk membagi halaman menjadi dua bagian (kiri dan kanan)
+        self.splitter_main = QSplitter(Qt.Orientation.Horizontal, self)
+
+        # Bagian kiri: QTabWidget untuk dua sheet
+        self.tab_widget = QTabWidget(self.splitter_main)  # Ditambahkan ke splitter utama
+        self.tab_widget.setTabPosition(QTabWidget.TabPosition.South)
+        
+        self.show_modeling_sae_dialog = None
+        self.show_modeling_saeHB_dialog = None
+        self.show_modeling_sae_unit_dialog = None
+        self.show_modeling_saeHB_normal_dialog = None
+        self.show_modellig_sae_pseudo_dialog = None
+        self.show_compute_variable_dialog = None
+        self.show_projection_variabel_dialog = None
+        
+
+        # Tab pertama (Data Editor)
+        self.tab1 = QWidget()
+        self.spreadsheet = QTableView(self.tab1)
+        self.spreadsheet.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.spreadsheet.setModel(self.model1)
+
+        tab1_layout = QVBoxLayout(self.tab1)
+        tab1_layout.addWidget(self.spreadsheet)
+        self.spreadsheet.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+
+        # Tab kedua (Data Output)
+        self.tab2 = QWidget()
+        self.table_view2 = QTableView(self.tab2)
+        self.table_view2.setModel(self.model2)
+        self.table_view2.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+
+        tab2_layout = QVBoxLayout(self.tab2)
+        tab2_layout.addWidget(self.table_view2)
+
+        # Tab ketiga (Output)
+        self.tab3 = QWidget()
+        self.scroll_area = QScrollArea(self.tab3)
+        
+        # Tab output
+        self.output_tab = QWidget()
+        self.scroll_area = QScrollArea(self.output_tab)
+        self.scroll_area.setWidgetResizable(True)
+        self.output_container = QWidget()
+        self.output_layout = QVBoxLayout(self.output_container)
+        self.output_container.setLayout(self.output_layout)
+        self.scroll_area.setWidget(self.output_container)
+        
+        # Atur layout output
+        self.output_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.output_layout.setSpacing(0)
+
+        tab3_layout = QVBoxLayout(self.tab3)
+        tab3_layout.addWidget(self.scroll_area)
+
+        # Menambahkan tab ke QTabWidget
+        self.tab_widget.addTab(self.tab1, &#34;Data Editor&#34;)
+        self.tab_widget.addTab(self.tab2, &#34;Data Output&#34;)
+        self.tab_widget.addTab(self.tab3, &#34;Output&#34;)  # Tab baru untuk output
+
+        # Membuat layout utama
+        layout = QVBoxLayout()
+        layout.addWidget(self.tab_widget)
+        
+
+        # Widget utama dan layout
+        central_widget = QWidget(self)
+        central_widget.setLayout(layout)
+        self.setCentralWidget(central_widget)
+
+        # Membuat menu bar
+        self.menu_bar = self.menuBar()
+
+        # Membuat menu File -&gt; Load dan Save
+        self.file_menu = self.menu_bar.addMenu(&#34;File&#34;)
+
+        self.load_action = QAction(&#34;Load File&#34;, self)
+        self.load_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_O))
+        self.load_action.setStatusTip(&#34;Ctrl+O&#34;)
+        
+        self.save_action = QAction(&#34;Save Data&#34;, self)
+        self.save_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_S))
+        self.save_action.setStatusTip(&#34;Ctrl+S&#34;)
+        
+        self.save_data_output_action = QAction(&#34;Save Data Output&#34;, self)
+        self.save_data_output_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Modifier.SHIFT | Qt.Key.Key_S))
+        self.save_action.setStatusTip(&#34;Ctrl+Shift+S&#34;)
+        
+        self.save_output_pdf = QAction(&#34;Save Output to PDF&#34;, self)
+        self.save_output_pdf.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_P))
+        self.save_output_pdf.setStatusTip(&#34;Ctrl+P&#34;)
+
+        self.file_menu.addAction(self.load_action)
+        self.file_menu.addAction(self.save_action)
+        self.file_menu.addAction(self.save_data_output_action)
+        self.file_menu.addAction(self.save_output_pdf)
+
+        # Menu &#34;Exploration&#34;
+        self.menu_exploration = self.menu_bar.addMenu(&#34;Exploration&#34;)
+
+        self.action_summary_data = QAction(&#34;Summary Data&#34;, self)
+
+        self.action_normality_test = QAction(&#34;Normality Test&#34;, self)
+
+        self.action_correlation = QAction(&#34;Correlation&#34;, self) 
+
+        self.action_multicollinearity = QAction(&#34;Multicollinearity&#34;, self)
+
+        self.action_variable_selection = QAction(&#34;Variable Selection&#34;, self)
+
+        self.menu_exploration.addAction(self.action_summary_data)
+        self.menu_exploration.addAction(self.action_normality_test)
+        self.menu_exploration.addAction(self.action_correlation)
+        self.menu_exploration.addAction(self.action_multicollinearity)
+        self.menu_exploration.addAction(self.action_variable_selection)
+
+        # Menu &#34;Graph&#34;
+        self.menu_graph = self.menu_bar.addMenu(&#34;Graph&#34;)
+
+        self.action_scatter_plot = QAction(&#34;Scatter Plot&#34;, self)
+
+        self.action_correlation_matrix = QAction(&#34;Correlation Matrix&#34;, self)
+
+        self.action_box_plot = QAction(&#34;Box Plot&#34;, self)
+
+        self.action_line_plot = QAction(&#34;Line Plot&#34;, self)
+
+        self.action_histogram = QAction(&#34;Histogram&#34;, self)
+
+        # Menambahkan plot-plot ke menu Graph
+        self.menu_graph.addAction(self.action_scatter_plot)
+        self.menu_graph.addAction(self.action_box_plot)
+        self.menu_graph.addAction(self.action_line_plot)
+        self.menu_graph.addAction(self.action_histogram)
+
+
+
+        # Menu &#34;Model&#34;
+        menu_model = self.menu_bar.addMenu(&#34;Model&#34;)
+
+        # Submenu &#34;Area Level&#34;
+        menu_area_level = QMenu(&#34;Area Level&#34;, self)
+        action_eblup_area = QAction(&#34;EBLUP&#34;, self)
+        action_hb_beta = QAction(&#34;HB Beta&#34;, self)
+        menu_area_level.addAction(action_eblup_area)
+        menu_area_level.addAction(action_hb_beta)
+
+        # Submenu &#34;Unit Level&#34;
+        menu_unit_level = QMenu(&#34;Unit Level&#34;, self)
+        action_eblup_unit = QAction(&#34;EBLUP&#34;, self)
+        action_hb_normal = QAction(&#34;HB Normal&#34;, self)
+        menu_unit_level.addAction(action_eblup_unit)
+        menu_unit_level.addAction(action_hb_normal)
+
+        # Submenu &#34;Pseudo&#34;
+        menu_pseudo = QMenu(&#34;Pseudo&#34;, self)
+        action_eblup_pseudo = QAction(&#34;EBLUP&#34;, self)
+        menu_pseudo.addAction(action_eblup_pseudo)
+
+        # Submenu &#34;Projection&#34;
+        menu_projection = QMenu(&#34;Projection&#34;, self)
+        action_projection = QAction(&#34;Projection&#34;, self)
+        menu_projection.addAction(action_projection)
+
+
+        # Menambahkan submenu ke menu &#34;Model&#34;
+        menu_model.addMenu(menu_area_level)
+        menu_model.addMenu(menu_unit_level)
+        menu_model.addMenu(menu_pseudo)
+        menu_model.addMenu(menu_projection)
+
+
+
+         # Menu &#39;Compute&#39;
+        menu_compute = self.menu_bar.addMenu(&#34;Compute&#34;)
+        compute_new_var = QAction(&#34;Compute New Variable&#34;, self)
+        menu_compute.addAction(compute_new_var)
+        
+        # Menu &#34;About&#34;
+        menu_about = self.menu_bar.addMenu(&#34;About&#34;)
+        action_about_info = QAction(&#34;About This App&#34;, self)
+        menu_about.addAction(action_about_info)
+        
+
+        # Tool Bar
+        self.toolBar = QToolBar(self)
+        self.toolBar.setIconSize(QSize(45, 35))
+        self.toolBar.setObjectName(&#34;toolBar&#34;)
+        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolBar)  # Perbaikan dilakukan di sini
+        # Actions for Toolbar
+        self.actionLoad_file = QAction(self)
+        self.actionLoad_file.setText(&#34;Load File&#34;)
+        self.toolBar.addAction(self.actionLoad_file)
+    
+    def edit_data_type(self, column_index):
+        &#34;&#34;&#34;Edit the data type of the column at the given index.&#34;&#34;&#34;
+        current_type = self.model1.get_column_type(column_index)
+        if current_type==pl.Utf8:
+            current_type = &#34;String&#34;
+        elif current_type==pl.Int64:
+            current_type = &#34;Integer&#34;
+        elif current_type==pl.Float64:
+            current_type = &#34;Float&#34;
+        type_list = [&#34;String&#34;, &#34;Integer&#34;, &#34;Float&#34;]
+        current_index = type_list.index(current_type)
+        new_type, ok = QInputDialog.getItem(self, &#34;Edit Data Type&#34;, &#34;Select new data type:&#34;, type_list, current=current_index)
+        if ok and new_type:
+            self.model1.set_column_type(column_index, new_type)
+            self.update_table(1, self.model1)
+    def update_table(self, sheet_number, model):
+        &#34;&#34;&#34;Memperbarui tabel pada sheet tertentu dengan model baru&#34;&#34;&#34;
+        if sheet_number == 1:
+            self.spreadsheet.setModel(model)
+            self.model1 = model
+        elif sheet_number == 2:
+            self.table_view2.setModel(model)
+            self.model2 = model
+            self.table_view2.resizeColumnsToContents()</code></pre>
+</details>
+<div class="desc"><p>QMainWindow(parent: Optional[QWidget] = None, flags: Qt.WindowType = Qt.WindowFlags())</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PyQt6.QtWidgets.QMainWindow</li>
+<li>PyQt6.QtWidgets.QWidget</li>
+<li>PyQt6.QtCore.QObject</li>
+<li>PyQt6.sip.wrapper</li>
+<li>PyQt6.QtGui.QPaintDevice</li>
+<li>PyQt6.sip.simplewrapper</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="sip-sae.test.file.load_file.MainWindow.edit_data_type"><code class="name flex">
+<span>def <span class="ident">edit_data_type</span></span>(<span>self, column_index)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def edit_data_type(self, column_index):
+    &#34;&#34;&#34;Edit the data type of the column at the given index.&#34;&#34;&#34;
+    current_type = self.model1.get_column_type(column_index)
+    if current_type==pl.Utf8:
+        current_type = &#34;String&#34;
+    elif current_type==pl.Int64:
+        current_type = &#34;Integer&#34;
+    elif current_type==pl.Float64:
+        current_type = &#34;Float&#34;
+    type_list = [&#34;String&#34;, &#34;Integer&#34;, &#34;Float&#34;]
+    current_index = type_list.index(current_type)
+    new_type, ok = QInputDialog.getItem(self, &#34;Edit Data Type&#34;, &#34;Select new data type:&#34;, type_list, current=current_index)
+    if ok and new_type:
+        self.model1.set_column_type(column_index, new_type)
+        self.update_table(1, self.model1)</code></pre>
+</details>
+<div class="desc"><p>Edit the data type of the column at the given index.</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.MainWindow.init_ui"><code class="name flex">
+<span>def <span class="ident">init_ui</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def init_ui(self):
+    # Membuat splitter utama untuk membagi halaman menjadi dua bagian (kiri dan kanan)
+    self.splitter_main = QSplitter(Qt.Orientation.Horizontal, self)
+
+    # Bagian kiri: QTabWidget untuk dua sheet
+    self.tab_widget = QTabWidget(self.splitter_main)  # Ditambahkan ke splitter utama
+    self.tab_widget.setTabPosition(QTabWidget.TabPosition.South)
+    
+    self.show_modeling_sae_dialog = None
+    self.show_modeling_saeHB_dialog = None
+    self.show_modeling_sae_unit_dialog = None
+    self.show_modeling_saeHB_normal_dialog = None
+    self.show_modellig_sae_pseudo_dialog = None
+    self.show_compute_variable_dialog = None
+    self.show_projection_variabel_dialog = None
+    
+
+    # Tab pertama (Data Editor)
+    self.tab1 = QWidget()
+    self.spreadsheet = QTableView(self.tab1)
+    self.spreadsheet.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+    self.spreadsheet.setModel(self.model1)
+
+    tab1_layout = QVBoxLayout(self.tab1)
+    tab1_layout.addWidget(self.spreadsheet)
+    self.spreadsheet.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+
+    # Tab kedua (Data Output)
+    self.tab2 = QWidget()
+    self.table_view2 = QTableView(self.tab2)
+    self.table_view2.setModel(self.model2)
+    self.table_view2.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+
+    tab2_layout = QVBoxLayout(self.tab2)
+    tab2_layout.addWidget(self.table_view2)
+
+    # Tab ketiga (Output)
+    self.tab3 = QWidget()
+    self.scroll_area = QScrollArea(self.tab3)
+    
+    # Tab output
+    self.output_tab = QWidget()
+    self.scroll_area = QScrollArea(self.output_tab)
+    self.scroll_area.setWidgetResizable(True)
+    self.output_container = QWidget()
+    self.output_layout = QVBoxLayout(self.output_container)
+    self.output_container.setLayout(self.output_layout)
+    self.scroll_area.setWidget(self.output_container)
+    
+    # Atur layout output
+    self.output_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+    self.output_layout.setSpacing(0)
+
+    tab3_layout = QVBoxLayout(self.tab3)
+    tab3_layout.addWidget(self.scroll_area)
+
+    # Menambahkan tab ke QTabWidget
+    self.tab_widget.addTab(self.tab1, &#34;Data Editor&#34;)
+    self.tab_widget.addTab(self.tab2, &#34;Data Output&#34;)
+    self.tab_widget.addTab(self.tab3, &#34;Output&#34;)  # Tab baru untuk output
+
+    # Membuat layout utama
+    layout = QVBoxLayout()
+    layout.addWidget(self.tab_widget)
+    
+
+    # Widget utama dan layout
+    central_widget = QWidget(self)
+    central_widget.setLayout(layout)
+    self.setCentralWidget(central_widget)
+
+    # Membuat menu bar
+    self.menu_bar = self.menuBar()
+
+    # Membuat menu File -&gt; Load dan Save
+    self.file_menu = self.menu_bar.addMenu(&#34;File&#34;)
+
+    self.load_action = QAction(&#34;Load File&#34;, self)
+    self.load_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_O))
+    self.load_action.setStatusTip(&#34;Ctrl+O&#34;)
+    
+    self.save_action = QAction(&#34;Save Data&#34;, self)
+    self.save_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_S))
+    self.save_action.setStatusTip(&#34;Ctrl+S&#34;)
+    
+    self.save_data_output_action = QAction(&#34;Save Data Output&#34;, self)
+    self.save_data_output_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Modifier.SHIFT | Qt.Key.Key_S))
+    self.save_action.setStatusTip(&#34;Ctrl+Shift+S&#34;)
+    
+    self.save_output_pdf = QAction(&#34;Save Output to PDF&#34;, self)
+    self.save_output_pdf.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_P))
+    self.save_output_pdf.setStatusTip(&#34;Ctrl+P&#34;)
+
+    self.file_menu.addAction(self.load_action)
+    self.file_menu.addAction(self.save_action)
+    self.file_menu.addAction(self.save_data_output_action)
+    self.file_menu.addAction(self.save_output_pdf)
+
+    # Menu &#34;Exploration&#34;
+    self.menu_exploration = self.menu_bar.addMenu(&#34;Exploration&#34;)
+
+    self.action_summary_data = QAction(&#34;Summary Data&#34;, self)
+
+    self.action_normality_test = QAction(&#34;Normality Test&#34;, self)
+
+    self.action_correlation = QAction(&#34;Correlation&#34;, self) 
+
+    self.action_multicollinearity = QAction(&#34;Multicollinearity&#34;, self)
+
+    self.action_variable_selection = QAction(&#34;Variable Selection&#34;, self)
+
+    self.menu_exploration.addAction(self.action_summary_data)
+    self.menu_exploration.addAction(self.action_normality_test)
+    self.menu_exploration.addAction(self.action_correlation)
+    self.menu_exploration.addAction(self.action_multicollinearity)
+    self.menu_exploration.addAction(self.action_variable_selection)
+
+    # Menu &#34;Graph&#34;
+    self.menu_graph = self.menu_bar.addMenu(&#34;Graph&#34;)
+
+    self.action_scatter_plot = QAction(&#34;Scatter Plot&#34;, self)
+
+    self.action_correlation_matrix = QAction(&#34;Correlation Matrix&#34;, self)
+
+    self.action_box_plot = QAction(&#34;Box Plot&#34;, self)
+
+    self.action_line_plot = QAction(&#34;Line Plot&#34;, self)
+
+    self.action_histogram = QAction(&#34;Histogram&#34;, self)
+
+    # Menambahkan plot-plot ke menu Graph
+    self.menu_graph.addAction(self.action_scatter_plot)
+    self.menu_graph.addAction(self.action_box_plot)
+    self.menu_graph.addAction(self.action_line_plot)
+    self.menu_graph.addAction(self.action_histogram)
+
+
+
+    # Menu &#34;Model&#34;
+    menu_model = self.menu_bar.addMenu(&#34;Model&#34;)
+
+    # Submenu &#34;Area Level&#34;
+    menu_area_level = QMenu(&#34;Area Level&#34;, self)
+    action_eblup_area = QAction(&#34;EBLUP&#34;, self)
+    action_hb_beta = QAction(&#34;HB Beta&#34;, self)
+    menu_area_level.addAction(action_eblup_area)
+    menu_area_level.addAction(action_hb_beta)
+
+    # Submenu &#34;Unit Level&#34;
+    menu_unit_level = QMenu(&#34;Unit Level&#34;, self)
+    action_eblup_unit = QAction(&#34;EBLUP&#34;, self)
+    action_hb_normal = QAction(&#34;HB Normal&#34;, self)
+    menu_unit_level.addAction(action_eblup_unit)
+    menu_unit_level.addAction(action_hb_normal)
+
+    # Submenu &#34;Pseudo&#34;
+    menu_pseudo = QMenu(&#34;Pseudo&#34;, self)
+    action_eblup_pseudo = QAction(&#34;EBLUP&#34;, self)
+    menu_pseudo.addAction(action_eblup_pseudo)
+
+    # Submenu &#34;Projection&#34;
+    menu_projection = QMenu(&#34;Projection&#34;, self)
+    action_projection = QAction(&#34;Projection&#34;, self)
+    menu_projection.addAction(action_projection)
+
+
+    # Menambahkan submenu ke menu &#34;Model&#34;
+    menu_model.addMenu(menu_area_level)
+    menu_model.addMenu(menu_unit_level)
+    menu_model.addMenu(menu_pseudo)
+    menu_model.addMenu(menu_projection)
+
+
+
+     # Menu &#39;Compute&#39;
+    menu_compute = self.menu_bar.addMenu(&#34;Compute&#34;)
+    compute_new_var = QAction(&#34;Compute New Variable&#34;, self)
+    menu_compute.addAction(compute_new_var)
+    
+    # Menu &#34;About&#34;
+    menu_about = self.menu_bar.addMenu(&#34;About&#34;)
+    action_about_info = QAction(&#34;About This App&#34;, self)
+    menu_about.addAction(action_about_info)
+    
+
+    # Tool Bar
+    self.toolBar = QToolBar(self)
+    self.toolBar.setIconSize(QSize(45, 35))
+    self.toolBar.setObjectName(&#34;toolBar&#34;)
+    self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolBar)  # Perbaikan dilakukan di sini
+    # Actions for Toolbar
+    self.actionLoad_file = QAction(self)
+    self.actionLoad_file.setText(&#34;Load File&#34;)
+    self.toolBar.addAction(self.actionLoad_file)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.MainWindow.update_table"><code class="name flex">
+<span>def <span class="ident">update_table</span></span>(<span>self, sheet_number, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_table(self, sheet_number, model):
+    &#34;&#34;&#34;Memperbarui tabel pada sheet tertentu dengan model baru&#34;&#34;&#34;
+    if sheet_number == 1:
+        self.spreadsheet.setModel(model)
+        self.model1 = model
+    elif sheet_number == 2:
+        self.table_view2.setModel(model)
+        self.model2 = model
+        self.table_view2.resizeColumnsToContents()</code></pre>
+</details>
+<div class="desc"><p>Memperbarui tabel pada sheet tertentu dengan model baru</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="sip-sae.test.file.load_file.TableModel"><code class="flex name class">
+<span>class <span class="ident">TableModel</span></span>
+<span>(</span><span>data, batch_size=100)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TableModel(QtCore.QAbstractTableModel):
+    def __init__(self, data, batch_size=100):
+        super().__init__()
+        self._data = data
+        self.batch_size = batch_size
+        self.loaded_rows = min(batch_size, self._data.shape[0])
+    
+    def rowCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -&gt; int:
+        # Return the number of rows that should be displayed. 
+        # Here, we use self.loaded_rows to support batch loading.
+        return self.loaded_rows
+
+    def columnCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -&gt; int:
+        # Return the number of columns based on your data&#39;s columns.
+        return len(self._data.columns)
+    
+    import polars as pl
+
+    def data(self, index: QtCore.QModelIndex, role: int = QtCore.Qt.ItemDataRole.DisplayRole):
+        if not index.isValid():
+            return None
+
+        if role == QtCore.Qt.ItemDataRole.DisplayRole or role == QtCore.Qt.ItemDataRole.EditRole:
+            column_name = self._data.columns[index.column()]  # Get column name
+            value = self._data[column_name][index.row()]  # Get value using Polars indexing
+            return str(value)  # Convert to string for Qt compatibility
+
+        return None
+
+    
+    def set_data(self, new_data):
+        if isinstance(new_data, pl.DataFrame):
+            self.beginResetModel()
+            self._data = new_data
+            self.loaded_rows = min(self.batch_size, self._data.shape[0])
+            self.endResetModel()
+        else:
+            raise ValueError(&#34;Data must be a Polars DataFrame&#34;)
+    def get_column_type(self, column_index):
+        if isinstance(column_index, int) and 0 &lt;= column_index &lt; len(self._data.columns):
+            column_name = self._data.columns[column_index]
+            return self._data[column_name].dtype
+        return None
+    def get_data(self):
+        return self._data
+    
+    def set_column_type(self, column_index, new_type):
+        if isinstance(column_index, int) and 0 &lt;= column_index &lt; len(self._data.columns):
+            column_name = self._data.columns[column_index]
+            old_dtype = self._data[column_name].dtype
+            old_data = self._data[column_name].to_list()
+
+            if new_type == &#34;String&#34;:
+                new_dtype = pl.Utf8
+            elif new_type == &#34;Integer&#34;:
+                if self._data[column_name].dtype == pl.Utf8:
+                    try:
+                        warning_dialog = QtWidgets.QMessageBox()
+                        warning_dialog.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                        warning_dialog.setText(f&#34;The current data type of column {column_name} is String. Converting to Integer will result in loss of non-numeric data.&#34;)
+                        warning_dialog.setInformativeText(&#34;Do you want to proceed with the conversion?&#34;)
+                        warning_dialog.setWindowTitle(&#34;Data Type Conversion Warning&#34;)
+                        warning_dialog.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+                        warning_dialog.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
+                        ret = warning_dialog.exec()
+
+                        if ret == QtWidgets.QMessageBox.StandardButton.Yes:
+                            self._data = self._data.with_columns([
+                                pl.when(pl.col(column_name).str.contains(r&#39;\d&#39;))
+                                .then(pl.col(column_name).str.extract(r&#39;(\d+)&#39;).cast(pl.Int64))
+                                .otherwise(pl.lit(None).cast(pl.Int64))
+                            ])
+                        else:
+                            return
+                    except Exception:
+                        raise ValueError(f&#34;Cannot convert column {column_name} to Integer&#34;)
+                new_dtype = pl.Int64
+            elif new_type == &#34;Float&#34;:
+                if self._data[column_name].dtype == pl.Utf8:
+                    try:
+                        warning_dialog = QtWidgets.QMessageBox()
+                        warning_dialog.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                        warning_dialog.setText(f&#34;The current data type of column {column_name} is String. Converting to Float will result in loss of non-numeric data.&#34;)
+                        warning_dialog.setInformativeText(&#34;Do you want to proceed with the conversion?&#34;)
+                        warning_dialog.setWindowTitle(&#34;Data Type Conversion Warning&#34;)
+                        warning_dialog.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+                        warning_dialog.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
+                        ret = warning_dialog.exec()
+
+                        if ret == QtWidgets.QMessageBox.StandardButton.Yes:
+                            self._data = self._data.with_columns([
+                                pl.when(pl.col(column_name).str.contains(r&#39;^\d+(\.\d+)?$&#39;) | pl.col(column_name).str.contains(r&#39;^\d+(,\d+)?$&#39;))
+                                .then(pl.col(column_name).str.replace(&#34;,&#34;, &#34;.&#34;).cast(pl.Float64, strict=False))
+                                .otherwise(pl.lit(None).cast(pl.Float64))
+                            ])
+                        else:
+                            return
+                    except Exception:
+                        raise ValueError(f&#34;Cannot convert column {column_name} to Float&#34;)
+                new_dtype = pl.Float64
+            else:
+                raise ValueError(&#34;Unsupported data type&#34;)
+
+            self.beginResetModel()
+            self._data = self._data.with_columns([pl.col(column_name).cast(new_dtype)])
+            self.endResetModel()</code></pre>
+</details>
+<div class="desc"><p>QAbstractTableModel(parent: Optional[QObject] = None)</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PyQt6.QtCore.QAbstractTableModel</li>
+<li>PyQt6.QtCore.QAbstractItemModel</li>
+<li>PyQt6.QtCore.QObject</li>
+<li>PyQt6.sip.wrapper</li>
+<li>PyQt6.sip.simplewrapper</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sip-sae.test.file.load_file.TableModel.pl"><code class="name">var <span class="ident">pl</span></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="sip-sae.test.file.load_file.TableModel.columnCount"><code class="name flex">
+<span>def <span class="ident">columnCount</span></span>(<span>self,<br>parent: PyQt6.QtCore.QModelIndex = &lt;PyQt6.QtCore.QModelIndex object&gt;) ‑> int</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def columnCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -&gt; int:
+    # Return the number of columns based on your data&#39;s columns.
+    return len(self._data.columns)</code></pre>
+</details>
+<div class="desc"><p>columnCount(self, parent: QModelIndex = QModelIndex()) -&gt; int</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TableModel.data"><code class="name flex">
+<span>def <span class="ident">data</span></span>(<span>self, index: PyQt6.QtCore.QModelIndex, role: int = 0)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def data(self, index: QtCore.QModelIndex, role: int = QtCore.Qt.ItemDataRole.DisplayRole):
+    if not index.isValid():
+        return None
+
+    if role == QtCore.Qt.ItemDataRole.DisplayRole or role == QtCore.Qt.ItemDataRole.EditRole:
+        column_name = self._data.columns[index.column()]  # Get column name
+        value = self._data[column_name][index.row()]  # Get value using Polars indexing
+        return str(value)  # Convert to string for Qt compatibility
+
+    return None</code></pre>
+</details>
+<div class="desc"><p>data(self, index: QModelIndex, role: int = Qt.DisplayRole) -&gt; Any</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TableModel.get_column_type"><code class="name flex">
+<span>def <span class="ident">get_column_type</span></span>(<span>self, column_index)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_column_type(self, column_index):
+    if isinstance(column_index, int) and 0 &lt;= column_index &lt; len(self._data.columns):
+        column_name = self._data.columns[column_index]
+        return self._data[column_name].dtype
+    return None</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TableModel.get_data"><code class="name flex">
+<span>def <span class="ident">get_data</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_data(self):
+    return self._data</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TableModel.rowCount"><code class="name flex">
+<span>def <span class="ident">rowCount</span></span>(<span>self,<br>parent: PyQt6.QtCore.QModelIndex = &lt;PyQt6.QtCore.QModelIndex object&gt;) ‑> int</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rowCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -&gt; int:
+    # Return the number of rows that should be displayed. 
+    # Here, we use self.loaded_rows to support batch loading.
+    return self.loaded_rows</code></pre>
+</details>
+<div class="desc"><p>rowCount(self, parent: QModelIndex = QModelIndex()) -&gt; int</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TableModel.set_column_type"><code class="name flex">
+<span>def <span class="ident">set_column_type</span></span>(<span>self, column_index, new_type)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_column_type(self, column_index, new_type):
+    if isinstance(column_index, int) and 0 &lt;= column_index &lt; len(self._data.columns):
+        column_name = self._data.columns[column_index]
+        old_dtype = self._data[column_name].dtype
+        old_data = self._data[column_name].to_list()
+
+        if new_type == &#34;String&#34;:
+            new_dtype = pl.Utf8
+        elif new_type == &#34;Integer&#34;:
+            if self._data[column_name].dtype == pl.Utf8:
+                try:
+                    warning_dialog = QtWidgets.QMessageBox()
+                    warning_dialog.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                    warning_dialog.setText(f&#34;The current data type of column {column_name} is String. Converting to Integer will result in loss of non-numeric data.&#34;)
+                    warning_dialog.setInformativeText(&#34;Do you want to proceed with the conversion?&#34;)
+                    warning_dialog.setWindowTitle(&#34;Data Type Conversion Warning&#34;)
+                    warning_dialog.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+                    warning_dialog.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
+                    ret = warning_dialog.exec()
+
+                    if ret == QtWidgets.QMessageBox.StandardButton.Yes:
+                        self._data = self._data.with_columns([
+                            pl.when(pl.col(column_name).str.contains(r&#39;\d&#39;))
+                            .then(pl.col(column_name).str.extract(r&#39;(\d+)&#39;).cast(pl.Int64))
+                            .otherwise(pl.lit(None).cast(pl.Int64))
+                        ])
+                    else:
+                        return
+                except Exception:
+                    raise ValueError(f&#34;Cannot convert column {column_name} to Integer&#34;)
+            new_dtype = pl.Int64
+        elif new_type == &#34;Float&#34;:
+            if self._data[column_name].dtype == pl.Utf8:
+                try:
+                    warning_dialog = QtWidgets.QMessageBox()
+                    warning_dialog.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                    warning_dialog.setText(f&#34;The current data type of column {column_name} is String. Converting to Float will result in loss of non-numeric data.&#34;)
+                    warning_dialog.setInformativeText(&#34;Do you want to proceed with the conversion?&#34;)
+                    warning_dialog.setWindowTitle(&#34;Data Type Conversion Warning&#34;)
+                    warning_dialog.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+                    warning_dialog.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
+                    ret = warning_dialog.exec()
+
+                    if ret == QtWidgets.QMessageBox.StandardButton.Yes:
+                        self._data = self._data.with_columns([
+                            pl.when(pl.col(column_name).str.contains(r&#39;^\d+(\.\d+)?$&#39;) | pl.col(column_name).str.contains(r&#39;^\d+(,\d+)?$&#39;))
+                            .then(pl.col(column_name).str.replace(&#34;,&#34;, &#34;.&#34;).cast(pl.Float64, strict=False))
+                            .otherwise(pl.lit(None).cast(pl.Float64))
+                        ])
+                    else:
+                        return
+                except Exception:
+                    raise ValueError(f&#34;Cannot convert column {column_name} to Float&#34;)
+            new_dtype = pl.Float64
+        else:
+            raise ValueError(&#34;Unsupported data type&#34;)
+
+        self.beginResetModel()
+        self._data = self._data.with_columns([pl.col(column_name).cast(new_dtype)])
+        self.endResetModel()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TableModel.set_data"><code class="name flex">
+<span>def <span class="ident">set_data</span></span>(<span>self, new_data)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_data(self, new_data):
+    if isinstance(new_data, pl.DataFrame):
+        self.beginResetModel()
+        self._data = new_data
+        self.loaded_rows = min(self.batch_size, self._data.shape[0])
+        self.endResetModel()
+    else:
+        raise ValueError(&#34;Data must be a Polars DataFrame&#34;)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="sip-sae.test.file.load_file.TestMainWindow"><code class="flex name class">
+<span>class <span class="ident">TestMainWindow</span></span>
+<span>(</span><span>methodName='runTest')</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TestMainWindow(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.app = QApplication(sys.argv)
+
+    def setUp(self):
+        self.main_window = MainWindow()
+        self.file_controller = FileController(self.main_window.model1, self.main_window.model2, self.main_window)
+
+    def test_load_file(self):
+        with patch(&#39;PyQt6.QtWidgets.QFileDialog.getOpenFileName&#39;, return_value=(&#39;test.csv&#39;, &#39;CSV Files (*.csv)&#39;)):
+            with patch(&#39;load_file.CSVOptionsDialog.get_csv_options&#39;, return_value=(&#39;test.csv&#39;, &#39;,&#39;, True)):
+                with patch(&#39;polars.read_csv&#39;, return_value=pl.DataFrame({&#39;Column1&#39;: [1, 2], &#39;Column2&#39;: [3, 4]})):
+                    self.file_controller.load_file()
+                    self.assertEqual(self.main_window.model1._data.shape, (2, 2))
+
+    def test_save_data(self):
+        with patch(&#39;PyQt6.QtWidgets.QFileDialog.getSaveFileName&#39;, return_value=(&#39;test.csv&#39;, &#39;CSV Files (*.csv)&#39;)):
+            with patch(&#39;polars.DataFrame.write_csv&#39;) as mock_write_csv:
+                self.file_controller.save_data()
+                mock_write_csv.assert_called_once()
+
+    def test_save_data_output(self):
+        with patch(&#39;PyQt6.QtWidgets.QFileDialog.getSaveFileName&#39;, return_value=(&#39;test_output.csv&#39;, &#39;CSV Files (*.csv)&#39;)):
+            with patch(&#39;polars.DataFrame.write_csv&#39;) as mock_write_csv:
+                self.file_controller.save_data_output()
+                mock_write_csv.assert_called_once()
+
+    def test_export_output_to_pdf(self):
+        with patch(&#39;PyQt6.QtWidgets.QFileDialog.getSaveFileName&#39;, return_value=(&#39;output.pdf&#39;, &#39;PDF Files (*.pdf)&#39;)):
+            with patch(&#39;PyQt6.QtGui.QPdfWriter&#39;) as MockPdfWriter:
+                mock_pdf_writer_instance = MockPdfWriter.return_value
+                self.file_controller.export_output_to_pdf()
+                # MockPdfWriter.assert_called_once()
+    
+    def test_edit_data_type(self):
+        self.main_window.model1.set_data(pl.DataFrame({&#39;Column1&#39;: [1, 2], &#39;Column2&#39;: [3, 4]}))
+        with patch(&#39;PyQt6.QtWidgets.QInputDialog.getItem&#39;, return_value=(&#39;String&#39;, True)):
+            self.main_window.edit_data_type(0)
+            self.assertEqual(self.main_window.model1.get_column_type(0), pl.Utf8)</code></pre>
+</details>
+<div class="desc"><p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+'runTest'.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test's environment ('fixture') can be
+implemented by overriding the 'setUp' and 'tearDown' methods respectively.</p>
+<p>If it is necessary to override the <strong>init</strong> method, the base class
+<strong>init</strong> method must always be called. It is important that subclasses
+should not change the signature of their <strong>init</strong> method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when
+the instance's assertion methods fail; test methods raising this
+exception will be deemed to have 'failed' rather than 'errored'.
+* longMessage: determines whether long messages (including repr of
+objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.
+* maxDiff: sets the maximum length of a diff in failure messages
+by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>unittest.case.TestCase</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="sip-sae.test.file.load_file.TestMainWindow.setUpClass"><code class="name flex">
+<span>def <span class="ident">setUpClass</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Hook method for setting up class fixture before running tests in the class.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="sip-sae.test.file.load_file.TestMainWindow.setUp"><code class="name flex">
+<span>def <span class="ident">setUp</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setUp(self):
+    self.main_window = MainWindow()
+    self.file_controller = FileController(self.main_window.model1, self.main_window.model2, self.main_window)</code></pre>
+</details>
+<div class="desc"><p>Hook method for setting up the test fixture before exercising it.</p></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TestMainWindow.test_edit_data_type"><code class="name flex">
+<span>def <span class="ident">test_edit_data_type</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_edit_data_type(self):
+    self.main_window.model1.set_data(pl.DataFrame({&#39;Column1&#39;: [1, 2], &#39;Column2&#39;: [3, 4]}))
+    with patch(&#39;PyQt6.QtWidgets.QInputDialog.getItem&#39;, return_value=(&#39;String&#39;, True)):
+        self.main_window.edit_data_type(0)
+        self.assertEqual(self.main_window.model1.get_column_type(0), pl.Utf8)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TestMainWindow.test_export_output_to_pdf"><code class="name flex">
+<span>def <span class="ident">test_export_output_to_pdf</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_export_output_to_pdf(self):
+    with patch(&#39;PyQt6.QtWidgets.QFileDialog.getSaveFileName&#39;, return_value=(&#39;output.pdf&#39;, &#39;PDF Files (*.pdf)&#39;)):
+        with patch(&#39;PyQt6.QtGui.QPdfWriter&#39;) as MockPdfWriter:
+            mock_pdf_writer_instance = MockPdfWriter.return_value
+            self.file_controller.export_output_to_pdf()
+            # MockPdfWriter.assert_called_once()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TestMainWindow.test_load_file"><code class="name flex">
+<span>def <span class="ident">test_load_file</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_load_file(self):
+    with patch(&#39;PyQt6.QtWidgets.QFileDialog.getOpenFileName&#39;, return_value=(&#39;test.csv&#39;, &#39;CSV Files (*.csv)&#39;)):
+        with patch(&#39;load_file.CSVOptionsDialog.get_csv_options&#39;, return_value=(&#39;test.csv&#39;, &#39;,&#39;, True)):
+            with patch(&#39;polars.read_csv&#39;, return_value=pl.DataFrame({&#39;Column1&#39;: [1, 2], &#39;Column2&#39;: [3, 4]})):
+                self.file_controller.load_file()
+                self.assertEqual(self.main_window.model1._data.shape, (2, 2))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TestMainWindow.test_save_data"><code class="name flex">
+<span>def <span class="ident">test_save_data</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_save_data(self):
+    with patch(&#39;PyQt6.QtWidgets.QFileDialog.getSaveFileName&#39;, return_value=(&#39;test.csv&#39;, &#39;CSV Files (*.csv)&#39;)):
+        with patch(&#39;polars.DataFrame.write_csv&#39;) as mock_write_csv:
+            self.file_controller.save_data()
+            mock_write_csv.assert_called_once()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.file.load_file.TestMainWindow.test_save_data_output"><code class="name flex">
+<span>def <span class="ident">test_save_data_output</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_save_data_output(self):
+    with patch(&#39;PyQt6.QtWidgets.QFileDialog.getSaveFileName&#39;, return_value=(&#39;test_output.csv&#39;, &#39;CSV Files (*.csv)&#39;)):
+        with patch(&#39;polars.DataFrame.write_csv&#39;) as mock_write_csv:
+            self.file_controller.save_data_output()
+            mock_write_csv.assert_called_once()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sip-sae.test.file" href="index.html">sip-sae.test.file</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sip-sae.test.file.load_file.CSVOptionsDialog" href="#sip-sae.test.file.load_file.CSVOptionsDialog">CSVOptionsDialog</a></code></h4>
+<ul class="">
+<li><code><a title="sip-sae.test.file.load_file.CSVOptionsDialog.get_csv_options" href="#sip-sae.test.file.load_file.CSVOptionsDialog.get_csv_options">get_csv_options</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.CSVOptionsDialog.init_ui" href="#sip-sae.test.file.load_file.CSVOptionsDialog.init_ui">init_ui</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.CSVOptionsDialog.select_file" href="#sip-sae.test.file.load_file.CSVOptionsDialog.select_file">select_file</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.CSVOptionsDialog.update_preview" href="#sip-sae.test.file.load_file.CSVOptionsDialog.update_preview">update_preview</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sip-sae.test.file.load_file.FileController" href="#sip-sae.test.file.load_file.FileController">FileController</a></code></h4>
+<ul class="">
+<li><code><a title="sip-sae.test.file.load_file.FileController.export_output_to_pdf" href="#sip-sae.test.file.load_file.FileController.export_output_to_pdf">export_output_to_pdf</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.FileController.load_file" href="#sip-sae.test.file.load_file.FileController.load_file">load_file</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.FileController.save_as_csv" href="#sip-sae.test.file.load_file.FileController.save_as_csv">save_as_csv</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.FileController.save_as_excel" href="#sip-sae.test.file.load_file.FileController.save_as_excel">save_as_excel</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.FileController.save_as_json" href="#sip-sae.test.file.load_file.FileController.save_as_json">save_as_json</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.FileController.save_as_txt" href="#sip-sae.test.file.load_file.FileController.save_as_txt">save_as_txt</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.FileController.save_data" href="#sip-sae.test.file.load_file.FileController.save_data">save_data</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.FileController.save_data_output" href="#sip-sae.test.file.load_file.FileController.save_data_output">save_data_output</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sip-sae.test.file.load_file.MainWindow" href="#sip-sae.test.file.load_file.MainWindow">MainWindow</a></code></h4>
+<ul class="">
+<li><code><a title="sip-sae.test.file.load_file.MainWindow.edit_data_type" href="#sip-sae.test.file.load_file.MainWindow.edit_data_type">edit_data_type</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.MainWindow.init_ui" href="#sip-sae.test.file.load_file.MainWindow.init_ui">init_ui</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.MainWindow.update_table" href="#sip-sae.test.file.load_file.MainWindow.update_table">update_table</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sip-sae.test.file.load_file.TableModel" href="#sip-sae.test.file.load_file.TableModel">TableModel</a></code></h4>
+<ul class="two-column">
+<li><code><a title="sip-sae.test.file.load_file.TableModel.columnCount" href="#sip-sae.test.file.load_file.TableModel.columnCount">columnCount</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TableModel.data" href="#sip-sae.test.file.load_file.TableModel.data">data</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TableModel.get_column_type" href="#sip-sae.test.file.load_file.TableModel.get_column_type">get_column_type</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TableModel.get_data" href="#sip-sae.test.file.load_file.TableModel.get_data">get_data</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TableModel.pl" href="#sip-sae.test.file.load_file.TableModel.pl">pl</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TableModel.rowCount" href="#sip-sae.test.file.load_file.TableModel.rowCount">rowCount</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TableModel.set_column_type" href="#sip-sae.test.file.load_file.TableModel.set_column_type">set_column_type</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TableModel.set_data" href="#sip-sae.test.file.load_file.TableModel.set_data">set_data</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sip-sae.test.file.load_file.TestMainWindow" href="#sip-sae.test.file.load_file.TestMainWindow">TestMainWindow</a></code></h4>
+<ul class="">
+<li><code><a title="sip-sae.test.file.load_file.TestMainWindow.setUp" href="#sip-sae.test.file.load_file.TestMainWindow.setUp">setUp</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TestMainWindow.setUpClass" href="#sip-sae.test.file.load_file.TestMainWindow.setUpClass">setUpClass</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TestMainWindow.test_edit_data_type" href="#sip-sae.test.file.load_file.TestMainWindow.test_edit_data_type">test_edit_data_type</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TestMainWindow.test_export_output_to_pdf" href="#sip-sae.test.file.load_file.TestMainWindow.test_export_output_to_pdf">test_export_output_to_pdf</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TestMainWindow.test_load_file" href="#sip-sae.test.file.load_file.TestMainWindow.test_load_file">test_load_file</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TestMainWindow.test_save_data" href="#sip-sae.test.file.load_file.TestMainWindow.test_save_data">test_save_data</a></code></li>
+<li><code><a title="sip-sae.test.file.load_file.TestMainWindow.test_save_data_output" href="#sip-sae.test.file.load_file.TestMainWindow.test_save_data_output">test_save_data_output</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>

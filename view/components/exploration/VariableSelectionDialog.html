@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>sip-sae.view.components.exploration.VariableSelectionDialog API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sip-sae.view.components.exploration.VariableSelectionDialog</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog"><code class="flex name class">
+<span>class <span class="ident">VariableSelectionDialog</span></span>
+<span>(</span><span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VariableSelectionDialog(QDialog):
+    &#34;&#34;&#34;
+    A dialog for selecting variables for regression analysis.
+    Attributes:
+        parent (QWidget): The parent widget.
+        model1 (Any): The first data model.
+        model2 (Any): The second data model.
+        all_columns_model1 (list): List of all columns in model1.
+        all_columns_model2 (list): List of all columns in model2.
+        selected_status (dict): Dictionary to store the status of selected variables.
+        data_editor_label (QLabel): Label for the data editor.
+        data_editor_model (QStringListModel): Model for the data editor list view.
+        data_editor_list (QListView): List view for the data editor.
+        data_output_label (QLabel): Label for the data output.
+        data_output_model (QStringListModel): Model for the data output list view.
+        data_output_list (QListView): List view for the data output.
+        remove_button1 (QPushButton): Button to remove selected variables.
+        add_dependent_variable_button (QPushButton): Button to add a dependent variable.
+        add_independent_variable_button (QPushButton): Button to add independent variables.
+        dependent_variable_label (QLabel): Label for the dependent variable list.
+        dependent_variable_model (QStringListModel): Model for the dependent variable list view.
+        dependent_variable_list (QListView): List view for the dependent variable.
+        independent_variable_label (QLabel): Label for the independent variable list.
+        independent_variable_model (QStringListModel): Model for the independent variable list view.
+        independent_variable_list (QListView): List view for the independent variable.
+        forward_checkbox (QCheckBox): Checkbox for forward selection method.
+        backward_checkbox (QCheckBox): Checkbox for backward selection method.
+        stepwise_checkbox (QCheckBox): Checkbox for stepwise selection method.
+        script_label (QLabel): Label for the R script.
+        icon_label (QLabel): Label for the running icon.
+        script_box (QTextEdit): Text box to display the generated R script.
+        run_button (QPushButton): Button to run the variable selection.
+    Methods:
+        __init__(self, parent): Initializes the dialog.
+        set_model(self, model1, model2): Sets the data models for the dialog.
+        get_column_with_dtype(self, model): Returns a list of columns with their data types.
+        dependent_variable(self): Adds a selected variable to the dependent variable list.
+        independent_variables(self): Adds selected variables to the independent variable list.
+        remove_variable(self): Removes selected variables from the dependent and independent variable lists.
+        get_selected_dependent_variable(self): Returns the selected dependent variable.
+        get_selected_independent_variables(self): Returns the selected independent variables.
+        accept(self): Runs the variable selection process.
+        closeEvent(self, event): Clears selected variables when the dialog is closed.
+        get_selected_methods(self): Returns the selected variable selection methods.
+        generate_r_script(self): Generates the R script for variable selection.
+    &#34;&#34;&#34;
+    
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self.model1 = None
+        self.model2 = None
+        self.all_columns_model1 = []
+        self.all_columns_model2 = []
+
+        self.setWindowTitle(&#34;Variable Selection&#34;)
+
+        # Menyimpan status variabel yang dipilih
+        self.selected_status = {}
+
+        # Layout utama
+        main_layout = QVBoxLayout(self)
+
+        # Layout konten utama
+        content_layout = QHBoxLayout()
+
+        # Layout kiri: Data Editor dan Data Output
+        left_layout = QVBoxLayout()
+
+        # Data Editor
+        self.data_editor_label = QLabel(&#34;Data Editor&#34;, self)
+        self.data_editor_model = QStringListModel()
+        self.data_editor_list = QListView(self)
+        self.data_editor_list.setModel(self.data_editor_model)
+        self.data_editor_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
+        self.data_editor_list.setEditTriggers(QListView.EditTrigger.NoEditTriggers)
+        left_layout.addWidget(self.data_editor_label)
+        left_layout.addWidget(self.data_editor_list)
+
+        # Data Output
+        self.data_output_label = QLabel(&#34;Data Output&#34;, self)
+        self.data_output_model = QStringListModel()
+        self.data_output_list = QListView(self)
+        self.data_output_list.setModel(self.data_output_model)
+        self.data_output_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
+        self.data_output_list.setEditTriggers(QListView.EditTrigger.NoEditTriggers)
+        left_layout.addWidget(self.data_output_label)
+        left_layout.addWidget(self.data_output_list)
+
+        content_layout.addLayout(left_layout)
+
+        # Central Layout: Buttons
+        button_layout1 = QVBoxLayout()
+        self.remove_button1 = QPushButton(&#34;🡄&#34;, self)
+        self.remove_button1.clicked.connect(self.remove_variable) 
+        self.remove_button1.setStyleSheet(&#34;font-size: 24px;&#34;) 
+        self.remove_button1.setFixedSize(50,35)
+        button_layout1.addStretch(3)
+        button_layout1.addWidget(self.remove_button1)
+        button_layout1.addStretch(7)
+
+        button_layout2 = QVBoxLayout()
+        self.add_dependent_variable_button = QPushButton(&#34;🡆&#34;, self)
+        self.add_dependent_variable_button.clicked.connect(self.dependent_variable)
+        self.add_dependent_variable_button.setStyleSheet(&#34;font-size: 24px;&#34;)
+        self.add_dependent_variable_button.setFixedSize(50,35)
+
+        self.add_independent_variable_button = QPushButton(&#34;🡆&#34;, self)  
+        self.add_independent_variable_button.clicked.connect(self.independent_variables)
+        self.add_independent_variable_button.setStyleSheet(&#34;font-size: 24px;&#34;)
+        self.add_independent_variable_button.setFixedSize(50,35)
+
+        button_layout2.addStretch(1)
+        button_layout2.addWidget(self.add_dependent_variable_button)
+        button_layout2.addStretch(2)
+        button_layout2.addWidget(self.add_independent_variable_button)
+        button_layout2.addStretch(6)
+
+        # Menambahkan kedua layout tombol ke content_layout
+        content_layout.addLayout(button_layout1)
+        content_layout.addLayout(button_layout2)
+
+        # Layout kanan: Variabel yang dipilih, metode, dan grafik
+        right_layout = QVBoxLayout()
+
+        # dependent_variable Axis
+        dependent_variable_layout = QVBoxLayout()
+        self.dependent_variable_label = QLabel(&#34;Dependent Variable&#34;, self)
+        self.dependent_variable_model = QStringListModel()
+        self.dependent_variable_list = QListView(self)
+        self.dependent_variable_list.setModel(self.dependent_variable_model)
+        self.dependent_variable_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
+
+        # Batasi tinggi 
+        item_height = 30  
+        self.dependent_variable_list.setFixedHeight(item_height + 4)  
+
+        dependent_variable_layout.addWidget(self.dependent_variable_label)
+        dependent_variable_layout.addWidget(self.dependent_variable_list)
+        right_layout.addLayout(dependent_variable_layout)
+
+
+        # independent_variable Axis
+        independent_variable_layout = QVBoxLayout()
+        self.independent_variable_label = QLabel(&#34;Independent Variable&#34;, self)
+        self.independent_variable_model = QStringListModel()
+        self.independent_variable_list = QListView(self)
+        self.independent_variable_list.setModel(self.independent_variable_model)
+        self.independent_variable_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
+        independent_variable_layout.addWidget(self.independent_variable_label)
+        independent_variable_layout.addWidget(self.independent_variable_list)
+        right_layout.addLayout(independent_variable_layout)
+
+        # Grup Variable Selection Method (Dipisah)
+        selection_method_group = QGroupBox(&#34;Variable Selection Method&#34;)
+        selection_method_layout = QVBoxLayout()
+
+        self.forward_checkbox = QCheckBox(&#34;Forward&#34;)
+        self.backward_checkbox = QCheckBox(&#34;Backward&#34;)
+        self.stepwise_checkbox = QCheckBox(&#34;Stepwise&#34;)
+
+        # Tambahkan event listener untuk setiap checkbox
+        self.forward_checkbox.stateChanged.connect(self.generate_r_script)
+        self.backward_checkbox.stateChanged.connect(self.generate_r_script)
+        self.stepwise_checkbox.stateChanged.connect(self.generate_r_script)
+
+        # Tambahkan checkbox ke layout
+        selection_method_layout.addWidget(self.forward_checkbox)
+        selection_method_layout.addWidget(self.backward_checkbox)
+        selection_method_layout.addWidget(self.stepwise_checkbox)
+        selection_method_group.setLayout(selection_method_layout)
+
+        right_layout.addWidget(selection_method_group)
+        content_layout.addLayout(right_layout)
+        main_layout.addLayout(content_layout)
+
+
+        # Script box
+        self.script_layout = QHBoxLayout() 
+        self.script_label = QLabel(&#34;R Script:&#34;, self)
+
+        self.icon_label = QLabel(self)
+        self.icon_label.setPixmap(QIcon(&#34;assets/running.svg&#34;).pixmap(QSize(16, 30)))
+        self.icon_label.setFixedSize(16, 30)
+        self.icon_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+
+        spacer = QSpacerItem(40, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.script_layout.addWidget(self.script_label)
+        self.script_layout.addItem(spacer)  
+        self.script_layout.addWidget(self.icon_label)
+        self.icon_label.setVisible(False)
+        self.script_box = QTextEdit(self)
+
+        main_layout.addLayout(self.script_layout)  
+        main_layout.addWidget(self.script_box)
+
+        # Tombol Run
+        button_row_layout = QHBoxLayout()
+        self.run_button = QPushButton(&#34;Run&#34;, self)
+        self.run_button.clicked.connect(self.accept)
+        button_row_layout.addWidget(self.run_button, alignment=Qt.AlignmentFlag.AlignRight)
+        main_layout.addLayout(button_row_layout)
+        
+        self.data_editor_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
+        self.data_output_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
+        self.independent_variable_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
+        self.dependent_variable_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
+
+    def set_model(self, model1, model2):
+        self.model1 = model1
+        self.model2 = model2
+        self.data_editor_model.setStringList(self.get_column_with_dtype(model1))
+        self.data_output_model.setStringList(self.get_column_with_dtype(model2))
+        self.all_columns_model1 = self.get_column_with_dtype(model1)
+        self.all_columns_model2 = self.get_column_with_dtype(model2)
+
+
+    def get_column_with_dtype(self, model):
+        self.columns = [
+            f&#34;{col} [{dtype}]&#34; if dtype == pl.Utf8 else f&#34;{col} [Numeric]&#34;
+            for col, dtype in zip(model.get_data().columns, model.get_data().dtypes)
+        ]
+        return self.columns 
+    
+
+    def dependent_variable(self):
+        # Check if there is already a variable in the dependent_variable axis
+        if len(self.dependent_variable_model.stringList()) &gt;= 1:
+            QMessageBox.warning(self, &#34;Warning&#34;, &#34;You can only add one variable to the dependent_variable Axis!&#34;)
+            return  # Do not add if one variable is already present
+
+        # Get all selected indexes from data editor and data output
+        selected_indexes = self.data_editor_list.selectedIndexes() + self.data_output_list.selectedIndexes()
+        selected_items = [index.data() for index in selected_indexes]
+
+        # Jika tidak ada yang dipilih
+        if not selected_items:
+            QMessageBox.warning(self, &#34;Warning&#34;, &#34;Please select a variable first!&#34;)
+            return
+
+        if len(selected_items) &gt; 1:
+            QMessageBox.warning(self, &#34;Warning&#34;, &#34;Please select only one variable!&#34;)
+            return
+
+        item = selected_items[0]
+
+        if &#34;[String]&#34; in item:
+            QMessageBox.warning(self, &#34;Warning&#34;, &#34;Selected variable must be of type Numeric.&#34;)
+            return
+
+        # Pindahkan item dari data_editor atau data_output
+        if item in self.data_editor_model.stringList():
+            editor_list = self.data_editor_model.stringList()
+            editor_list.remove(item)
+            self.data_editor_model.setStringList(editor_list)
+        elif item in self.data_output_model.stringList():
+            output_list = self.data_output_model.stringList()
+            output_list.remove(item)
+            self.data_output_model.setStringList(output_list)
+
+        # Masukkan ke dependent_variable_model
+        self.dependent_variable_model.setStringList([item])
+
+        # Generate R script setelah variabel ditambahkan
+        self.generate_r_script()
+
+
+    
+    def independent_variables(self):
+
+        selected_indexes = self.data_editor_list.selectedIndexes() + self.data_output_list.selectedIndexes()
+        selected_items = [index.data() for index in selected_indexes]
+        selected_list = self.independent_variable_model.stringList()
+
+        contains_string = any(&#34;[String]&#34; in item for item in selected_items)
+        selected_items = [item for item in selected_items if &#34;[String]&#34; not in item]
+
+        if contains_string:
+            QMessageBox.warning(None, &#34;Warning&#34;, &#34;Selected variables must be of type Numeric.&#34;)
+
+        for item in selected_items:
+            if item in self.data_editor_model.stringList():
+                editor_list = self.data_editor_model.stringList()
+                editor_list.remove(item)
+                self.data_editor_model.setStringList(editor_list)
+            elif item in self.data_output_model.stringList():
+                output_list = self.data_output_model.stringList()
+                output_list.remove(item)
+                self.data_output_model.setStringList(output_list)
+
+            if item not in selected_list:
+                selected_list.append(item)
+
+        self.independent_variable_model.setStringList(selected_list)
+        self.generate_r_script()
+
+
+    def remove_variable(self):
+        # Ambil indeks yang dipilih dari daftar variabel dependent_variable dan independent_variable
+        selected_dependent_variable_indexes = self.dependent_variable_list.selectedIndexes()
+        selected_independent_variable_indexes = self.independent_variable_list.selectedIndexes()
+
+        # Ambil nama variabel yang dipilih
+        selected_dependent_variable_items = [index.data() for index in selected_dependent_variable_indexes]
+        selected_independent_variable_items = [index.data() for index in selected_independent_variable_indexes]
+
+        # Gabungkan kedua daftar variabel yang dipilih
+        selected_items = selected_dependent_variable_items + selected_independent_variable_items
+
+        # Ambil daftar semua variabel yang sedang dipilih
+        dependent_variable_list = self.dependent_variable_model.stringList()
+        independent_variable_list = self.independent_variable_model.stringList()
+
+        # Periksa apakah variabel dikembalikan ke data editor atau data output
+        for item in selected_items:
+            column_name = item.split(&#39; &#39;)[0]  # Ambil nama kolom sebelum spasi
+
+            if column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model1]:
+                editor_list = self.data_editor_model.stringList()
+                if item not in editor_list:
+                    editor_list.append(item)
+                    self.data_editor_model.setStringList(editor_list)
+
+            elif column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model2]:
+                output_list = self.data_output_model.stringList()
+                if item not in output_list:
+                    output_list.append(item)
+                    self.data_output_model.setStringList(output_list)
+
+            # Hapus item dari daftar dependent_variable atau independent_variable jika ada
+            if item in dependent_variable_list:
+                dependent_variable_list.remove(item)
+
+            if item in independent_variable_list:
+                independent_variable_list.remove(item)
+
+        # Perbarui daftar variabel yang dipilih
+        self.dependent_variable_model.setStringList(dependent_variable_list)
+        self.independent_variable_model.setStringList(independent_variable_list)
+
+        # Perbarui script R setelah perubahan
+        self.generate_r_script()
+
+    def get_selected_dependent_variable(self):
+        return [
+            item.rsplit(&#34; [String]&#34;, 1)[0].rsplit(&#34; [Numeric]&#34;, 1)[0]
+            for item in self.dependent_variable_model.stringList()
+        ]
+    
+    def get_selected_independent_variables(self):
+        return [
+            item.rsplit(&#34; [String]&#34;, 1)[0].rsplit(&#34; [Numeric]&#34;, 1)[0]
+            for item in self.independent_variable_model.stringList()
+        ]
+    
+    def accept(self):
+        r_script = self.script_box.toPlainText()
+        if not r_script:
+            QMessageBox.warning(self, &#34;Empty Script&#34;, &#34;Please generate a script before running.&#34;)
+            return
+
+        if len(self.get_selected_independent_variables()) &lt; 2:
+            QMessageBox.warning(self, &#34;Invalid Independent Variables&#34;, &#34;Please select at least two independent variables.&#34;)
+            return
+        
+        selected_methods = self.get_selected_methods()
+        if not selected_methods:
+            QMessageBox.warning(self, &#34;Invalid Selection Methods&#34;, &#34;Please select at least one selection method.&#34;)
+            return
+        
+        self.run_button.setEnabled(False)
+        self.run_button.setText(&#34;Running...&#34;)
+        self.icon_label.setVisible(True)
+
+        variable_selection = VariableSelection(self.model1, self.model2, self.parent)
+
+        controller =  VariableSelectionController(variable_selection)
+        controller.run_model(r_script)
+
+        if variable_selection.error:
+            QMessageBox.critical(self, &#34;Variable Selection&#34;, variable_selection.result)
+        else:
+            QMessageBox.information(self, &#34;Variable Selection&#34;, &#34;Exploration has been completed.&#34;)
+            
+        self.parent.add_output(script_text=r_script, result_text=variable_selection.result)
+        self.icon_label.setVisible(False)
+        self.run_button.setText(&#34;Run&#34;)
+        self.run_button.setEnabled(True)
+        self.close()
+
+    def closeEvent(self, event):
+        &#34;&#34;&#34;Menghapus variabel yang dipilih ketika dialog ditutup.&#34;&#34;&#34;
+        self.dependent_variable_model.setStringList([]) 
+        self.independent_variable_model.setStringList([])
+        self.script_box.setPlainText(&#34;&#34;)  
+        event.accept()
+
+    def get_selected_methods(self):
+        &#34;&#34;&#34;Function to check selected selection methods&#34;&#34;&#34;
+        selected_methods = []
+        if self.forward_checkbox.isChecked():
+            selected_methods.append(&#34;forward&#34;)
+        if self.backward_checkbox.isChecked():
+            selected_methods.append(&#34;backward&#34;)
+        if self.stepwise_checkbox.isChecked():
+            selected_methods.append(&#34;both&#34;)
+        return selected_methods
+
+    def generate_r_script(self):
+        &#34;&#34;&#34;Function to generate R script for Variable Selection&#34;&#34;&#34;
+        # Get selected dependent and independent variables
+        dependent_var = self.get_selected_dependent_variable()
+        independent_vars = self.get_selected_independent_variables()
+
+        # Check if dependent_var and independent_vars are empty
+        if not dependent_var or not independent_vars:
+            self.script_box.setPlainText(&#34;&#34;) 
+            return
+
+        # Make sure dependent_var is a string and remove quotation marks
+        if isinstance(dependent_var, list):
+            dependent_var = dependent_var[0]  
+        dependent_var = str(dependent_var).strip(&#34;[]&#39;\&#34;&#34;)  
+
+        # Format independent variables with backticks if they contain special characters
+        formatted_independent_vars = &#34; + &#34;.join(
+            [f&#34;`{var}`&#34; for var in independent_vars]
+        )
+
+        # Initialize base model
+        r_script = (
+            f&#34;# Initial regression model\n&#34;
+            f&#34;null_model &lt;- lm(`{dependent_var}` ~ 1, data=data)\n&#34;
+            f&#34;full_model &lt;- lm(`{dependent_var}` ~ {formatted_independent_vars}, data=data)\n\n&#34;
+        )
+
+        selected_methods = self.get_selected_methods()
+        # If no methods are selected, display a message
+        if not selected_methods:
+            self.script_box.setPlainText(&#34;&#34;)
+            return
+
+        # Add script for each selected method
+        for method in selected_methods:
+            model_var = f&#34;{method}_model&#34;  # Variable name for the model
+            result_var = f&#34;{method}_result&#34;  # Variable name for the summary result
+
+            r_script += (
+            f&#34;{model_var} &lt;- step(null_model, \n&#34;
+            f&#34;                      scope = list(lower = null_model, upper = full_model), \n&#34;
+            f&#34;                      direction = \&#34;{method}\&#34;)\n\n&#34;
+            )
+
+            # Add model summary
+            r_script += f&#34;{result_var} &lt;- summary({model_var})\n\n&#34;
+
+        # Display the generated script
+        self.script_box.setPlainText(r_script)</code></pre>
+</details>
+<div class="desc"><p>A dialog for selecting variables for regression analysis.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>parent</code></strong> :&ensp;<code>QWidget</code></dt>
+<dd>The parent widget.</dd>
+<dt><strong><code>model1</code></strong> :&ensp;<code>Any</code></dt>
+<dd>The first data model.</dd>
+<dt><strong><code>model2</code></strong> :&ensp;<code>Any</code></dt>
+<dd>The second data model.</dd>
+<dt><strong><code>all_columns_model1</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of all columns in model1.</dd>
+<dt><strong><code>all_columns_model2</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of all columns in model2.</dd>
+<dt><strong><code>selected_status</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary to store the status of selected variables.</dd>
+<dt><strong><code>data_editor_label</code></strong> :&ensp;<code>QLabel</code></dt>
+<dd>Label for the data editor.</dd>
+<dt><strong><code>data_editor_model</code></strong> :&ensp;<code>QStringListModel</code></dt>
+<dd>Model for the data editor list view.</dd>
+<dt><strong><code>data_editor_list</code></strong> :&ensp;<code>QListView</code></dt>
+<dd>List view for the data editor.</dd>
+<dt><strong><code>data_output_label</code></strong> :&ensp;<code>QLabel</code></dt>
+<dd>Label for the data output.</dd>
+<dt><strong><code>data_output_model</code></strong> :&ensp;<code>QStringListModel</code></dt>
+<dd>Model for the data output list view.</dd>
+<dt><strong><code>data_output_list</code></strong> :&ensp;<code>QListView</code></dt>
+<dd>List view for the data output.</dd>
+<dt><strong><code>remove_button1</code></strong> :&ensp;<code>QPushButton</code></dt>
+<dd>Button to remove selected variables.</dd>
+<dt><strong><code>add_dependent_variable_button</code></strong> :&ensp;<code>QPushButton</code></dt>
+<dd>Button to add a dependent variable.</dd>
+<dt><strong><code>add_independent_variable_button</code></strong> :&ensp;<code>QPushButton</code></dt>
+<dd>Button to add independent variables.</dd>
+<dt><strong><code>dependent_variable_label</code></strong> :&ensp;<code>QLabel</code></dt>
+<dd>Label for the dependent variable list.</dd>
+<dt><strong><code>dependent_variable_model</code></strong> :&ensp;<code>QStringListModel</code></dt>
+<dd>Model for the dependent variable list view.</dd>
+<dt><strong><code>dependent_variable_list</code></strong> :&ensp;<code>QListView</code></dt>
+<dd>List view for the dependent variable.</dd>
+<dt><strong><code>independent_variable_label</code></strong> :&ensp;<code>QLabel</code></dt>
+<dd>Label for the independent variable list.</dd>
+<dt><strong><code>independent_variable_model</code></strong> :&ensp;<code>QStringListModel</code></dt>
+<dd>Model for the independent variable list view.</dd>
+<dt><strong><code>independent_variable_list</code></strong> :&ensp;<code>QListView</code></dt>
+<dd>List view for the independent variable.</dd>
+<dt><strong><code>forward_checkbox</code></strong> :&ensp;<code>QCheckBox</code></dt>
+<dd>Checkbox for forward selection method.</dd>
+<dt><strong><code>backward_checkbox</code></strong> :&ensp;<code>QCheckBox</code></dt>
+<dd>Checkbox for backward selection method.</dd>
+<dt><strong><code>stepwise_checkbox</code></strong> :&ensp;<code>QCheckBox</code></dt>
+<dd>Checkbox for stepwise selection method.</dd>
+<dt><strong><code>script_label</code></strong> :&ensp;<code>QLabel</code></dt>
+<dd>Label for the R script.</dd>
+<dt><strong><code>icon_label</code></strong> :&ensp;<code>QLabel</code></dt>
+<dd>Label for the running icon.</dd>
+<dt><strong><code>script_box</code></strong> :&ensp;<code>QTextEdit</code></dt>
+<dd>Text box to display the generated R script.</dd>
+<dt><strong><code>run_button</code></strong> :&ensp;<code>QPushButton</code></dt>
+<dd>Button to run the variable selection.</dd>
+</dl>
+<h2 id="methods">Methods</h2>
+<p><strong>init</strong>(self, parent): Initializes the dialog.
+set_model(self, model1, model2): Sets the data models for the dialog.
+get_column_with_dtype(self, model): Returns a list of columns with their data types.
+dependent_variable(self): Adds a selected variable to the dependent variable list.
+independent_variables(self): Adds selected variables to the independent variable list.
+remove_variable(self): Removes selected variables from the dependent and independent variable lists.
+get_selected_dependent_variable(self): Returns the selected dependent variable.
+get_selected_independent_variables(self): Returns the selected independent variables.
+accept(self): Runs the variable selection process.
+closeEvent(self, event): Clears selected variables when the dialog is closed.
+get_selected_methods(self): Returns the selected variable selection methods.
+generate_r_script(self): Generates the R script for variable selection.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PyQt6.QtWidgets.QDialog</li>
+<li>PyQt6.QtWidgets.QWidget</li>
+<li>PyQt6.QtCore.QObject</li>
+<li>PyQt6.sip.wrapper</li>
+<li>PyQt6.QtGui.QPaintDevice</li>
+<li>PyQt6.sip.simplewrapper</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.accept"><code class="name flex">
+<span>def <span class="ident">accept</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def accept(self):
+    r_script = self.script_box.toPlainText()
+    if not r_script:
+        QMessageBox.warning(self, &#34;Empty Script&#34;, &#34;Please generate a script before running.&#34;)
+        return
+
+    if len(self.get_selected_independent_variables()) &lt; 2:
+        QMessageBox.warning(self, &#34;Invalid Independent Variables&#34;, &#34;Please select at least two independent variables.&#34;)
+        return
+    
+    selected_methods = self.get_selected_methods()
+    if not selected_methods:
+        QMessageBox.warning(self, &#34;Invalid Selection Methods&#34;, &#34;Please select at least one selection method.&#34;)
+        return
+    
+    self.run_button.setEnabled(False)
+    self.run_button.setText(&#34;Running...&#34;)
+    self.icon_label.setVisible(True)
+
+    variable_selection = VariableSelection(self.model1, self.model2, self.parent)
+
+    controller =  VariableSelectionController(variable_selection)
+    controller.run_model(r_script)
+
+    if variable_selection.error:
+        QMessageBox.critical(self, &#34;Variable Selection&#34;, variable_selection.result)
+    else:
+        QMessageBox.information(self, &#34;Variable Selection&#34;, &#34;Exploration has been completed.&#34;)
+        
+    self.parent.add_output(script_text=r_script, result_text=variable_selection.result)
+    self.icon_label.setVisible(False)
+    self.run_button.setText(&#34;Run&#34;)
+    self.run_button.setEnabled(True)
+    self.close()</code></pre>
+</details>
+<div class="desc"><p>accept(self)</p></div>
+</dd>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.closeEvent"><code class="name flex">
+<span>def <span class="ident">closeEvent</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def closeEvent(self, event):
+    &#34;&#34;&#34;Menghapus variabel yang dipilih ketika dialog ditutup.&#34;&#34;&#34;
+    self.dependent_variable_model.setStringList([]) 
+    self.independent_variable_model.setStringList([])
+    self.script_box.setPlainText(&#34;&#34;)  
+    event.accept()</code></pre>
+</details>
+<div class="desc"><p>Menghapus variabel yang dipilih ketika dialog ditutup.</p></div>
+</dd>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.dependent_variable"><code class="name flex">
+<span>def <span class="ident">dependent_variable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dependent_variable(self):
+    # Check if there is already a variable in the dependent_variable axis
+    if len(self.dependent_variable_model.stringList()) &gt;= 1:
+        QMessageBox.warning(self, &#34;Warning&#34;, &#34;You can only add one variable to the dependent_variable Axis!&#34;)
+        return  # Do not add if one variable is already present
+
+    # Get all selected indexes from data editor and data output
+    selected_indexes = self.data_editor_list.selectedIndexes() + self.data_output_list.selectedIndexes()
+    selected_items = [index.data() for index in selected_indexes]
+
+    # Jika tidak ada yang dipilih
+    if not selected_items:
+        QMessageBox.warning(self, &#34;Warning&#34;, &#34;Please select a variable first!&#34;)
+        return
+
+    if len(selected_items) &gt; 1:
+        QMessageBox.warning(self, &#34;Warning&#34;, &#34;Please select only one variable!&#34;)
+        return
+
+    item = selected_items[0]
+
+    if &#34;[String]&#34; in item:
+        QMessageBox.warning(self, &#34;Warning&#34;, &#34;Selected variable must be of type Numeric.&#34;)
+        return
+
+    # Pindahkan item dari data_editor atau data_output
+    if item in self.data_editor_model.stringList():
+        editor_list = self.data_editor_model.stringList()
+        editor_list.remove(item)
+        self.data_editor_model.setStringList(editor_list)
+    elif item in self.data_output_model.stringList():
+        output_list = self.data_output_model.stringList()
+        output_list.remove(item)
+        self.data_output_model.setStringList(output_list)
+
+    # Masukkan ke dependent_variable_model
+    self.dependent_variable_model.setStringList([item])
+
+    # Generate R script setelah variabel ditambahkan
+    self.generate_r_script()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.generate_r_script"><code class="name flex">
+<span>def <span class="ident">generate_r_script</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_r_script(self):
+    &#34;&#34;&#34;Function to generate R script for Variable Selection&#34;&#34;&#34;
+    # Get selected dependent and independent variables
+    dependent_var = self.get_selected_dependent_variable()
+    independent_vars = self.get_selected_independent_variables()
+
+    # Check if dependent_var and independent_vars are empty
+    if not dependent_var or not independent_vars:
+        self.script_box.setPlainText(&#34;&#34;) 
+        return
+
+    # Make sure dependent_var is a string and remove quotation marks
+    if isinstance(dependent_var, list):
+        dependent_var = dependent_var[0]  
+    dependent_var = str(dependent_var).strip(&#34;[]&#39;\&#34;&#34;)  
+
+    # Format independent variables with backticks if they contain special characters
+    formatted_independent_vars = &#34; + &#34;.join(
+        [f&#34;`{var}`&#34; for var in independent_vars]
+    )
+
+    # Initialize base model
+    r_script = (
+        f&#34;# Initial regression model\n&#34;
+        f&#34;null_model &lt;- lm(`{dependent_var}` ~ 1, data=data)\n&#34;
+        f&#34;full_model &lt;- lm(`{dependent_var}` ~ {formatted_independent_vars}, data=data)\n\n&#34;
+    )
+
+    selected_methods = self.get_selected_methods()
+    # If no methods are selected, display a message
+    if not selected_methods:
+        self.script_box.setPlainText(&#34;&#34;)
+        return
+
+    # Add script for each selected method
+    for method in selected_methods:
+        model_var = f&#34;{method}_model&#34;  # Variable name for the model
+        result_var = f&#34;{method}_result&#34;  # Variable name for the summary result
+
+        r_script += (
+        f&#34;{model_var} &lt;- step(null_model, \n&#34;
+        f&#34;                      scope = list(lower = null_model, upper = full_model), \n&#34;
+        f&#34;                      direction = \&#34;{method}\&#34;)\n\n&#34;
+        )
+
+        # Add model summary
+        r_script += f&#34;{result_var} &lt;- summary({model_var})\n\n&#34;
+
+    # Display the generated script
+    self.script_box.setPlainText(r_script)</code></pre>
+</details>
+<div class="desc"><p>Function to generate R script for Variable Selection</p></div>
+</dd>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_column_with_dtype"><code class="name flex">
+<span>def <span class="ident">get_column_with_dtype</span></span>(<span>self, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_column_with_dtype(self, model):
+    self.columns = [
+        f&#34;{col} [{dtype}]&#34; if dtype == pl.Utf8 else f&#34;{col} [Numeric]&#34;
+        for col, dtype in zip(model.get_data().columns, model.get_data().dtypes)
+    ]
+    return self.columns </code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_selected_dependent_variable"><code class="name flex">
+<span>def <span class="ident">get_selected_dependent_variable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_selected_dependent_variable(self):
+    return [
+        item.rsplit(&#34; [String]&#34;, 1)[0].rsplit(&#34; [Numeric]&#34;, 1)[0]
+        for item in self.dependent_variable_model.stringList()
+    ]</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_selected_independent_variables"><code class="name flex">
+<span>def <span class="ident">get_selected_independent_variables</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_selected_independent_variables(self):
+    return [
+        item.rsplit(&#34; [String]&#34;, 1)[0].rsplit(&#34; [Numeric]&#34;, 1)[0]
+        for item in self.independent_variable_model.stringList()
+    ]</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_selected_methods"><code class="name flex">
+<span>def <span class="ident">get_selected_methods</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_selected_methods(self):
+    &#34;&#34;&#34;Function to check selected selection methods&#34;&#34;&#34;
+    selected_methods = []
+    if self.forward_checkbox.isChecked():
+        selected_methods.append(&#34;forward&#34;)
+    if self.backward_checkbox.isChecked():
+        selected_methods.append(&#34;backward&#34;)
+    if self.stepwise_checkbox.isChecked():
+        selected_methods.append(&#34;both&#34;)
+    return selected_methods</code></pre>
+</details>
+<div class="desc"><p>Function to check selected selection methods</p></div>
+</dd>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.independent_variables"><code class="name flex">
+<span>def <span class="ident">independent_variables</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def independent_variables(self):
+
+    selected_indexes = self.data_editor_list.selectedIndexes() + self.data_output_list.selectedIndexes()
+    selected_items = [index.data() for index in selected_indexes]
+    selected_list = self.independent_variable_model.stringList()
+
+    contains_string = any(&#34;[String]&#34; in item for item in selected_items)
+    selected_items = [item for item in selected_items if &#34;[String]&#34; not in item]
+
+    if contains_string:
+        QMessageBox.warning(None, &#34;Warning&#34;, &#34;Selected variables must be of type Numeric.&#34;)
+
+    for item in selected_items:
+        if item in self.data_editor_model.stringList():
+            editor_list = self.data_editor_model.stringList()
+            editor_list.remove(item)
+            self.data_editor_model.setStringList(editor_list)
+        elif item in self.data_output_model.stringList():
+            output_list = self.data_output_model.stringList()
+            output_list.remove(item)
+            self.data_output_model.setStringList(output_list)
+
+        if item not in selected_list:
+            selected_list.append(item)
+
+    self.independent_variable_model.setStringList(selected_list)
+    self.generate_r_script()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.remove_variable"><code class="name flex">
+<span>def <span class="ident">remove_variable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_variable(self):
+    # Ambil indeks yang dipilih dari daftar variabel dependent_variable dan independent_variable
+    selected_dependent_variable_indexes = self.dependent_variable_list.selectedIndexes()
+    selected_independent_variable_indexes = self.independent_variable_list.selectedIndexes()
+
+    # Ambil nama variabel yang dipilih
+    selected_dependent_variable_items = [index.data() for index in selected_dependent_variable_indexes]
+    selected_independent_variable_items = [index.data() for index in selected_independent_variable_indexes]
+
+    # Gabungkan kedua daftar variabel yang dipilih
+    selected_items = selected_dependent_variable_items + selected_independent_variable_items
+
+    # Ambil daftar semua variabel yang sedang dipilih
+    dependent_variable_list = self.dependent_variable_model.stringList()
+    independent_variable_list = self.independent_variable_model.stringList()
+
+    # Periksa apakah variabel dikembalikan ke data editor atau data output
+    for item in selected_items:
+        column_name = item.split(&#39; &#39;)[0]  # Ambil nama kolom sebelum spasi
+
+        if column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model1]:
+            editor_list = self.data_editor_model.stringList()
+            if item not in editor_list:
+                editor_list.append(item)
+                self.data_editor_model.setStringList(editor_list)
+
+        elif column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model2]:
+            output_list = self.data_output_model.stringList()
+            if item not in output_list:
+                output_list.append(item)
+                self.data_output_model.setStringList(output_list)
+
+        # Hapus item dari daftar dependent_variable atau independent_variable jika ada
+        if item in dependent_variable_list:
+            dependent_variable_list.remove(item)
+
+        if item in independent_variable_list:
+            independent_variable_list.remove(item)
+
+    # Perbarui daftar variabel yang dipilih
+    self.dependent_variable_model.setStringList(dependent_variable_list)
+    self.independent_variable_model.setStringList(independent_variable_list)
+
+    # Perbarui script R setelah perubahan
+    self.generate_r_script()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.set_model"><code class="name flex">
+<span>def <span class="ident">set_model</span></span>(<span>self, model1, model2)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_model(self, model1, model2):
+    self.model1 = model1
+    self.model2 = model2
+    self.data_editor_model.setStringList(self.get_column_with_dtype(model1))
+    self.data_output_model.setStringList(self.get_column_with_dtype(model2))
+    self.all_columns_model1 = self.get_column_with_dtype(model1)
+    self.all_columns_model2 = self.get_column_with_dtype(model2)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sip-sae.view.components.exploration" href="index.html">sip-sae.view.components.exploration</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog">VariableSelectionDialog</a></code></h4>
+<ul class="">
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.accept" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.accept">accept</a></code></li>
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.closeEvent" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.closeEvent">closeEvent</a></code></li>
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.dependent_variable" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.dependent_variable">dependent_variable</a></code></li>
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.generate_r_script" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.generate_r_script">generate_r_script</a></code></li>
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_column_with_dtype" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_column_with_dtype">get_column_with_dtype</a></code></li>
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_selected_dependent_variable" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_selected_dependent_variable">get_selected_dependent_variable</a></code></li>
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_selected_independent_variables" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_selected_independent_variables">get_selected_independent_variables</a></code></li>
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_selected_methods" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.get_selected_methods">get_selected_methods</a></code></li>
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.independent_variables" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.independent_variables">independent_variables</a></code></li>
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.remove_variable" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.remove_variable">remove_variable</a></code></li>
+<li><code><a title="sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.set_model" href="#sip-sae.view.components.exploration.VariableSelectionDialog.VariableSelectionDialog.set_model">set_model</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>sip-sae.service.modelling.SaeHBArea API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sip-sae.service.modelling.SaeHBArea</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="sip-sae.service.modelling.SaeHBArea.assign_as_factor"><code class="name flex">
+<span>def <span class="ident">assign_as_factor</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_as_factor(parent):
+    &#34;&#34;&#34;
+    Assigns selected variables as factors and updates the parent object&#39;s factor variable list and model.
+    Args:
+        parent: An object that contains the following attributes:
+            - variables_list: A QListView or similar widget that holds the list of variables.
+            - as_factor_var: A list that stores the variables to be treated as factors.
+            - as_factor_model: A QStringListModel or similar model that represents the factor variables.
+    The function performs the following steps:
+        1. Retrieves the selected indexes from the variables_list.
+        2. Extracts the data from the selected indexes and adds them to the as_factor_var list, ensuring no duplicates.
+        3. Updates the as_factor_model with the new list of factor variables.
+        4. Removes the selected variables from the variables_list.
+        5. Calls the show_r_script function to update the R script display.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        new_vars = []
+        for index in selected_indexes:
+            new_vars.append(index.data())
+        parent.as_factor_var = list(set(parent.as_factor_var + new_vars))  # Add new variables if they are different
+        parent.as_factor_model.setStringList(parent.as_factor_var)
+        for index in sorted(selected_indexes, reverse=True):
+            parent.variables_list.model().removeRow(index.row())  # Remove from variables list
+        show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Assigns selected variables as factors and updates the parent object's factor variable list and model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>An object that contains the following attributes:
+- variables_list: A QListView or similar widget that holds the list of variables.
+- as_factor_var: A list that stores the variables to be treated as factors.
+- as_factor_model: A QStringListModel or similar model that represents the factor variables.</dd>
+</dl>
+<p>The function performs the following steps:
+1. Retrieves the selected indexes from the variables_list.
+2. Extracts the data from the selected indexes and adds them to the as_factor_var list, ensuring no duplicates.
+3. Updates the as_factor_model with the new list of factor variables.
+4. Removes the selected variables from the variables_list.
+5. Calls the show_r_script function to update the R script display.</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeHBArea.assign_auxilary"><code class="name flex">
+<span>def <span class="ident">assign_auxilary</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_auxilary(parent):
+    &#34;&#34;&#34;
+    Assigns auxiliary variables from the selected indexes in the parent&#39;s variables list.
+    This function performs the following steps:
+    1. Retrieves the selected indexes from the parent&#39;s variables list.
+    2. Filters out non-numeric variables from the selected indexes.
+    3. If no valid numeric variables are selected, displays a warning message.
+    4. Adds the new numeric variables to the parent&#39;s auxiliary variables list.
+    5. Updates the parent&#39;s auxiliary model with the new list of auxiliary variables.
+    6. Removes the selected variables from the parent&#39;s variables list.
+    7. Calls the show_r_script function to update the R script.
+    Args:
+        parent: The parent object containing the variables list, auxiliary variables list, and auxiliary model.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        new_vars = []
+        for index in selected_indexes:
+            type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
+            if type_of_var != &#34;String&#34;:
+                new_vars.append(index.data())
+        if not new_vars:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setText(&#34;No valid numeric variables selected. Please select at least one numeric variable.&#34;)
+            msg.setWindowTitle(&#34;Warning&#34;)
+            msg.exec()
+            return
+        parent.auxilary_vars = list(set(parent.auxilary_vars + new_vars))  # Add new variables if they are different
+        parent.auxilary_model.setStringList(parent.auxilary_vars)
+        for index in sorted(selected_indexes, reverse=True):
+            parent.variables_list.model().removeRow(index.row())  # Remove from variables list
+        show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Assigns auxiliary variables from the selected indexes in the parent's variables list.
+This function performs the following steps:
+1. Retrieves the selected indexes from the parent's variables list.
+2. Filters out non-numeric variables from the selected indexes.
+3. If no valid numeric variables are selected, displays a warning message.
+4. Adds the new numeric variables to the parent's auxiliary variables list.
+5. Updates the parent's auxiliary model with the new list of auxiliary variables.
+6. Removes the selected variables from the parent's variables list.
+7. Calls the show_r_script function to update the R script.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object containing the variables list, auxiliary variables list, and auxiliary model.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeHBArea.assign_of_interest"><code class="name flex">
+<span>def <span class="ident">assign_of_interest</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_of_interest(parent):
+    &#34;&#34;&#34;
+    Assigns a variable of interest from the selected variables in the parent object&#39;s variables list.
+    This function checks the selected variables in the parent object&#39;s variables list. If any of the selected
+    variables are not of type &#34;String&#34;, it assigns the first non-string variable as the variable of interest,
+    updates the parent object&#39;s of_interest_model with this variable, and removes the variable from the variables list.
+    If all selected variables are of type &#34;String&#34;, it displays a warning message.
+    Args:
+        parent: The parent object containing the variables list and other related attributes.
+    Attributes:
+        parent.variables_list: The list of variables from which the variable of interest is selected.
+        parent.of_interest_var: The variable of interest to be assigned.
+        parent.of_interest_model: The model to be updated with the variable of interest.
+    Raises:
+        QMessageBox: Displays a warning message if all selected variables are of type &#34;String&#34;.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        all_string = True
+        for index in selected_indexes:
+            type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
+            if type_of_var != &#34;String&#34;:
+                all_string = False
+                parent.of_interest_var = [index.data()]
+                parent.of_interest_model.setStringList(parent.of_interest_var)
+                parent.variables_list.model().removeRow(selected_indexes[-1].row())  # Remove from variables list
+                show_r_script(parent)
+                break
+        if all_string:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setText(&#34;All selected variables are of type String. Variable of interest must be of type Numeric.&#34;)
+            msg.setWindowTitle(&#34;Warning&#34;)
+            msg.exec()</code></pre>
+</details>
+<div class="desc"><p>Assigns a variable of interest from the selected variables in the parent object's variables list.
+This function checks the selected variables in the parent object's variables list. If any of the selected
+variables are not of type "String", it assigns the first non-string variable as the variable of interest,
+updates the parent object's of_interest_model with this variable, and removes the variable from the variables list.
+If all selected variables are of type "String", it displays a warning message.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object containing the variables list and other related attributes.</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<p>parent.variables_list: The list of variables from which the variable of interest is selected.
+parent.of_interest_var: The variable of interest to be assigned.
+parent.of_interest_model: The model to be updated with the variable of interest.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>QMessageBox</code></dt>
+<dd>Displays a warning message if all selected variables are of type "String".</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeHBArea.assign_vardir"><code class="name flex">
+<span>def <span class="ident">assign_vardir</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def assign_vardir(parent):
+    &#34;&#34;&#34;
+    Assigns a variable directory (vardir) from the selected variables in the parent object&#39;s variables list.
+    This function checks the selected variables in the parent object&#39;s variables list. If any of the selected 
+    variables are not of type &#34;String&#34;, it assigns the first non-string variable to the vardir_var attribute 
+    of the parent object, updates the vardir_model with this variable, removes the variable from the variables 
+    list, and calls the show_r_script function. If all selected variables are of type &#34;String&#34;, it displays a 
+    warning message indicating that the vardir variable must be of type Numeric.
+    Args:
+        parent: The parent object containing the variables list, vardir_var, and vardir_model attributes.
+    Raises:
+        None
+    Displays:
+        QMessageBox: A warning message if all selected variables are of type &#34;String&#34;.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.variables_list.selectedIndexes()
+    if selected_indexes:
+        all_string = True
+        for index in selected_indexes:
+            type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
+            if type_of_var != &#34;String&#34;:
+                all_string = False
+                parent.vardir_var = [index.data()]
+                parent.vardir_model.setStringList(parent.vardir_var)
+                parent.variables_list.model().removeRow(selected_indexes[-1].row())  # Remove from variables list
+                show_r_script(parent)
+                break
+        if all_string:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setText(&#34;All selected variables are of type String. Vardir variable must be of type Numeric.&#34;)
+            msg.setWindowTitle(&#34;Warning&#34;)
+            msg.exec()</code></pre>
+</details>
+<div class="desc"><p>Assigns a variable directory (vardir) from the selected variables in the parent object's variables list.
+This function checks the selected variables in the parent object's variables list. If any of the selected
+variables are not of type "String", it assigns the first non-string variable to the vardir_var attribute
+of the parent object, updates the vardir_model with this variable, removes the variable from the variables
+list, and calls the show_r_script function. If all selected variables are of type "String", it displays a
+warning message indicating that the vardir variable must be of type Numeric.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object containing the variables list, vardir_var, and vardir_model attributes.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<p>None</p>
+<h2 id="displays">Displays</h2>
+<p>QMessageBox: A warning message if all selected variables are of type "String".</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeHBArea.generate_r_script"><code class="name flex">
+<span>def <span class="ident">generate_r_script</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_r_script(parent):
+    &#34;&#34;&#34;
+    Generates an R script based on the provided parent object&#39;s attributes.
+    Args:
+        parent (object): An object containing the following attributes:
+            - of_interest_var (list): A list containing the variable of interest.
+            - auxilary_vars (list): A list of auxiliary variables.
+            - vardir_var (list): A list containing the variance directory variable.
+            - as_factor_var (list): A list of variables to be treated as factors.
+            - selection_method (str): The method for variable selection (e.g., &#34;Stepwise&#34;, &#34;None&#34;).
+            - model_method (str): The method for modeling (e.g., &#34;lm&#34;, &#34;glm&#34;).
+            - iter_update (int): The number of iterations for updating the model.
+            - iter_mcmc (int): The number of MCMC iterations.
+            - burn_in (int): The number of burn-in iterations.
+    Returns:
+        str: The generated R script as a string.
+    &#34;&#34;&#34;
+    
+    of_interest_var = f&#39;{parent.of_interest_var[0].split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)}&#39; if parent.of_interest_var else &#39;&#34;&#34;&#39;
+    auxilary_vars = &#34; + &#34;.join([var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;) for var in parent.auxilary_vars]) if parent.auxilary_vars else &#39;&#34;&#34;&#39;
+    vardir_var = f&#39;{parent.vardir_var[0].split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)}&#39; if parent.vardir_var else &#39;&#34;&#34;&#39;
+    as_factor_var = &#34; + &#34;.join([f&#39;as.factor({var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)})&#39; for var in parent.as_factor_var]) if parent.as_factor_var else &#39;&#34;&#34;&#39;
+    
+    if (auxilary_vars==&#39;&#34;&#34;&#39; or auxilary_vars is None) and as_factor_var==&#39;&#34;&#34;&#39;:
+        formula = f&#39;{of_interest_var} ~ 1&#39;
+    elif as_factor_var==&#39;&#34;&#34;&#39;:
+        formula = f&#39;{of_interest_var} ~ {auxilary_vars}&#39;
+    elif auxilary_vars==&#39;&#34;&#34;&#39;:
+        formula = f&#39;{of_interest_var} ~ {as_factor_var}&#39;
+    else:
+        formula = f&#39;{of_interest_var} ~ {auxilary_vars} + {as_factor_var}&#39;
+
+    r_script = f&#39;names(data) &lt;- gsub(&#34; &#34;, &#34;_&#34;, names(data)); #Replace space with underscore\n&#39;
+    r_script += f&#39;formula &lt;- {formula}\n&#39;
+    if parent.selection_method==&#34;Stepwise&#34;:
+        parent.selection_method = &#34;both&#34;
+    if parent.selection_method and parent.selection_method != &#34;None&#34; and auxilary_vars:
+        r_script += f&#39;stepwise_model &lt;- step(formula, direction=&#34;{parent.selection_method.lower()}&#34;)\n&#39;
+        r_script += f&#39;final_formula &lt;- formula(stepwise_model)\n&#39;
+        r_script += f&#39;model&lt;-{parent.model_method} (final_formula, iter.update={parent.iter_update}, iter.mcmc = {parent.iter_mcmc}, burn.in ={parent.burn_in} , data=data)&#39;
+    else:
+        r_script += f&#39;model&lt;-{parent.model_method} (formula, iter.update={parent.iter_update}, iter.mcmc = {parent.iter_mcmc}, burn.in ={parent.burn_in}, data=data)&#39;
+    return r_script</code></pre>
+</details>
+<div class="desc"><p>Generates an R script based on the provided parent object's attributes.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong> :&ensp;<code>object</code></dt>
+<dd>An object containing the following attributes:
+- of_interest_var (list): A list containing the variable of interest.
+- auxilary_vars (list): A list of auxiliary variables.
+- vardir_var (list): A list containing the variance directory variable.
+- as_factor_var (list): A list of variables to be treated as factors.
+- selection_method (str): The method for variable selection (e.g., "Stepwise", "None").
+- model_method (str): The method for modeling (e.g., "lm", "glm").
+- iter_update (int): The number of iterations for updating the model.
+- iter_mcmc (int): The number of MCMC iterations.
+- burn_in (int): The number of burn-in iterations.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The generated R script as a string.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeHBArea.get_script"><code class="name flex">
+<span>def <span class="ident">get_script</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_script(parent):
+    &#34;&#34;&#34;
+    Retrieves the text content from the &#39;r_script_edit&#39; attribute of the given parent object.
+    Args:
+        parent: An object that contains an attribute &#39;r_script_edit&#39; which is expected to be a QTextEdit or similar widget.
+    Returns:
+        str: The text content of the &#39;r_script_edit&#39; widget as a plain string.
+    &#34;&#34;&#34;
+    
+    return parent.r_script_edit.toPlainText()  </code></pre>
+</details>
+<div class="desc"><p>Retrieves the text content from the 'r_script_edit' attribute of the given parent object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>An object that contains an attribute 'r_script_edit' which is expected to be a QTextEdit or similar widget.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The text content of the 'r_script_edit' widget as a plain string.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeHBArea.get_selected_variables"><code class="name flex">
+<span>def <span class="ident">get_selected_variables</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_selected_variables(parent):
+    &#34;&#34;&#34;
+    Retrieve selected variables from the parent object.
+    Args:
+        parent (object): The parent object containing the variables of interest.
+    Returns:
+        tuple: A tuple containing the following variables from the parent object:
+            - of_interest_var: The variable of interest.
+            - auxilary_vars: Auxiliary variables.
+            - vardir_var: The variable direction.
+            - as_factor_var: The factor variable.
+    &#34;&#34;&#34;
+    
+    return parent.of_interest_var, parent.auxilary_vars, parent.vardir_var, parent.as_factor_var</code></pre>
+</details>
+<div class="desc"><p>Retrieve selected variables from the parent object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong> :&ensp;<code>object</code></dt>
+<dd>The parent object containing the variables of interest.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>A tuple containing the following variables from the parent object:
+- of_interest_var: The variable of interest.
+- auxilary_vars: Auxiliary variables.
+- vardir_var: The variable direction.
+- as_factor_var: The factor variable.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeHBArea.set_selection_method"><code class="name flex">
+<span>def <span class="ident">set_selection_method</span></span>(<span>parent, dialog)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_selection_method(parent, dialog):
+    &#34;&#34;&#34;
+    Sets the selection method and updates iteration parameters for the parent object,
+    then accepts the dialog and shows the R script.
+    Args:
+        parent: The parent object containing the selection method and iteration parameters.
+        dialog: The dialog object to be accepted.
+    Side Effects:
+        Updates the following attributes of the parent object:
+        - iter_update: The updated iteration value.
+        - iter_mcmc: The updated MCMC iteration value.
+        - burn_in: The updated burn-in value.
+        Accepts the dialog and calls the show_r_script function with the parent object.
+    &#34;&#34;&#34;
+    
+    # parent.selection_method = parent.method_combo.currentText()
+    parent.iter_update = parent.iter_update.text()
+    parent.iter_mcmc = parent.iter_mcmc.text()
+    parent.burn_in = parent.burn_in.text()
+    dialog.accept()
+    show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Sets the selection method and updates iteration parameters for the parent object,
+then accepts the dialog and shows the R script.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object containing the selection method and iteration parameters.</dd>
+<dt><strong><code>dialog</code></strong></dt>
+<dd>The dialog object to be accepted.</dd>
+</dl>
+<p>Side Effects:
+Updates the following attributes of the parent object:
+- iter_update: The updated iteration value.
+- iter_mcmc: The updated MCMC iteration value.
+- burn_in: The updated burn-in value.
+Accepts the dialog and calls the show_r_script function with the parent object.</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeHBArea.show_options"><code class="name flex">
+<span>def <span class="ident">show_options</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_options(parent):
+    &#34;&#34;&#34;
+    Displays a dialog window with options for configuring the stepwise selection method and iteration parameters.
+    Parameters:
+    parent (QWidget): The parent widget for the dialog.
+    The dialog includes the following options:
+    - Number of Iteration Update (minimum 2): A QLineEdit for specifying the number of iteration updates, with a default value of 3.
+    - Number of Total Iterations per Chain: A QLineEdit for specifying the total number of iterations per chain, with a default value of 2000.
+    - Number of iterations to discard at the beginning: A QLineEdit for specifying the number of iterations to discard at the beginning, with a default value of 1000.
+    The dialog also includes &#34;OK&#34; and &#34;Cancel&#34; buttons. Clicking &#34;OK&#34; will apply the settings and close the dialog, while clicking &#34;Cancel&#34; will close the dialog without applying any changes.
+    &#34;&#34;&#34;
+    
+    options_dialog = QDialog(parent)
+    options_dialog.setWindowTitle(&#34;Options&#34;)
+
+    layout = QVBoxLayout()
+
+    method_label = QLabel(&#34;Stepwise Selection Method:&#34;)
+    # layout.addWidget(method_label)
+
+    # parent.method_combo = QComboBox()
+    # parent.method_combo.addItems([&#34;None&#34;, &#34;Stepwise&#34;, &#34;Forward&#34;, &#34;Backward&#34;])
+    # layout.addWidget(parent.method_combo)
+
+    iter_update_label = QLabel(&#34;Number of Iteration Update (minimum 2):&#34;)
+    layout.addWidget(iter_update_label)
+    
+    parent.iter_update = QLineEdit()
+    parent.iter_update.setValidator(QIntValidator())
+    parent.iter_update.setText(&#34;3&#34;)  # Set default value to 3
+    layout.addWidget(parent.iter_update)
+    
+    iter_mcmc_label = QLabel(&#34;Number of Total Iterations per Chain:&#34;)
+    layout.addWidget(iter_mcmc_label)
+    
+    parent.iter_mcmc = QLineEdit()
+    parent.iter_mcmc.setValidator(QIntValidator())
+    parent.iter_mcmc.setText(&#34;2000&#34;)  # Set default value to 2000
+    layout.addWidget(parent.iter_mcmc)
+    
+    burn_in_label = QLabel(&#34;Number of iterations to discard at the beginning:&#34;)
+    layout.addWidget(burn_in_label)
+    
+    parent.burn_in = QLineEdit()
+    parent.burn_in.setValidator(QIntValidator())
+    parent.burn_in.setText(&#34;1000&#34;)  # Set default value to 1000
+    layout.addWidget(parent.burn_in)
+    
+
+    button_layout = QHBoxLayout()
+    ok_button = QPushButton(&#34;OK&#34;)
+    cancel_button = QPushButton(&#34;Cancel&#34;)
+    button_layout.addWidget(ok_button)
+    button_layout.addWidget(cancel_button)
+
+    layout.addLayout(button_layout)
+
+    options_dialog.setLayout(layout)
+
+    ok_button.clicked.connect(lambda: set_selection_method(parent, options_dialog))
+    cancel_button.clicked.connect(options_dialog.reject)
+
+    options_dialog.exec()</code></pre>
+</details>
+<div class="desc"><p>Displays a dialog window with options for configuring the stepwise selection method and iteration parameters.
+Parameters:
+parent (QWidget): The parent widget for the dialog.
+The dialog includes the following options:
+- Number of Iteration Update (minimum 2): A QLineEdit for specifying the number of iteration updates, with a default value of 3.
+- Number of Total Iterations per Chain: A QLineEdit for specifying the total number of iterations per chain, with a default value of 2000.
+- Number of iterations to discard at the beginning: A QLineEdit for specifying the number of iterations to discard at the beginning, with a default value of 1000.
+The dialog also includes "OK" and "Cancel" buttons. Clicking "OK" will apply the settings and close the dialog, while clicking "Cancel" will close the dialog without applying any changes.</p></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeHBArea.show_r_script"><code class="name flex">
+<span>def <span class="ident">show_r_script</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_r_script(parent):
+    &#34;&#34;&#34;
+    Generates an R script using the given parent object and sets the text of the parent&#39;s R script editor.
+    Args:
+        parent: An object that contains the method `generate_r_script` and the attribute `r_script_edit`.
+                The `generate_r_script` method is used to generate the R script, and `r_script_edit` is
+                an editor widget where the generated R script will be displayed.
+    &#34;&#34;&#34;
+    
+    r_script = generate_r_script(parent)
+    parent.r_script_edit.setText(r_script)</code></pre>
+</details>
+<div class="desc"><p>Generates an R script using the given parent object and sets the text of the parent's R script editor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>An object that contains the method <code><a title="sip-sae.service.modelling.SaeHBArea.generate_r_script" href="#sip-sae.service.modelling.SaeHBArea.generate_r_script">generate_r_script()</a></code> and the attribute <code>r_script_edit</code>.
+The <code><a title="sip-sae.service.modelling.SaeHBArea.generate_r_script" href="#sip-sae.service.modelling.SaeHBArea.generate_r_script">generate_r_script()</a></code> method is used to generate the R script, and <code>r_script_edit</code> is
+an editor widget where the generated R script will be displayed.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.service.modelling.SaeHBArea.unassign_variable"><code class="name flex">
+<span>def <span class="ident">unassign_variable</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unassign_variable(parent):
+    &#34;&#34;&#34;
+    Unassigns selected variables from the specified lists in the parent object and adds them back to the variables list.
+    This function checks for selected items in the following lists in order:
+    1. of_interest_list
+    2. auxilary_list
+    3. vardir_list
+    4. as_factor_list
+    For each list, if there are selected items, it removes these items from the corresponding variable list in the parent object,
+    updates the model for that list, and adds the items back to the variables list. It then calls the show_r_script function.
+    Args:
+        parent: The parent object containing the lists and models to be updated.
+    &#34;&#34;&#34;
+    
+    selected_indexes = parent.of_interest_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.of_interest_var = [var for var in parent.of_interest_var if var not in selected_items]
+        parent.of_interest_model.setStringList(parent.of_interest_var)
+        parent.variables_list.model().insertRow(0)  # Add back to variables list
+        parent.variables_list.model().setData(parent.variables_list.model().index(0), selected_items[0])
+        show_r_script(parent)
+        return
+
+    selected_indexes = parent.auxilary_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.auxilary_vars = [var for var in parent.auxilary_vars if var not in selected_items]
+        parent.auxilary_model.setStringList(parent.auxilary_vars)
+        for item in selected_items:
+            parent.variables_list.model().insertRow(0)  # Add back to variables list
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script(parent)
+        return
+
+    selected_indexes = parent.vardir_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.vardir_var = [var for var in parent.vardir_var if var not in selected_items]
+        parent.vardir_model.setStringList(parent.vardir_var)
+        for item in selected_items:
+            parent.variables_list.model().insertRow(0)  # Add back to variables list
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script(parent)
+        return
+
+    selected_indexes = parent.as_factor_list.selectedIndexes()
+    if selected_indexes:
+        selected_items = [index.data() for index in selected_indexes]
+        parent.as_factor_var = [var for var in parent.as_factor_var if var not in selected_items]
+        parent.as_factor_model.setStringList(parent.as_factor_var)
+        for item in selected_items:
+            parent.variables_list.model().insertRow(0)  # Add back to variables list
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script(parent)</code></pre>
+</details>
+<div class="desc"><p>Unassigns selected variables from the specified lists in the parent object and adds them back to the variables list.
+This function checks for selected items in the following lists in order:
+1. of_interest_list
+2. auxilary_list
+3. vardir_list
+4. as_factor_list
+For each list, if there are selected items, it removes these items from the corresponding variable list in the parent object,
+updates the model for that list, and adds the items back to the variables list. It then calls the show_r_script function.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong></dt>
+<dd>The parent object containing the lists and models to be updated.</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sip-sae.service.modelling" href="index.html">sip-sae.service.modelling</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.assign_as_factor" href="#sip-sae.service.modelling.SaeHBArea.assign_as_factor">assign_as_factor</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.assign_auxilary" href="#sip-sae.service.modelling.SaeHBArea.assign_auxilary">assign_auxilary</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.assign_of_interest" href="#sip-sae.service.modelling.SaeHBArea.assign_of_interest">assign_of_interest</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.assign_vardir" href="#sip-sae.service.modelling.SaeHBArea.assign_vardir">assign_vardir</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.generate_r_script" href="#sip-sae.service.modelling.SaeHBArea.generate_r_script">generate_r_script</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.get_script" href="#sip-sae.service.modelling.SaeHBArea.get_script">get_script</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.get_selected_variables" href="#sip-sae.service.modelling.SaeHBArea.get_selected_variables">get_selected_variables</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.set_selection_method" href="#sip-sae.service.modelling.SaeHBArea.set_selection_method">set_selection_method</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.show_options" href="#sip-sae.service.modelling.SaeHBArea.show_options">show_options</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.show_r_script" href="#sip-sae.service.modelling.SaeHBArea.show_r_script">show_r_script</a></code></li>
+<li><code><a title="sip-sae.service.modelling.SaeHBArea.unassign_variable" href="#sip-sae.service.modelling.SaeHBArea.unassign_variable">unassign_variable</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>

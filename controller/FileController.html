@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>sip-sae.controller.FileController API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sip-sae.controller.FileController</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sip-sae.controller.FileController.FileController"><code class="flex name class">
+<span>class <span class="ident">FileController</span></span>
+<span>(</span><span>model1, model2, view)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FileController:
+    &#34;&#34;&#34;
+    Controller class to handle file operations such as loading, saving, and exporting data.
+    Attributes:
+        model1: The first data model.
+        model2: The second data model.
+        view: The view component of the MVC architecture.
+    Methods:
+        __init__(model1, model2, view):
+            Initializes the FileController with the given models and view.
+        load_file():
+            Loads a CSV or Excel file into the first model.
+        save_data():
+            Saves data from the first model to a file in various formats (CSV, Excel, JSON, Text).
+        save_data_output():
+            Saves data from the second model to a file in various formats (CSV, Excel, JSON, Text).
+        save_as_csv(file_path, model):
+            Saves data from the given model as a CSV file.
+        save_as_excel(file_path, model):
+            Saves data from the given model as an Excel file.
+        save_as_json(file_path, model):
+            Saves data from the given model as a JSON file.
+        save_as_txt(file_path, model):
+            Saves data from the given model as a text file with tab-separated values.
+        export_output_to_pdf():
+            Exports the content of all widgets in the output layout to a PDF file.
+    &#34;&#34;&#34;
+    
+    def __init__(self, model1, model2, view):
+        self.model1 = model1
+        self.model2 = model2
+        self.view = view
+
+        # Hubungkan menu bar dengan fungsi
+        self.view.load_action.triggered.connect(self.load_file)
+        self.view.save_action.triggered.connect(self.save_data)
+        self.view.save_data_output_action.triggered.connect(self.save_data_output)
+        self.view.actionLoad_file.triggered.connect(self.load_file)
+        self.view.actionSave_Data.triggered.connect(self.save_data)
+        self.view.save_output_pdf.triggered.connect(self.export_output_to_pdf)  
+
+    def load_file(self):
+        &#34;&#34;&#34;Muat file CSV atau Excel ke model pertama.&#34;&#34;&#34;
+        file_path, selected_filter = QFileDialog.getOpenFileName(
+            self.view, &#34;Open File&#34;, &#34;&#34;,
+            &#34;CSV Files (*.csv);;Excel Files (*.xlsx)&#34;
+        )
+
+        if not file_path:  # Jika file tidak dipilih
+            return
+
+        try:
+            if selected_filter == &#34;CSV Files (*.csv)&#34;:
+                dialog = CSVOptionsDialog(self.view)
+                dialog.file_path = file_path
+                dialog.file_label.setText(f&#34;Selected: {file_path}&#34;)
+                dialog.update_preview()
+                file_path, separator, header = dialog.get_csv_options()
+
+                if not file_path:  # Jika file tidak dipilih
+                    return
+
+                # Baca data dari CSV dengan atau tanpa header
+                if header:
+                    data = pl.read_csv(file_path, separator=separator, ignore_errors=True, has_header=True, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;])
+                else:
+                    data = pl.read_csv(file_path, separator=separator, ignore_errors=True, has_header=False, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;])
+                    data.columns = [f&#34;Column {i+1}&#34; for i in range(data.shape[1])]
+            elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                import pandas as pd
+                sheet_names = pd.ExcelFile(file_path).sheet_names
+                sheet_name, ok = QInputDialog.getItem(self.view, &#34;Select Sheet&#34;, &#34;Sheet:&#34;, sheet_names, 0, False)
+                if not ok:
+                    return
+                data = pl.read_excel(file_path, sheet_name=sheet_name)
+
+            self.model1.set_data(data)
+            self.view.update_table(1, self.model1)
+        except Exception as e:
+            QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to load file: {str(e)}&#34;)
+
+    def save_data(self):
+        &#34;&#34;&#34;Simpan data dari model pertama (Sheet 1).&#34;&#34;&#34;
+        file_path, selected_filter = QFileDialog.getSaveFileName(
+            self.view, &#34;Save File&#34;, &#34;&#34;,
+            &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
+        )
+        
+        if file_path:
+
+            try:
+                if selected_filter == &#34;CSV Files (*.csv)&#34;:
+                    self.save_as_csv(file_path, self.model1)
+                elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                    self.save_as_excel(file_path, self.model1)
+                elif selected_filter == &#34;JSON Files (*.json)&#34;:
+                    self.save_as_json(file_path, self.model1)
+                elif selected_filter == &#34;Text Files (*.txt)&#34;:
+                    self.save_as_txt(file_path, self.model1)
+
+                QMessageBox.information(self.view, &#34;Success&#34;, &#34;File saved successfully!&#34;)
+            except Exception as e:
+                QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)
+
+    def save_data_output(self):
+        &#34;&#34;&#34;Simpan data dari model kedua (Sheet 2).&#34;&#34;&#34;
+        file_path, selected_filter = QFileDialog.getSaveFileName(
+            self.view, &#34;Save Output Data&#34;, &#34;&#34;,
+            &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
+        )
+        
+        if file_path:
+
+            try:
+                if selected_filter == &#34;CSV Files (*.csv)&#34;:
+                    self.save_as_csv(file_path, self.model2)
+                elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                    self.save_as_excel(file_path, self.model2)
+                elif selected_filter == &#34;JSON Files (*.json)&#34;:
+                    self.save_as_json(file_path, self.model2)
+                elif selected_filter == &#34;Text Files (*.txt)&#34;:
+                    self.save_as_txt(file_path, self.model2)
+
+                QMessageBox.information(self.view, &#34;Success&#34;, &#34;Output file saved successfully!&#34;)
+            except Exception as e:
+                QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)
+
+    def save_as_csv(self, file_path, model):
+        &#34;&#34;&#34;Simpan data sebagai CSV.&#34;&#34;&#34;
+        data = model.get_data()
+        data.write_csv(file_path)
+
+    def save_as_excel(self, file_path, model):
+        &#34;&#34;&#34;Simpan data sebagai Excel.&#34;&#34;&#34;
+        data = model.get_data()
+        data.write_excel(file_path)
+
+    def save_as_json(self, file_path, model):
+        &#34;&#34;&#34;Simpan data sebagai JSON.&#34;&#34;&#34;
+        data = model.get_data()
+        data.write_json(file_path, orient=&#34;records&#34;, lines=True)
+
+    def save_as_txt(self, file_path, model):
+        &#34;&#34;&#34;Simpan data sebagai file teks.&#34;&#34;&#34;
+        data = model.get_data()
+        data.write_csv(file_path, separator=&#34;\t&#34;)
+    
+    def export_output_to_pdf(self):
+        &#34;&#34;&#34;Export the content of all widgets in the output layout to a PDF file.&#34;&#34;&#34;
+        file_path, _ = QFileDialog.getSaveFileName(
+            self.view, &#34;Save PDF&#34;, &#34;&#34;, &#34;PDF Files (*.pdf)&#34;
+        )
+
+        if not file_path:
+            return
+
+        pdf_writer = QPdfWriter(file_path)
+        painter = QPainter(pdf_writer)
+
+        # Convert cm to points (1 cm = 28.3465 points)
+        top_margin = 4 * 28.3465
+        side_margin = 3 * 28.3465
+
+        y_offset = top_margin
+        page_height = pdf_writer.height()
+        page_width = pdf_writer.width()
+
+        def draw_text_multiline(text, y_offset):
+            &#34;&#34;&#34;Helper function to split text and draw it across multiple pages if needed.&#34;&#34;&#34;
+            font_metrics = painter.fontMetrics()
+            line_height = font_metrics.lineSpacing()
+            lines = text.splitlines()
+            for line in lines:
+                if y_offset + line_height &gt; page_height - top_margin:
+                    pdf_writer.newPage()
+                    y_offset = top_margin
+                painter.drawText(QRectF(side_margin, y_offset, page_width - 2 * side_margin, line_height),
+                                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, line)
+                y_offset += line_height
+            return y_offset
+
+        for i in range(self.view.output_layout.count()):
+            widget = self.view.output_layout.itemAt(i).widget()
+            if isinstance(widget, QFrame):
+                for j in range(widget.layout().count()):
+                    sub_widget = widget.layout().itemAt(j).widget()
+                    if isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Script R:&lt;/b&gt;&#34; in sub_widget.text():
+                        script_box = widget.layout().itemAt(j + 1).widget()
+                        text = script_box.toPlainText()
+                        y_offset = draw_text_multiline(text, y_offset)
+                    elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Output:&lt;/b&gt;&#34; in sub_widget.text():
+                        result_box = widget.layout().itemAt(j + 1).widget()
+                        text = result_box.toPlainText()
+                        y_offset = draw_text_multiline(text, y_offset)
+                    elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Plot:&lt;/b&gt;&#34; in sub_widget.text():
+                        for k in range(j + 1, widget.layout().count()):
+                            plot_label = widget.layout().itemAt(k).widget()
+                            if isinstance(plot_label, QLabel):
+                                image = plot_label.pixmap().toImage()
+                                image_height = image.height() * (page_width - 2 * side_margin) / image.width()
+                                if y_offset + image_height &gt; page_height - top_margin:
+                                    pdf_writer.newPage()
+                                    y_offset = top_margin
+                                rect = QRectF(side_margin, y_offset, page_width - 2 * side_margin, image_height)
+                                painter.drawImage(rect, image)
+                                y_offset += image_height
+
+            # Check if y_offset exceeds page height for next widget
+            if y_offset &gt; page_height - top_margin:
+                pdf_writer.newPage()
+                y_offset = top_margin
+
+        painter.end()
+
+        QMessageBox.information(self.view, &#34;Success&#34;, &#34;PDF exported successfully!&#34;)</code></pre>
+</details>
+<div class="desc"><p>Controller class to handle file operations such as loading, saving, and exporting data.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>model1</code></strong></dt>
+<dd>The first data model.</dd>
+<dt><strong><code>model2</code></strong></dt>
+<dd>The second data model.</dd>
+<dt><strong><code>view</code></strong></dt>
+<dd>The view component of the MVC architecture.</dd>
+</dl>
+<h2 id="methods">Methods</h2>
+<p><strong>init</strong>(model1, model2, view):
+Initializes the FileController with the given models and view.
+load_file():
+Loads a CSV or Excel file into the first model.
+save_data():
+Saves data from the first model to a file in various formats (CSV, Excel, JSON, Text).
+save_data_output():
+Saves data from the second model to a file in various formats (CSV, Excel, JSON, Text).
+save_as_csv(file_path, model):
+Saves data from the given model as a CSV file.
+save_as_excel(file_path, model):
+Saves data from the given model as an Excel file.
+save_as_json(file_path, model):
+Saves data from the given model as a JSON file.
+save_as_txt(file_path, model):
+Saves data from the given model as a text file with tab-separated values.
+export_output_to_pdf():
+Exports the content of all widgets in the output layout to a PDF file.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="sip-sae.controller.FileController.FileController.export_output_to_pdf"><code class="name flex">
+<span>def <span class="ident">export_output_to_pdf</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def export_output_to_pdf(self):
+    &#34;&#34;&#34;Export the content of all widgets in the output layout to a PDF file.&#34;&#34;&#34;
+    file_path, _ = QFileDialog.getSaveFileName(
+        self.view, &#34;Save PDF&#34;, &#34;&#34;, &#34;PDF Files (*.pdf)&#34;
+    )
+
+    if not file_path:
+        return
+
+    pdf_writer = QPdfWriter(file_path)
+    painter = QPainter(pdf_writer)
+
+    # Convert cm to points (1 cm = 28.3465 points)
+    top_margin = 4 * 28.3465
+    side_margin = 3 * 28.3465
+
+    y_offset = top_margin
+    page_height = pdf_writer.height()
+    page_width = pdf_writer.width()
+
+    def draw_text_multiline(text, y_offset):
+        &#34;&#34;&#34;Helper function to split text and draw it across multiple pages if needed.&#34;&#34;&#34;
+        font_metrics = painter.fontMetrics()
+        line_height = font_metrics.lineSpacing()
+        lines = text.splitlines()
+        for line in lines:
+            if y_offset + line_height &gt; page_height - top_margin:
+                pdf_writer.newPage()
+                y_offset = top_margin
+            painter.drawText(QRectF(side_margin, y_offset, page_width - 2 * side_margin, line_height),
+                            Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, line)
+            y_offset += line_height
+        return y_offset
+
+    for i in range(self.view.output_layout.count()):
+        widget = self.view.output_layout.itemAt(i).widget()
+        if isinstance(widget, QFrame):
+            for j in range(widget.layout().count()):
+                sub_widget = widget.layout().itemAt(j).widget()
+                if isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Script R:&lt;/b&gt;&#34; in sub_widget.text():
+                    script_box = widget.layout().itemAt(j + 1).widget()
+                    text = script_box.toPlainText()
+                    y_offset = draw_text_multiline(text, y_offset)
+                elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Output:&lt;/b&gt;&#34; in sub_widget.text():
+                    result_box = widget.layout().itemAt(j + 1).widget()
+                    text = result_box.toPlainText()
+                    y_offset = draw_text_multiline(text, y_offset)
+                elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Plot:&lt;/b&gt;&#34; in sub_widget.text():
+                    for k in range(j + 1, widget.layout().count()):
+                        plot_label = widget.layout().itemAt(k).widget()
+                        if isinstance(plot_label, QLabel):
+                            image = plot_label.pixmap().toImage()
+                            image_height = image.height() * (page_width - 2 * side_margin) / image.width()
+                            if y_offset + image_height &gt; page_height - top_margin:
+                                pdf_writer.newPage()
+                                y_offset = top_margin
+                            rect = QRectF(side_margin, y_offset, page_width - 2 * side_margin, image_height)
+                            painter.drawImage(rect, image)
+                            y_offset += image_height
+
+        # Check if y_offset exceeds page height for next widget
+        if y_offset &gt; page_height - top_margin:
+            pdf_writer.newPage()
+            y_offset = top_margin
+
+    painter.end()
+
+    QMessageBox.information(self.view, &#34;Success&#34;, &#34;PDF exported successfully!&#34;)</code></pre>
+</details>
+<div class="desc"><p>Export the content of all widgets in the output layout to a PDF file.</p></div>
+</dd>
+<dt id="sip-sae.controller.FileController.FileController.load_file"><code class="name flex">
+<span>def <span class="ident">load_file</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_file(self):
+    &#34;&#34;&#34;Muat file CSV atau Excel ke model pertama.&#34;&#34;&#34;
+    file_path, selected_filter = QFileDialog.getOpenFileName(
+        self.view, &#34;Open File&#34;, &#34;&#34;,
+        &#34;CSV Files (*.csv);;Excel Files (*.xlsx)&#34;
+    )
+
+    if not file_path:  # Jika file tidak dipilih
+        return
+
+    try:
+        if selected_filter == &#34;CSV Files (*.csv)&#34;:
+            dialog = CSVOptionsDialog(self.view)
+            dialog.file_path = file_path
+            dialog.file_label.setText(f&#34;Selected: {file_path}&#34;)
+            dialog.update_preview()
+            file_path, separator, header = dialog.get_csv_options()
+
+            if not file_path:  # Jika file tidak dipilih
+                return
+
+            # Baca data dari CSV dengan atau tanpa header
+            if header:
+                data = pl.read_csv(file_path, separator=separator, ignore_errors=True, has_header=True, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;])
+            else:
+                data = pl.read_csv(file_path, separator=separator, ignore_errors=True, has_header=False, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;])
+                data.columns = [f&#34;Column {i+1}&#34; for i in range(data.shape[1])]
+        elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+            import pandas as pd
+            sheet_names = pd.ExcelFile(file_path).sheet_names
+            sheet_name, ok = QInputDialog.getItem(self.view, &#34;Select Sheet&#34;, &#34;Sheet:&#34;, sheet_names, 0, False)
+            if not ok:
+                return
+            data = pl.read_excel(file_path, sheet_name=sheet_name)
+
+        self.model1.set_data(data)
+        self.view.update_table(1, self.model1)
+    except Exception as e:
+        QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to load file: {str(e)}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Muat file CSV atau Excel ke model pertama.</p></div>
+</dd>
+<dt id="sip-sae.controller.FileController.FileController.save_as_csv"><code class="name flex">
+<span>def <span class="ident">save_as_csv</span></span>(<span>self, file_path, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_as_csv(self, file_path, model):
+    &#34;&#34;&#34;Simpan data sebagai CSV.&#34;&#34;&#34;
+    data = model.get_data()
+    data.write_csv(file_path)</code></pre>
+</details>
+<div class="desc"><p>Simpan data sebagai CSV.</p></div>
+</dd>
+<dt id="sip-sae.controller.FileController.FileController.save_as_excel"><code class="name flex">
+<span>def <span class="ident">save_as_excel</span></span>(<span>self, file_path, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_as_excel(self, file_path, model):
+    &#34;&#34;&#34;Simpan data sebagai Excel.&#34;&#34;&#34;
+    data = model.get_data()
+    data.write_excel(file_path)</code></pre>
+</details>
+<div class="desc"><p>Simpan data sebagai Excel.</p></div>
+</dd>
+<dt id="sip-sae.controller.FileController.FileController.save_as_json"><code class="name flex">
+<span>def <span class="ident">save_as_json</span></span>(<span>self, file_path, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_as_json(self, file_path, model):
+    &#34;&#34;&#34;Simpan data sebagai JSON.&#34;&#34;&#34;
+    data = model.get_data()
+    data.write_json(file_path, orient=&#34;records&#34;, lines=True)</code></pre>
+</details>
+<div class="desc"><p>Simpan data sebagai JSON.</p></div>
+</dd>
+<dt id="sip-sae.controller.FileController.FileController.save_as_txt"><code class="name flex">
+<span>def <span class="ident">save_as_txt</span></span>(<span>self, file_path, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_as_txt(self, file_path, model):
+    &#34;&#34;&#34;Simpan data sebagai file teks.&#34;&#34;&#34;
+    data = model.get_data()
+    data.write_csv(file_path, separator=&#34;\t&#34;)</code></pre>
+</details>
+<div class="desc"><p>Simpan data sebagai file teks.</p></div>
+</dd>
+<dt id="sip-sae.controller.FileController.FileController.save_data"><code class="name flex">
+<span>def <span class="ident">save_data</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_data(self):
+    &#34;&#34;&#34;Simpan data dari model pertama (Sheet 1).&#34;&#34;&#34;
+    file_path, selected_filter = QFileDialog.getSaveFileName(
+        self.view, &#34;Save File&#34;, &#34;&#34;,
+        &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
+    )
+    
+    if file_path:
+
+        try:
+            if selected_filter == &#34;CSV Files (*.csv)&#34;:
+                self.save_as_csv(file_path, self.model1)
+            elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                self.save_as_excel(file_path, self.model1)
+            elif selected_filter == &#34;JSON Files (*.json)&#34;:
+                self.save_as_json(file_path, self.model1)
+            elif selected_filter == &#34;Text Files (*.txt)&#34;:
+                self.save_as_txt(file_path, self.model1)
+
+            QMessageBox.information(self.view, &#34;Success&#34;, &#34;File saved successfully!&#34;)
+        except Exception as e:
+            QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Simpan data dari model pertama (Sheet 1).</p></div>
+</dd>
+<dt id="sip-sae.controller.FileController.FileController.save_data_output"><code class="name flex">
+<span>def <span class="ident">save_data_output</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_data_output(self):
+    &#34;&#34;&#34;Simpan data dari model kedua (Sheet 2).&#34;&#34;&#34;
+    file_path, selected_filter = QFileDialog.getSaveFileName(
+        self.view, &#34;Save Output Data&#34;, &#34;&#34;,
+        &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
+    )
+    
+    if file_path:
+
+        try:
+            if selected_filter == &#34;CSV Files (*.csv)&#34;:
+                self.save_as_csv(file_path, self.model2)
+            elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                self.save_as_excel(file_path, self.model2)
+            elif selected_filter == &#34;JSON Files (*.json)&#34;:
+                self.save_as_json(file_path, self.model2)
+            elif selected_filter == &#34;Text Files (*.txt)&#34;:
+                self.save_as_txt(file_path, self.model2)
+
+            QMessageBox.information(self.view, &#34;Success&#34;, &#34;Output file saved successfully!&#34;)
+        except Exception as e:
+            QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Simpan data dari model kedua (Sheet 2).</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sip-sae.controller" href="index.html">sip-sae.controller</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sip-sae.controller.FileController.FileController" href="#sip-sae.controller.FileController.FileController">FileController</a></code></h4>
+<ul class="">
+<li><code><a title="sip-sae.controller.FileController.FileController.export_output_to_pdf" href="#sip-sae.controller.FileController.FileController.export_output_to_pdf">export_output_to_pdf</a></code></li>
+<li><code><a title="sip-sae.controller.FileController.FileController.load_file" href="#sip-sae.controller.FileController.FileController.load_file">load_file</a></code></li>
+<li><code><a title="sip-sae.controller.FileController.FileController.save_as_csv" href="#sip-sae.controller.FileController.FileController.save_as_csv">save_as_csv</a></code></li>
+<li><code><a title="sip-sae.controller.FileController.FileController.save_as_excel" href="#sip-sae.controller.FileController.FileController.save_as_excel">save_as_excel</a></code></li>
+<li><code><a title="sip-sae.controller.FileController.FileController.save_as_json" href="#sip-sae.controller.FileController.FileController.save_as_json">save_as_json</a></code></li>
+<li><code><a title="sip-sae.controller.FileController.FileController.save_as_txt" href="#sip-sae.controller.FileController.FileController.save_as_txt">save_as_txt</a></code></li>
+<li><code><a title="sip-sae.controller.FileController.FileController.save_data" href="#sip-sae.controller.FileController.FileController.save_data">save_data</a></code></li>
+<li><code><a title="sip-sae.controller.FileController.FileController.save_data_output" href="#sip-sae.controller.FileController.FileController.save_data_output">save_data_output</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>

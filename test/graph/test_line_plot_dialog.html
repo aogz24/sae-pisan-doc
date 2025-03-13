@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>sip-sae.test.graph.test_line_plot_dialog API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sip-sae.test.graph.test_line_plot_dialog</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="sip-sae.test.graph.test_line_plot_dialog.line_plot_dialog"><code class="name flex">
+<span>def <span class="ident">line_plot_dialog</span></span>(<span>qtbot)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.fixture
+def line_plot_dialog(qtbot):
+    parent = QWidget()
+    dialog = LinePlotDialog(parent)
+    qtbot.addWidget(dialog)
+    return dialog</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.graph.test_line_plot_dialog.test_add_variable_horizontal"><code class="name flex">
+<span>def <span class="ident">test_add_variable_horizontal</span></span>(<span>line_plot_dialog, qtbot)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_add_variable_horizontal(line_plot_dialog, qtbot):
+    if not hasattr(line_plot_dialog, &#34;horizontal_model&#34;):
+        line_plot_dialog.horizontal_model = QStringListModel()
+        line_plot_dialog.horizontal_list.setModel(line_plot_dialog.horizontal_model)
+    line_plot_dialog.data_editor_model.setStringList([&#34;Time [Numeric]&#34;, &#34;Other [Numeric]&#34;])
+    line_plot_dialog.data_editor_list.setCurrentIndex(line_plot_dialog.data_editor_model.index(0, 0))
+    line_plot_dialog.add_variable_horizontal()
+    assert &#34;Time [Numeric]&#34; in line_plot_dialog.horizontal_model.stringList()
+    assert &#34;Time [Numeric]&#34; not in line_plot_dialog.data_editor_model.stringList()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.graph.test_line_plot_dialog.test_add_variable_vertical"><code class="name flex">
+<span>def <span class="ident">test_add_variable_vertical</span></span>(<span>line_plot_dialog, qtbot)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_add_variable_vertical(line_plot_dialog, qtbot):
+    line_plot_dialog.data_editor_model.setStringList([&#34;VarA [Numeric]&#34;, &#34;VarB [String]&#34;])
+    line_plot_dialog.data_output_model.setStringList([&#34;VarC [Numeric]&#34;])
+    if not hasattr(line_plot_dialog, &#34;vertical_model&#34;) or line_plot_dialog.vertical_model is None:
+        line_plot_dialog.vertical_model = QStringListModel()
+        line_plot_dialog.vertical_list.setModel(line_plot_dialog.vertical_model)
+    line_plot_dialog.data_editor_list.setCurrentIndex(line_plot_dialog.data_editor_model.index(0, 0))
+    line_plot_dialog.data_output_list.setCurrentIndex(line_plot_dialog.data_output_model.index(0, 0))
+    line_plot_dialog.add_variable_vertical()
+    vertical = line_plot_dialog.vertical_model.stringList()
+    assert &#34;VarA [Numeric]&#34; in vertical
+    assert &#34;VarC [Numeric]&#34; in vertical
+    assert &#34;VarB [String]&#34; in line_plot_dialog.data_editor_model.stringList()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.graph.test_line_plot_dialog.test_generate_r_script"><code class="name flex">
+<span>def <span class="ident">test_generate_r_script</span></span>(<span>line_plot_dialog, qtbot, horizontal, vertical, method, expected_script)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.parametrize(
+    &#34;horizontal, vertical, method, expected_script&#34;,
+    [
+        # Case 1: Single Lineplot with two vertical variables.
+        (
+            [&#34;Time&#34;], [&#34;Value&#34;, &#34;Pressure&#34;], &#34;Single Lineplot&#34;,
+            (
+                &#34;# Line plot for Time vs. Value\n&#34;
+                &#34;lineplot_Value &lt;- ggplot(data, aes(x = Time, y = Value)) +\n&#34;
+                &#34;    geom_line(color = sample(colors(), 1)) +\n&#34;
+                &#34;    ggtitle(\&#34;Line Plot: Time vs. Value\&#34;) +\n&#34;
+                &#34;    xlab(\&#34;Time\&#34;) +\n&#34;
+                &#34;    ylab(\&#34;Value\&#34;) +\n&#34;
+                &#34;    theme_minimal()\n\n&#34;
+                &#34;# Line plot for Time vs. Pressure\n&#34;
+                &#34;lineplot_Pressure &lt;- ggplot(data, aes(x = Time, y = Pressure)) +\n&#34;
+                &#34;    geom_line(color = sample(colors(), 1)) +\n&#34;
+                &#34;    ggtitle(\&#34;Line Plot: Time vs. Pressure\&#34;) +\n&#34;
+                &#34;    xlab(\&#34;Time\&#34;) +\n&#34;
+                &#34;    ylab(\&#34;Pressure\&#34;) +\n&#34;
+                &#34;    theme_minimal()\n&#34;
+            ).strip()
+        ),
+        # Case 2: Multiple Lineplot with two vertical variables.
+        (
+            [&#34;Time&#34;], [&#34;Value&#34;, &#34;Pressure&#34;], &#34;Multiple Lineplot&#34;,
+            (
+                &#34;# Multiple line plot for Time vs. multiple y variables\n\n&#34;
+                &#34;# Convert to long format for ggplot\n&#34;
+                &#34;data_long &lt;- pivot_longer(data, cols = c(\&#34;Value\&#34;, \&#34;Pressure\&#34;),\n&#34;
+                &#34;                        names_to = \&#34;variable\&#34;, values_to = \&#34;value\&#34;)\n\n&#34;
+                &#34;# Create line plot\n&#34;
+                &#34;lineplot_multiple &lt;- ggplot(data_long, aes(x = Time, y = value, color = variable)) +\n&#34;
+                &#34;    geom_line() +\n&#34;
+                &#34;    ggtitle(\&#34;Multiple Line Plot: Time vs. Value, Pressure\&#34;) +\n&#34;
+                &#34;    xlab(\&#34;Time\&#34;) +\n&#34;
+                &#34;    ylab(\&#34;Value\&#34;) +\n&#34;
+                &#34;    theme_minimal()\n&#34;
+            ).strip()
+        ),
+    ]
+)
+def test_generate_r_script(line_plot_dialog, qtbot, horizontal, vertical, method, expected_script):
+    # Override selection methods to simulate user input.
+    line_plot_dialog.get_selected_horizontal = lambda: horizontal
+    line_plot_dialog.get_selected_vertical = lambda: vertical
+    # Override method_combo.currentText() to return our test method.
+    line_plot_dialog.method_combo.currentText = lambda: method
+    
+    # Generate the R script.
+    line_plot_dialog.generate_r_script()
+    script = line_plot_dialog.script_box.toPlainText().strip()
+    
+    # Assert that the expected script is contained in the generated script.
+    assert expected_script in script</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.graph.test_line_plot_dialog.test_get_column_with_dtype"><code class="name flex">
+<span>def <span class="ident">test_get_column_with_dtype</span></span>(<span>line_plot_dialog)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_get_column_with_dtype(line_plot_dialog):
+    mock_model = MagicMock()
+    mock_data = Mock()
+    mock_data.columns = [&#34;X&#34;, &#34;Y&#34;, &#34;Z&#34;]
+    mock_data.dtypes = [pl.Float64, pl.Utf8, pl.Int64]
+    mock_model.get_data.return_value = mock_data
+    result = line_plot_dialog.get_column_with_dtype(mock_model)
+    expected = [&#34;X [Numeric]&#34;, &#34;Y [String]&#34;, &#34;Z [Numeric]&#34;]
+    assert result == expected</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.graph.test_line_plot_dialog.test_get_selected_horizontal"><code class="name flex">
+<span>def <span class="ident">test_get_selected_horizontal</span></span>(<span>line_plot_dialog)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_get_selected_horizontal(line_plot_dialog):
+    if not hasattr(line_plot_dialog, &#34;horizontal_model&#34;) or line_plot_dialog.horizontal_model is None:
+        line_plot_dialog.horizontal_model = QStringListModel()
+        line_plot_dialog.horizontal_list.setModel(line_plot_dialog.horizontal_model)
+    line_plot_dialog.horizontal_model.setStringList([&#34;Time [Numeric]&#34;])
+    result = line_plot_dialog.get_selected_horizontal()
+    assert result == [&#34;Time&#34;]</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.graph.test_line_plot_dialog.test_get_selected_vertical"><code class="name flex">
+<span>def <span class="ident">test_get_selected_vertical</span></span>(<span>line_plot_dialog)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_get_selected_vertical(line_plot_dialog):
+    if not hasattr(line_plot_dialog, &#34;vertical_model&#34;) or line_plot_dialog.vertical_model is None:
+        line_plot_dialog.vertical_model = QStringListModel()
+        line_plot_dialog.vertical_list.setModel(line_plot_dialog.vertical_model)
+    line_plot_dialog.vertical_model.setStringList([&#34;Value [Numeric]&#34;, &#34;Pressure [Numeric]&#34;])
+    result = line_plot_dialog.get_selected_vertical()
+    assert result == [&#34;Value&#34;, &#34;Pressure&#34;]</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.graph.test_line_plot_dialog.test_remove_variable"><code class="name flex">
+<span>def <span class="ident">test_remove_variable</span></span>(<span>line_plot_dialog, qtbot)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_remove_variable(line_plot_dialog, qtbot):
+    if not hasattr(line_plot_dialog, &#34;horizontal_model&#34;):
+        line_plot_dialog.horizontal_model = QStringListModel()
+        line_plot_dialog.horizontal_list.setModel(line_plot_dialog.horizontal_model)
+    line_plot_dialog.horizontal_model.setStringList([&#34;Time [Numeric]&#34;])
+    line_plot_dialog.all_columns_model1 = [&#34;Time [Numeric]&#34;]
+    line_plot_dialog.data_editor_model.setStringList([])
+    line_plot_dialog.horizontal_list.setCurrentIndex(line_plot_dialog.horizontal_model.index(0, 0))
+    line_plot_dialog.remove_variable()
+    assert line_plot_dialog.horizontal_model.stringList() == []
+    assert &#34;Time [Numeric]&#34; in line_plot_dialog.data_editor_model.stringList()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.graph.test_line_plot_dialog.test_set_model"><code class="name flex">
+<span>def <span class="ident">test_set_model</span></span>(<span>line_plot_dialog)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_set_model(line_plot_dialog):
+    model1_mock = MagicMock()
+    model2_mock = MagicMock()
+    model1_mock.get_data.return_value.columns = [&#39;A&#39;, &#39;B&#39;]
+    model1_mock.get_data.return_value.dtypes = [pl.Float64, pl.Utf8]
+    model2_mock.get_data.return_value.columns = [&#39;C&#39;]
+    model2_mock.get_data.return_value.dtypes = [pl.Int64]
+    line_plot_dialog.set_model(model1_mock, model2_mock)
+    expected_editor = [&#39;A [Numeric]&#39;, &#39;B [String]&#39;]
+    expected_output = [&#39;C [Numeric]&#39;]
+    assert line_plot_dialog.data_editor_model.stringList() == expected_editor
+    assert line_plot_dialog.data_output_model.stringList() == expected_output</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="sip-sae.test.graph.test_line_plot_dialog.test_ui_initialization"><code class="name flex">
+<span>def <span class="ident">test_ui_initialization</span></span>(<span>line_plot_dialog)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_ui_initialization(line_plot_dialog):
+    assert line_plot_dialog.windowTitle() == &#34;Line Plot&#34;
+    assert line_plot_dialog.data_editor_list is not None
+    assert line_plot_dialog.data_output_list is not None
+    assert line_plot_dialog.horizontal_list is not None
+    assert line_plot_dialog.vertical_list is not None
+    assert line_plot_dialog.method_combo is not None
+    assert line_plot_dialog.script_box.toPlainText() == &#34;&#34;</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sip-sae.test.graph" href="index.html">sip-sae.test.graph</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="sip-sae.test.graph.test_line_plot_dialog.line_plot_dialog" href="#sip-sae.test.graph.test_line_plot_dialog.line_plot_dialog">line_plot_dialog</a></code></li>
+<li><code><a title="sip-sae.test.graph.test_line_plot_dialog.test_add_variable_horizontal" href="#sip-sae.test.graph.test_line_plot_dialog.test_add_variable_horizontal">test_add_variable_horizontal</a></code></li>
+<li><code><a title="sip-sae.test.graph.test_line_plot_dialog.test_add_variable_vertical" href="#sip-sae.test.graph.test_line_plot_dialog.test_add_variable_vertical">test_add_variable_vertical</a></code></li>
+<li><code><a title="sip-sae.test.graph.test_line_plot_dialog.test_generate_r_script" href="#sip-sae.test.graph.test_line_plot_dialog.test_generate_r_script">test_generate_r_script</a></code></li>
+<li><code><a title="sip-sae.test.graph.test_line_plot_dialog.test_get_column_with_dtype" href="#sip-sae.test.graph.test_line_plot_dialog.test_get_column_with_dtype">test_get_column_with_dtype</a></code></li>
+<li><code><a title="sip-sae.test.graph.test_line_plot_dialog.test_get_selected_horizontal" href="#sip-sae.test.graph.test_line_plot_dialog.test_get_selected_horizontal">test_get_selected_horizontal</a></code></li>
+<li><code><a title="sip-sae.test.graph.test_line_plot_dialog.test_get_selected_vertical" href="#sip-sae.test.graph.test_line_plot_dialog.test_get_selected_vertical">test_get_selected_vertical</a></code></li>
+<li><code><a title="sip-sae.test.graph.test_line_plot_dialog.test_remove_variable" href="#sip-sae.test.graph.test_line_plot_dialog.test_remove_variable">test_remove_variable</a></code></li>
+<li><code><a title="sip-sae.test.graph.test_line_plot_dialog.test_set_model" href="#sip-sae.test.graph.test_line_plot_dialog.test_set_model">test_set_model</a></code></li>
+<li><code><a title="sip-sae.test.graph.test_line_plot_dialog.test_ui_initialization" href="#sip-sae.test.graph.test_line_plot_dialog.test_ui_initialization">test_ui_initialization</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,3348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>sip-sae.view.MainWindow API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sip-sae.view.MainWindow</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sip-sae.view.MainWindow.MainWindow"><code class="flex name class">
+<span>class <span class="ident">MainWindow</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MainWindow(QMainWindow):
+    &#34;&#34;&#34;Main application window for SAE Pisan: Small Area Estimation Programming for Statistical Analysis.
+    Attributes:
+        data1 (pl.DataFrame): DataFrame for the first sheet (Data Editor).
+        data2 (pl.DataFrame): DataFrame for the second sheet (Data Output).
+        model1 (TableModel): Table model for the first sheet.
+        model2 (TableModel): Table model for the second sheet.
+        path (str): Path to the application directory.
+        font_size (int): Default font size for the application.
+        show_modeling_sae_dialog (ModelingSaeDialog): Dialog for SAE modeling.
+        show_modeling_saeHB_dialog (ModelingSaeHBDialog): Dialog for SAE HB modeling.
+        show_modeling_sae_unit_dialog (ModelingSaeUnitDialog): Dialog for SAE unit modeling.
+        show_modeling_saeHB_normal_dialog (ModelingSaeHBNormalDialog): Dialog for SAE HB normal modeling.
+        show_modellig_sae_pseudo_dialog (ModelingSaePseudoDialog): Dialog for SAE pseudo modeling.
+        show_compute_variable_dialog (ComputeVariableDialog): Dialog for computing new variables.
+        show_projection_variabel_dialog (ProjectionDialog): Dialog for variable projection.
+        menu_bar (QMenuBar): Menu bar for the application.
+        toolBar (QToolBar): Tool bar for the application.
+        tab_widget (QTabWidget): Tab widget containing the different sheets.
+        spreadsheet (QTableView): Table view for the first sheet.
+        table_view2 (QTableView): Table view for the second sheet.
+        scroll_area (QScrollArea): Scroll area for the output tab.
+        output_layout (QVBoxLayout): Layout for displaying output in the output tab.
+    Methods:
+        init_ui(): Initializes the user interface.
+        change_font_size(): Opens a dialog to change the font size.
+        set_font_size(size): Sets the font size for the application.
+        load_stylesheet_with_font_size(size): Loads the stylesheet with the specified font size.
+        open_summary_data_dialog_lazy(): Lazily opens the summary data dialog.
+        open_normality_test_dialog_lazy(): Lazily opens the normality test dialog.
+        open_multicollinearity_dialog_lazy(): Lazily opens the multicollinearity dialog.
+        open_variable_selection_dialog_lazy(): Lazily opens the variable selection dialog.
+        open_scatter_plot_dialog_lazy(): Lazily opens the scatter plot dialog.
+        open_correlation_matrix_dialog_lazy(): Lazily opens the correlation matrix dialog.
+        open_box_plot_dialog_lazy(): Lazily opens the box plot dialog.
+        open_line_plot_dialog_lazy(): Lazily opens the line plot dialog.
+        open_histogram_dialog_lazy(): Lazily opens the histogram dialog.
+        open_summary_data_dialog(): Opens the summary data dialog.
+        open_normality_test_dialog(): Opens the normality test dialog.
+        open_scatter_plot_dialog(): Opens the scatter plot dialog.
+        open_line_plot_dialog(): Opens the line plot dialog.
+        open_box_plot_dialog(): Opens the box plot dialog.
+        open_correlation_matrix_dialog(): Opens the correlation matrix dialog.
+        open_multicollinearity_dialog(): Opens the multicollinearity dialog.
+        open_histogram_dialog(): Opens the histogram dialog.
+        open_variable_selection_dialog(): Opens the variable selection dialog.
+        show_modeling_sae_dialog_lazy(): Lazily shows the SAE modeling dialog.
+        show_modeling_saeHB_dialog_lazy(): Lazily shows the SAE HB modeling dialog.
+        show_modeling_sae_unit_dialog_lazy(): Lazily shows the SAE unit modeling dialog.
+        show_modeling_saeHB_normal_dialog_lazy(): Lazily shows the SAE HB normal modeling dialog.
+        show_modellig_sae_pseudo_dialog_lazy(): Lazily shows the SAE pseudo modeling dialog.
+        show_compute_variable_dialog_lazy(): Lazily shows the compute variable dialog.
+        show_projection_variabel_dialog_lazy(): Lazily shows the projection variable dialog.
+        open_about_dialog(): Opens the about dialog.
+        add_row(sheet_number): Adds a new row to the specified sheet.
+        add_column(sheet_number): Adds a new column to the specified sheet.
+        update_table(sheet_number, model): Updates the table for the specified sheet with a new model.
+        keyPressEvent(event): Handles keyboard shortcuts for copy, paste, undo, and redo.
+        copy_selection(): Copies the selected cells to the clipboard.
+        paste_selection(): Pastes the clipboard content to the selected cells.
+        undo_action(): Undoes the last action.
+        redo_action(): Redoes the last undone action.
+        group_by_row(selection): Groups selected indexes by row.
+        show_output(title, content): Displays output in the Output tab.
+        show_header_context_menu(pos): Shows the context menu for the header.
+        rename_column(column_index): Renames the column at the given index.
+        edit_data_type(column_index): Edits the data type of the column at the given index.
+        set_path(path): Sets the path for the application.
+        add_output(script_text, result_text=None, plot_paths=None, error_text=None): Adds output to the layout in the form of a card.
+        remove_output(card_frame): Removes output from the layout.
+        copy_output_image(card_frame): Copies the output image to the clipboard.
+        show_context_menu(pos, card_frame): Shows the context menu for each output.&#34;&#34;&#34;
+    
+    def __init__(self):
+        &#34;&#34;&#34;
+        Initializes the MainWindow class.
+        This constructor sets up the main window for the SAE Pisan application, 
+        including setting the window title, initializing data frames, models, 
+        and UI components.
+        Attributes:
+            data1 (pl.DataFrame): A DataFrame with 100 columns and 100 empty rows.
+            data2 (pl.DataFrame): A DataFrame with columns &#34;Estimated Value&#34;, 
+                                  &#34;Standar Error&#34;, and &#34;CV&#34;, each with 100 empty rows.
+            model1 (TableModel): The table model for the first data frame.
+            model2 (TableModel): The table model for the second data frame.
+            path (str): The path to the parent directory of the current file.
+            font_size (int): The font size used in the UI.
+        &#34;&#34;&#34;
+        
+        super().__init__()
+
+        self.setWindowTitle(&#34;SAE Pisan: Small Area Estimation Programming for Statistical Analysis v1.0.0&#34;)
+        columns = [f&#34;Column {i+1}&#34; for i in range(100)]
+        self.data1 = pl.DataFrame({col: [&#34;&#34;] * 100 for col in columns})
+        self.data2 = pl.DataFrame({
+            &#34;Estimated Value&#34;: [&#34;&#34;] * 100,
+            &#34;Standar Error&#34;: [&#34;&#34;] * 100,
+            &#34;CV&#34;: [&#34;&#34;] * 100
+        })
+
+        # Model untuk Sheet 2
+        self.model1 = TableModel(self.data1)
+        self.model2 = TableModel(self.data2)
+        self.path = os.path.join(os.path.dirname(__file__), &#39;..&#39;)
+        self.font_size = 14
+
+        # Inisialisasi UI
+        self.init_ui()
+        self.showMaximized()
+
+    def init_ui(self):
+        &#34;&#34;&#34;
+        Initialize the user interface of the main window.
+        This method sets up the main layout, including a splitter, tab widgets, 
+        and various tabs for data editing, data output, and other functionalities. 
+        It also configures the menu bar with different menus and actions, 
+        and sets up the toolbar with various actions and icons.
+        Tabs:
+            - Data Editor: Allows editing of data in a spreadsheet format.
+            - Data Output: Displays output data in a table view.
+            - Output: Displays output in a scrollable area.
+        Menus:
+            - File: Contains actions to load and save files.
+            - Exploration: Contains actions for data exploration such as summary data, normality test, correlation, etc.
+            - Graph: Contains actions to generate different types of plots.
+            - Model: Contains actions related to different modeling techniques.
+            - Compute: Contains actions to compute new variables.
+            - About: Contains information about the application.
+            - Settings: Contains actions to change application settings.
+        Toolbar:
+            - Load File: Action to load a file.
+            - Save Data: Action to save data.
+            - Undo: Action to undo the last operation.
+            - Redo: Action to redo the last undone operation.
+            - Compute New Variable: Action to compute a new variable.
+            - Setting: Action to open settings.
+        Shortcuts:
+            - Go to Start Row: Ctrl + Up
+            - Go to End Row: Ctrl + Down
+            - Go to Start Column: Ctrl + Left
+            - Go to End Column: Ctrl + Right
+        Layout:
+            - The main layout is a vertical box layout containing the tab widget.
+            - The central widget is set with this layout.
+            - The main window is resized to a default size of 800x600.
+        &#34;&#34;&#34;
+        
+        # Membuat splitter utama untuk membagi halaman menjadi dua bagian (kiri dan kanan)
+        self.splitter_main = QSplitter(Qt.Orientation.Horizontal, self)
+
+        # Bagian kiri: QTabWidget untuk dua sheet
+        self.tab_widget = QTabWidget(self.splitter_main)  # Ditambahkan ke splitter utama
+        self.tab_widget.setTabPosition(QTabWidget.TabPosition.South)
+        
+        self.show_modeling_sae_dialog = None
+        self.show_modeling_saeHB_dialog = None
+        self.show_modeling_sae_unit_dialog = None
+        self.show_modeling_saeHB_normal_dialog = None
+        self.show_modellig_sae_pseudo_dialog = None
+        self.show_compute_variable_dialog = None
+        self.show_projection_variabel_dialog = None
+        
+
+        # Tab pertama (Data Editor)
+        self.tab1 = QWidget()
+        self.spreadsheet = QTableView(self.tab1)
+        self.spreadsheet.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.spreadsheet.customContextMenuRequested.connect(lambda pos: show_context_menu(self, pos))
+        self.spreadsheet.setModel(self.model1)
+        self.spreadsheet.horizontalHeader().setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.spreadsheet.horizontalHeader().customContextMenuRequested.connect(self.show_header_context_menu)
+        self.spreadsheet.horizontalHeader().sectionDoubleClicked.connect(self.rename_column)
+        self.spreadsheet.verticalHeader().setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.spreadsheet.verticalHeader().customContextMenuRequested.connect(lambda pos: show_context_menu(self, pos))
+
+        tab1_layout = QVBoxLayout(self.tab1)
+        tab1_layout.addWidget(self.spreadsheet)
+        self.spreadsheet.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+
+        # Tab kedua (Data Output)
+        self.tab2 = QWidget()
+        self.table_view2 = QTableView(self.tab2)
+        self.table_view2.setModel(self.model2)
+        self.table_view2.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+
+        tab2_layout = QVBoxLayout(self.tab2)
+        tab2_layout.addWidget(self.table_view2)
+
+        # Tab ketiga (Output)
+        self.tab3 = QWidget()
+        self.scroll_area = QScrollArea(self.tab3)
+        
+        # Tab output
+        self.output_tab = QWidget()
+        self.scroll_area = QScrollArea(self.output_tab)
+        self.scroll_area.setWidgetResizable(True)
+        self.output_container = QWidget()
+        self.output_layout = QVBoxLayout(self.output_container)
+        self.scroll_area.verticalScrollBar().rangeChanged.connect(lambda: self.scroll_area.verticalScrollBar().setValue(self.scroll_area.verticalScrollBar().maximum()))
+        self.output_container.setLayout(self.output_layout)
+        self.scroll_area.setWidget(self.output_container)
+        
+        # Atur layout output
+        self.output_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.output_layout.setSpacing(0)
+
+        tab3_layout = QVBoxLayout(self.tab3)
+        tab3_layout.addWidget(self.scroll_area)
+
+        # Menambahkan tab ke QTabWidget
+        self.tab_widget.addTab(self.tab1, &#34;Data Editor&#34;)
+        self.tab_widget.addTab(self.tab2, &#34;Data Output&#34;)
+        self.tab_widget.addTab(self.tab3, &#34;Output&#34;)  # Tab baru untuk output
+
+        # Membuat layout utama
+        layout = QVBoxLayout()
+        layout.addWidget(self.tab_widget)
+        
+
+        # Widget utama dan layout
+        central_widget = QWidget(self)
+        central_widget.setLayout(layout)
+        self.setCentralWidget(central_widget)
+
+        # Membuat menu bar
+        self.menu_bar = self.menuBar()
+
+        # Membuat menu File -&gt; Load dan Save
+        self.file_menu = self.menu_bar.addMenu(&#34;File&#34;)
+
+        self.load_action = QAction(&#34;Load File&#34;, self)
+        self.load_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_O))
+        self.load_action.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;open.svg&#39;)))
+        self.load_action.setStatusTip(&#34;Ctrl+O&#34;)
+        
+        self.save_action = QAction(&#34;Save Data&#34;, self)
+        self.save_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_S))
+        self.save_action.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;savedata.svg&#39;)))
+        self.save_action.setStatusTip(&#34;Ctrl+S&#34;)
+        
+        self.save_data_output_action = QAction(&#34;Save Data Output&#34;, self)
+        self.save_data_output_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Modifier.SHIFT | Qt.Key.Key_S))
+        self.save_data_output_action.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;savedataoutput.svg&#39;)))
+        self.save_action.setStatusTip(&#34;Ctrl+Shift+S&#34;)
+        
+        self.save_output_pdf = QAction(&#34;Save Output to PDF&#34;, self)
+        self.save_output_pdf.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_P))
+        self.save_output_pdf.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;savepdf.svg&#39;)))
+        self.save_output_pdf.setStatusTip(&#34;Ctrl+P&#34;)
+
+        self.file_menu.addAction(self.load_action)
+        self.file_menu.addAction(self.save_action)
+        self.file_menu.addAction(self.save_data_output_action)
+        self.file_menu.addAction(self.save_output_pdf)
+
+        # Menu &#34;Exploration&#34;
+        self.menu_exploration = self.menu_bar.addMenu(&#34;Exploration&#34;)
+
+        self.action_summary_data = QAction(&#34;Summary Data&#34;, self)
+        self.action_summary_data.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;summary.svg&#39;)))
+        self.action_summary_data.triggered.connect(self.open_summary_data_dialog_lazy)
+
+        self.action_normality_test = QAction(&#34;Normality Test&#34;, self)
+        self.action_normality_test.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;normality.svg&#39;)))
+        self.action_normality_test.triggered.connect(self.open_normality_test_dialog_lazy)
+
+        self.action_correlation = QAction(&#34;Correlation&#34;, self)
+        self.action_correlation.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;correlation.svg&#39;)))
+        self.action_correlation.triggered.connect(self.open_correlation_matrix_dialog_lazy)
+
+        self.action_multicollinearity = QAction(&#34;Multicollinearity&#34;, self)
+        self.action_multicollinearity.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;multicolinierity.svg&#39;)))
+        self.action_multicollinearity.triggered.connect(self.open_multicollinearity_dialog_lazy)
+
+        self.action_variable_selection = QAction(&#34;Variable Selection&#34;, self)
+        self.action_variable_selection.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;varselection.svg&#39;)))
+        self.action_variable_selection.triggered.connect(self.open_variable_selection_dialog_lazy)
+
+        self.menu_exploration.addAction(self.action_summary_data)
+        self.menu_exploration.addAction(self.action_normality_test)
+        self.menu_exploration.addAction(self.action_correlation)
+        self.menu_exploration.addAction(self.action_multicollinearity)
+        self.menu_exploration.addAction(self.action_variable_selection)
+
+        # Menu &#34;Graph&#34;
+        self.menu_graph = self.menu_bar.addMenu(&#34;Graph&#34;)
+
+        self.action_scatter_plot = QAction(&#34;Scatter Plot&#34;, self)
+        self.action_scatter_plot.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;scatterplot.svg&#39;)))
+        self.action_scatter_plot.triggered.connect(self.open_scatter_plot_dialog_lazy)
+
+        self.action_box_plot = QAction(&#34;Box Plot&#34;, self)
+        self.action_box_plot.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;boxplot.svg&#39;)))
+        self.action_box_plot.triggered.connect(self.open_box_plot_dialog_lazy)
+
+        self.action_line_plot = QAction(&#34;Line Plot&#34;, self)
+        self.action_line_plot.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;lineplot.svg&#39;)))
+        self.action_line_plot.triggered.connect(self.open_line_plot_dialog_lazy)
+
+        self.action_histogram = QAction(&#34;Histogram&#34;, self)
+        self.action_histogram.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;histogram.svg&#39;)))
+        self.action_histogram.triggered.connect(self.open_histogram_dialog_lazy)
+
+        # Menambahkan plot-plot ke menu Graph
+        self.menu_graph.addAction(self.action_scatter_plot)
+        self.menu_graph.addAction(self.action_box_plot)
+        self.menu_graph.addAction(self.action_line_plot)
+        self.menu_graph.addAction(self.action_histogram)
+        # Menu &#34;Model&#34;
+        menu_model = self.menu_bar.addMenu(&#34;Model&#34;)
+
+        # Submenu &#34;Area Level&#34;
+        menu_area_level = QMenu(&#34;Area Level&#34;, self)
+        menu_area_level.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;arealevel.svg&#39;)))
+        action_eblup_area = QAction(&#34;EBLUP&#34;, self)
+        action_eblup_area.triggered.connect(self.show_modeling_sae_dialog_lazy)
+        action_hb_beta = QAction(&#34;HB Beta&#34;, self)
+        action_hb_beta.triggered.connect(self.show_modeling_saeHB_dialog_lazy)
+        menu_area_level.addAction(action_eblup_area)
+        menu_area_level.addAction(action_hb_beta)
+
+        # Submenu &#34;Unit Level&#34;
+        menu_unit_level = QMenu(&#34;Unit Level&#34;, self)
+        menu_unit_level.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;unitlevel.svg&#39;)))
+        action_eblup_unit = QAction(&#34;EBLUP&#34;, self)
+        action_eblup_unit.triggered.connect(self.show_modeling_sae_unit_dialog_lazy)
+        action_hb_normal = QAction(&#34;HB Normal&#34;, self)
+        action_hb_normal.triggered.connect(self.show_modeling_saeHB_normal_dialog_lazy)
+        menu_unit_level.addAction(action_eblup_unit)
+        menu_unit_level.addAction(action_hb_normal)
+
+        # Submenu &#34;Pseudo&#34;
+        menu_pseudo = QMenu(&#34;Pseudo&#34;, self)
+        action_eblup_pseudo = QAction(&#34;EBLUP&#34;, self)
+        action_eblup_pseudo.triggered.connect(self.show_modellig_sae_pseudo_dialog_lazy)
+        menu_pseudo.addAction(action_eblup_pseudo)
+
+        # Submenu &#34;Projection&#34;
+        menu_projection = QMenu(&#34;Projection&#34;, self)
+        action_projection = QAction(&#34;Projection&#34;, self)
+        action_projection.triggered.connect(self.show_projection_variabel_dialog_lazy)
+        menu_projection.addAction(action_projection)
+
+
+        # Menambahkan submenu ke menu &#34;Model&#34;
+        menu_model.addMenu(menu_area_level)
+        menu_model.addMenu(menu_unit_level)
+        menu_model.addMenu(menu_pseudo)
+        menu_model.addMenu(menu_projection)
+
+
+
+         # Menu &#39;Compute&#39;
+        menu_compute = self.menu_bar.addMenu(&#34;Compute&#34;)
+        compute_new_var = QAction(&#34;Compute New Variable&#34;, self)
+        compute_new_var.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;compute.svg&#39;)))
+        compute_new_var.triggered.connect(self.show_compute_variable_dialog_lazy)
+        menu_compute.addAction(compute_new_var)
+        
+        # Menu &#34;About&#34;
+        menu_about = self.menu_bar.addMenu(&#34;About&#34;)
+        action_about_info = QAction(&#34;About This App&#34;, self)
+        action_about_info.triggered.connect(self.open_about_dialog)
+        action_about_info.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;about.svg&#39;)))
+        menu_about.addAction(action_about_info)
+        
+
+        # Tool Bar
+        self.toolBar = QToolBar(self)
+        self.toolBar.setIconSize(QSize(45, 35))
+        self.toolBar.setObjectName(&#34;toolBar&#34;)
+        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolBar)  # Perbaikan dilakukan di sini
+        # Actions for Toolbar
+        self.actionLoad_file = QAction(self)  # Menggunakan self untuk referensi instance
+        icon_load = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;open.svg&#39;))
+        self.actionLoad_file.setIcon(icon_load)
+        self.actionLoad_file.setText(&#34;Load File&#34;)
+        self.toolBar.addAction(self.actionLoad_file)
+
+        self.actionSave_Data = QAction(self)  # Menggunakan self untuk referensi instance
+        icon_save = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;save.svg&#39;))
+        self.actionSave_Data.setIcon(icon_save)
+        self.actionSave_Data.setText(&#34;Save Data&#34;)
+        self.toolBar.addAction(self.actionSave_Data)
+
+        self.actionUndo = QAction(self)
+        icon_undo = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;undo.svg&#39;))
+        self.actionUndo.setIcon(icon_undo)
+        self.actionUndo.setText(&#34;Undo&#34;)
+        self.actionUndo.triggered.connect(self.undo_action)
+        self.toolBar.addAction(self.actionUndo)
+
+        self.actionRedo = QAction(self)
+        icon_redo = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;redo.svg&#39;))
+        self.actionRedo.setIcon(icon_redo)
+        self.actionRedo.setText(&#34;Redo&#34;)
+        self.actionRedo.triggered.connect(self.redo_action)
+        self.toolBar.addAction(self.actionRedo)
+        
+        self.actionCompute = QAction(self)
+        icon_compute = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;compute.svg&#39;))
+        self.actionCompute.setIcon(icon_compute)
+        self.actionCompute.setText(&#34;Compute New Variable&#34;)
+        self.actionCompute.triggered.connect(self.show_compute_variable_dialog_lazy)
+        self.toolBar.addAction(self.actionCompute)
+        
+        # Shortcuts for &#34;Go to Start/End Row/Column&#34;
+        self.go_to_start_row_action = QAction(self)
+        self.go_to_start_row_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_Up))
+        self.go_to_start_row_action.triggered.connect(lambda : go_to_start_row(self))
+        self.addAction(self.go_to_start_row_action)
+
+        self.go_to_end_row_action = QAction(self)
+        self.go_to_end_row_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_Down))
+        self.go_to_end_row_action.triggered.connect(lambda : go_to_end_row(self))
+        self.addAction(self.go_to_end_row_action)
+
+        self.go_to_start_column_action = QAction(self)
+        self.go_to_start_column_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_Left))
+        self.go_to_start_column_action.triggered.connect(lambda : go_to_start_column(self))
+        self.addAction(self.go_to_start_column_action)
+
+        self.go_to_end_column_action = QAction(self)
+        self.go_to_end_column_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_Right))
+        self.go_to_end_column_action.triggered.connect(lambda : go_to_end_column(self))
+        self.addAction(self.go_to_end_column_action)
+
+        # Add spacer to push following items to the right
+        spacer = QWidget(self)
+        spacer.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        self.toolBar.addWidget(spacer)
+
+        # Add &#34;Setting&#34; button to the right
+        self.actionSetting = QAction(self)
+        icon_setting = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;setting.svg&#39;))
+        self.actionSetting.setIcon(icon_setting)
+        self.actionSetting.setText(&#34;Setting&#34;)
+        self.actionSetting.triggered.connect(self.change_font_size)
+        self.toolBar.addAction(self.actionSetting)
+
+        # Menu &#34;Settings&#34;
+        menu_settings = self.menu_bar.addMenu(&#34;Settings&#34;)
+        action_change_font_size = QAction(&#34;Change Font Size&#34;, self)
+        action_change_font_size.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;setting.svg&#39;)))
+        action_change_font_size.triggered.connect(self.change_font_size)
+        menu_settings.addAction(action_change_font_size)
+
+        # Menetapkan ukuran default
+        self.resize(800, 600)
+
+    
+    def change_font_size(self):
+        &#34;&#34;&#34;
+        Opens a dialog to change the font size of the application.
+        The dialog presents three font size options: &#34;Small&#34;, &#34;Medium&#34;, and &#34;Big&#34;.
+        The user can select a font size from a combo box, and the selected size
+        will be applied to the application if the user confirms the selection.
+        The dialog also displays a sample text (&#34;AaBbCc&#34;) that updates in real-time
+        to reflect the selected font size.
+        Attributes:
+            sizes (dict): A dictionary mapping font size names to their corresponding pixel values.
+            items (list): A list of font size names.
+            dialog (QDialog): The dialog window for selecting the font size.
+            layout (QVBoxLayout): The main layout of the dialog.
+            combo_box (QComboBox): The combo box for selecting the font size.
+            display (QLabel): The label displaying the sample text with the selected font size.
+            button_box (QHBoxLayout): The layout containing the OK and Cancel buttons.
+            ok_button (QPushButton): The button to confirm the font size selection.
+            cancel_button (QPushButton): The button to cancel the font size selection.
+        Methods:
+            update_display_font_size: Updates the sample text&#39;s font size based on the selected size in the combo box.
+        &#34;&#34;&#34;
+        
+        sizes = {&#34;Small&#34;: 10, &#34;Medium&#34;: 14, &#34;Big&#34;: 22}
+        items = list(sizes.keys())
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle(&#34;Select Font Size&#34;)
+        dialog.setMinimumWidth(200)
+
+        layout = QVBoxLayout(dialog)
+
+        combo_box = QComboBox()
+        combo_box.addItems(items)
+        default_size = next(key for key, value in sizes.items() if value == self.font_size)
+        combo_box.setCurrentText(default_size)
+        layout.addWidget(combo_box)
+        
+        display = QLabel(&#34;AaBbCc&#34;)
+        display.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        display.setStyleSheet(f&#34;font-size: {self.font_size}px;&#34;)
+        layout.addWidget(display)
+    
+        def update_display_font_size():
+            size = combo_box.currentText()
+            display.setStyleSheet(f&#34;font-size: {sizes[size]}px;&#34;)
+
+        combo_box.currentTextChanged.connect(update_display_font_size)
+
+        button_box = QHBoxLayout()
+        ok_button = QPushButton(&#34;OK&#34;)
+        cancel_button = QPushButton(&#34;Cancel&#34;)
+        button_box.addWidget(ok_button)
+        button_box.addWidget(cancel_button)
+        layout.addLayout(button_box)
+
+        ok_button.clicked.connect(dialog.accept)
+        cancel_button.clicked.connect(dialog.reject)
+
+        dialog.setLayout(layout)
+
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            selected_size = combo_box.currentText()
+            self.set_font_size(sizes[selected_size])
+            self.font_size = sizes[selected_size]
+
+    def set_font_size(self, size):
+        &#34;&#34;&#34;
+        Sets the font size for the main window.
+        Args:
+            size (int): The desired font size to be set.
+        This method updates the stylesheet of the main window with the specified font size.
+        &#34;&#34;&#34;
+        
+        stylesheet = self.load_stylesheet_with_font_size(size)
+        self.setStyleSheet(stylesheet)
+
+    def load_stylesheet_with_font_size(self, size):
+        &#34;&#34;&#34;
+        Memuat stylesheet dan mengganti ukuran font global.
+        &#34;&#34;&#34;
+        stylesheet_path = os.path.join(self.path, &#39;assets&#39;, &#39;style&#39;, &#39;style.qss&#39;)
+        if os.path.exists(stylesheet_path):
+            with open(stylesheet_path, &#39;r&#39;) as file:
+                stylesheet = file.read()
+                stylesheet = stylesheet.replace(&#34;font-size: 14px;&#34;, f&#34;font-size: {size}px;&#34;)
+                return stylesheet
+        else:
+            print(f&#34;Stylesheet tidak ditemukan di {stylesheet_path}&#34;)
+            return &#34;&#34;
+    
+    def open_summary_data_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and opens the summary data dialog.
+        This method checks if the &#39;show_summary_data_dialog&#39; attribute exists.
+        If it does not exist, it initializes it with an instance of SummaryDataDialog.
+        Then, it calls the &#39;open_summary_data_dialog&#39; method to open the dialog.
+        &#34;&#34;&#34;
+        
+        if not hasattr(self, &#39;show_summary_data_dialog&#39;):
+            self.show_summary_data_dialog = SummaryDataDialog(self)
+        self.open_summary_data_dialog()
+
+    def open_normality_test_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and opens the normality test dialog.
+        This method checks if the normality test dialog has already been created.
+        If not, it initializes the dialog and then opens it. If the dialog has 
+        already been created, it simply opens the existing instance.
+        &#34;&#34;&#34;
+        
+        if not hasattr(self, &#39;show_normality_test_dialog&#39;):
+            self.show_normality_test_dialog = NormalityTestDialog(self)
+        self.open_normality_test_dialog()
+
+    def open_multicollinearity_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and opens the multicollinearity dialog.
+        This method checks if the &#39;show_multicollinearity_dialog&#39; attribute exists.
+        If it does not, it initializes it with an instance of MulticollinearityDialog.
+        Then, it opens the multicollinearity dialog.
+        Returns:
+            None
+        &#34;&#34;&#34;
+        
+        if not hasattr(self, &#39;show_multicollinearity_dialog&#39;):
+            self.show_multicollinearity_dialog = MulticollinearityDialog(self)
+        self.open_multicollinearity_dialog()
+
+    def open_variable_selection_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and opens the variable selection dialog.
+        This method checks if the &#39;show_variable_selection_dialog&#39; attribute
+        exists. If it does not, it initializes it with an instance of 
+        VariableSelectionDialog. Then, it calls the method to open the 
+        variable selection dialog.
+        &#34;&#34;&#34;
+        
+        if not hasattr(self, &#39;show_variable_selection_dialog&#39;):
+            self.show_variable_selection_dialog = VariableSelectionDialog(self)
+        self.open_variable_selection_dialog()
+    
+    def open_scatter_plot_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and opens the scatter plot dialog.
+        This method checks if the scatter plot dialog has already been created.
+        If not, it initializes the dialog and then opens it. This ensures that
+        the dialog is only created when needed, potentially saving resources.
+        Attributes:
+            show_scatter_plot_dialog (ScatterPlotDialog): The scatter plot dialog instance.
+        &#34;&#34;&#34;
+        
+        if not hasattr(self, &#39;show_scatter_plot_dialog&#39;):
+            self.show_scatter_plot_dialog = ScatterPlotDialog(self)
+        self.open_scatter_plot_dialog()
+
+    def open_correlation_matrix_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and opens the correlation matrix dialog.
+        This method checks if the correlation matrix dialog has already been created.
+        If not, it initializes the dialog. Then, it opens the dialog.
+        Attributes:
+            show_correlation_matrix_dialog (CorrelationMatrixDialog): The correlation matrix dialog instance.
+        &#34;&#34;&#34;
+        
+        if not hasattr(self, &#39;show_correlation_matrix_dialog&#39;):
+            self.show_correlation_matrix_dialog = CorrelationMatrixDialog(self)
+        self.open_correlation_matrix_dialog()
+
+    def open_box_plot_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and opens the box plot dialog.
+        This method checks if the &#39;show_box_plot_dialog&#39; attribute exists.
+        If it does not, it initializes &#39;show_box_plot_dialog&#39; with an instance
+        of BoxPlotDialog. Then, it calls the method to open the box plot dialog.
+        &#34;&#34;&#34;
+        
+        if not hasattr(self, &#39;show_box_plot_dialog&#39;):
+            self.show_box_plot_dialog = BoxPlotDialog(self)
+        self.open_box_plot_dialog()
+
+    def open_line_plot_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and opens the line plot dialog.
+        This method checks if the &#39;show_line_plot_dialog&#39; attribute exists.
+        If it does not, it initializes &#39;show_line_plot_dialog&#39; with an instance
+        of LinePlotDialog. Then, it calls the method to open the line plot dialog.
+        &#34;&#34;&#34;
+        
+        if not hasattr(self, &#39;show_line_plot_dialog&#39;):
+            self.show_line_plot_dialog = LinePlotDialog(self)
+        self.open_line_plot_dialog()
+
+    def open_histogram_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Opens the histogram dialog lazily.
+        This method checks if the histogram dialog has already been created.
+        If not, it initializes the HistogramDialog and assigns it to the 
+        &#39;show_histogram_dialog&#39; attribute. Then, it opens the histogram dialog.
+        &#34;&#34;&#34;
+        
+        if not hasattr(self, &#39;show_histogram_dialog&#39;):
+            self.show_histogram_dialog = HistogramDialog(self)
+        self.open_histogram_dialog()
+    
+    def open_summary_data_dialog(self):
+        &#34;&#34;&#34;
+        Opens the summary data dialog.
+        This method sets the models for the summary data dialog and then displays the dialog.
+        It uses `self.model1` and `self.model2` as the models to be set in the dialog.
+        Returns:
+            None
+        &#34;&#34;&#34;
+        
+        self.show_summary_data_dialog.set_model(self.model1, self.model2)
+        self.show_summary_data_dialog.show()
+        
+    def open_normality_test_dialog(self):
+        &#34;&#34;&#34;
+        Opens the normality test dialog.
+        This method sets the models for the normality test dialog and then displays the dialog.
+        It uses `self.model1` and `self.model2` as the models to be set in the dialog.
+        Returns:
+            None
+        &#34;&#34;&#34;
+        
+        self.show_normality_test_dialog.set_model( self.model1, self.model2)
+        self.show_normality_test_dialog.show()
+
+    def open_scatter_plot_dialog(self):
+        &#34;&#34;&#34;
+        Opens the scatter plot dialog and sets the models for the dialog.
+        This method sets the models for the scatter plot dialog using 
+        `self.model1` and `self.model2`, and then displays the dialog.
+        &#34;&#34;&#34;
+        
+        self.show_scatter_plot_dialog.set_model(self.model1, self.model2)
+        self.show_scatter_plot_dialog.show()
+
+    def open_line_plot_dialog(self):
+        &#34;&#34;&#34;
+        Opens the line plot dialog and sets the models for the dialog.
+        This method sets the models for the line plot dialog using `self.model1` 
+        and `self.model2`, and then displays the dialog.
+        Returns:
+            None
+        &#34;&#34;&#34;
+        
+        self.show_line_plot_dialog.set_model(self.model1, self.model2)
+        self.show_line_plot_dialog.show()
+    
+    def open_box_plot_dialog(self):
+        &#34;&#34;&#34;
+        Opens the box plot dialog and sets the models for the dialog.
+        This method sets the models for the box plot dialog using `self.model1` and `self.model2`,
+        and then displays the dialog.
+        Returns:
+            None
+        &#34;&#34;&#34;
+        
+        self.show_box_plot_dialog.set_model(self.model1, self.model2)
+        self.show_box_plot_dialog.show()
+
+    def open_correlation_matrix_dialog(self):
+        &#34;&#34;&#34;
+        Opens the correlation matrix dialog.
+        This method sets the model data for the correlation matrix dialog
+        and then displays the dialog to the user.
+        The models used are `self.model1` and `self.model2`.
+        &#34;&#34;&#34;
+        
+        self.show_correlation_matrix_dialog.set_model(self.model1, self.model2)
+        self.show_correlation_matrix_dialog.show()
+    
+    def open_multicollinearity_dialog(self):
+        &#34;&#34;&#34;
+        Opens the multicollinearity dialog and sets the models for it.
+        This method sets the models for the multicollinearity dialog using
+        `self.model1` and `self.model2`, and then displays the dialog.
+        &#34;&#34;&#34;
+        
+        self.show_multicollinearity_dialog.set_model(self.model1, self.model2)
+        self.show_multicollinearity_dialog.show()
+    
+    def open_histogram_dialog(self):
+        &#34;&#34;&#34;
+        Opens the histogram dialog and sets the models for it.
+        This method sets the models for the histogram dialog using `self.model1` and `self.model2`,
+        and then displays the histogram dialog.
+        &#34;&#34;&#34;
+        
+        self.show_histogram_dialog.set_model(self.model1, self.model2)
+        self.show_histogram_dialog.show()
+
+    def open_variable_selection_dialog(self):
+        &#34;&#34;&#34;
+        Opens the variable selection dialog.
+        This method sets the model for the variable selection dialog using 
+        `self.model1` and `self.model2`, and then displays the dialog.
+        &#34;&#34;&#34;
+        
+        self.show_variable_selection_dialog.set_model(self.model1, self.model2)
+        self.show_variable_selection_dialog.show()
+
+    def show_modeling_sae_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and displays the ModelingSaeDialog.
+        If the ModelingSaeDialog has not been created yet, this method will
+        instantiate it and set its model to `self.model1`. Then, it will
+        display the dialog.
+        Returns:
+            None
+        &#34;&#34;&#34;
+        
+        if self.show_modeling_sae_dialog is None:
+            self.show_modeling_sae_dialog = ModelingSaeDialog(self)
+        self.show_modeling_sae_dialog.set_model(self.model1)
+        self.show_modeling_sae_dialog.show()
+
+    def show_modeling_saeHB_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Displays the ModelingSaeHBDialog lazily.
+        This method initializes the ModelingSaeHBDialog if it has not been created yet,
+        sets its model to `self.model1`, and then shows the dialog.
+        Attributes:
+            show_modeling_saeHB_dialog (ModelingSaeHBDialog): The dialog instance to be shown.
+            model1: The model to be set in the dialog.
+        &#34;&#34;&#34;
+        
+        if self.show_modeling_saeHB_dialog is None:
+            self.show_modeling_saeHB_dialog = ModelingSaeHBDialog(self)
+        self.show_modeling_saeHB_dialog.set_model(self.model1)
+        self.show_modeling_saeHB_dialog.show()
+
+    def show_modeling_sae_unit_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and displays the ModelingSaeUnitDialog.
+        If the dialog has not been created yet, it initializes it with the current instance.
+        Then, it sets the model for the dialog and shows it.
+        Attributes:
+            show_modeling_sae_unit_dialog (ModelingSaeUnitDialog): The dialog for modeling SAE units.
+            model1: The model to be set in the dialog.
+        &#34;&#34;&#34;
+        
+        if self.show_modeling_sae_unit_dialog is None:
+            self.show_modeling_sae_unit_dialog = ModelingSaeUnitDialog(self)
+        self.show_modeling_sae_unit_dialog.set_model(self.model1)
+        self.show_modeling_sae_unit_dialog.show()
+
+    def show_modeling_saeHB_normal_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and displays the ModelingSaeHBNormalDialog.
+        If the dialog has not been created yet, it initializes a new instance
+        of ModelingSaeHBNormalDialog and sets its model to self.model1. 
+        Then, it shows the dialog.
+        Attributes:
+            show_modeling_saeHB_normal_dialog (ModelingSaeHBNormalDialog): 
+            The dialog instance to be displayed.
+            model1: The model to be set in the dialog.
+        &#34;&#34;&#34;
+        
+        if self.show_modeling_saeHB_normal_dialog is None:
+            self.show_modeling_saeHB_normal_dialog = ModelingSaeHBNormalDialog(self)
+        self.show_modeling_saeHB_normal_dialog.set_model(self.model1)
+        self.show_modeling_saeHB_normal_dialog.show()
+
+    def show_modellig_sae_pseudo_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and displays the Modeling SAE Pseudo dialog.
+        This method checks if the `show_modellig_sae_pseudo_dialog` attribute is None.
+        If it is, it initializes a new instance of `ModelingSaePseudoDialog` with the current
+        instance (`self`) as the parent. It then sets the model for the dialog using `self.model1`
+        and displays the dialog.
+        Returns:
+            None
+        &#34;&#34;&#34;
+        
+        if self.show_modellig_sae_pseudo_dialog is None:
+            self.show_modellig_sae_pseudo_dialog = ModelingSaePseudoDialog(self)
+        self.show_modellig_sae_pseudo_dialog.set_model(self.model1)
+        self.show_modellig_sae_pseudo_dialog.show()
+
+    def show_compute_variable_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Displays the Compute Variable dialog lazily.
+        This method initializes the Compute Variable dialog if it hasn&#39;t been created yet,
+        sets its model to `self.model1`, and then shows the dialog.
+        If `self.show_compute_variable_dialog` is already initialized, it simply updates
+        the model and shows the dialog.
+        Returns:
+            None
+        &#34;&#34;&#34;
+        
+        if self.show_compute_variable_dialog is None:
+            self.show_compute_variable_dialog = ComputeVariableDialog(self)
+        self.show_compute_variable_dialog.set_model(self.model1)
+        self.show_compute_variable_dialog.show()
+
+    def show_projection_variabel_dialog_lazy(self):
+        &#34;&#34;&#34;
+        Lazily initializes and displays the ProjectionDialog.
+        This method checks if the `show_projection_variabel_dialog` attribute is None.
+        If it is, it initializes it with a new instance of `ProjectionDialog`.
+        It then sets the model for the dialog and checks if the prerequisites for
+        showing the dialog are met. If they are, it displays the dialog.
+        Attributes:
+            show_projection_variabel_dialog (ProjectionDialog): The dialog to be shown.
+            model1: The model to be set in the dialog.
+        Returns:
+            None
+        &#34;&#34;&#34;
+        
+        if self.show_projection_variabel_dialog is None:
+            self.show_projection_variabel_dialog = ProjectionDialog(self)
+        self.show_projection_variabel_dialog.set_model(self.model1)
+        if self.show_projection_variabel_dialog.show_prerequisites():
+            self.show_projection_variabel_dialog.show()
+
+    def open_about_dialog(self):
+        &#34;&#34;&#34;
+        Opens the About dialog window.
+        This method creates an instance of the AboutDialog class, passing the
+        current instance as the parent, and then executes the dialog.
+        &#34;&#34;&#34;
+        
+        about_dialog = AboutDialog(self)
+        about_dialog.exec()
+
+    def add_row(self, sheet_number):
+        &#34;&#34;&#34;Sinkronisasi data ketika baris baru ditambahkan di SpreadsheetWidget.&#34;&#34;&#34;
+        if sheet_number == 1:
+            # Tambahkan baris baru di DataFrame data1
+            new_row = pl.DataFrame({col: [&#34;&#34;] for col in self.data1.columns})
+            self.data1 = pl.concat([self.data1, new_row])
+        elif sheet_number == 2:
+            pass  # Tidak digunakan untuk Sheet 2
+    
+    def add_column(self, sheet_number):
+        &#34;&#34;&#34;Sinkronisasi data ketika kolom baru ditambahkan di SpreadsheetWidget.&#34;&#34;&#34;
+        if sheet_number == 1:
+            # Tambahkan kolom baru di DataFrame data1
+            new_column_name = f&#34;Column {self.data1.shape[1] + 1}&#34;
+            new_column = pl.DataFrame({new_column_name: [&#34;&#34;] * self.data1.shape[0]})
+            self.data1 = pl.concat([self.data1, new_column], how=&#34;horizontal&#34;)
+        elif sheet_number == 2:
+            pass  # Tidak digunakan untuk Sheet 2
+    
+    def update_table(self, sheet_number, model):
+        &#34;&#34;&#34;Memperbarui tabel pada sheet tertentu dengan model baru&#34;&#34;&#34;
+        if sheet_number == 1:
+            self.spreadsheet.setModel(model)
+            self.model1 = model
+            self.spreadsheet.resizeColumnsToContents()
+            self.tab_widget.setCurrentWidget(self.tab1)
+            if self.show_modeling_sae_dialog:
+                self.show_modeling_sae_dialog.set_model(model)
+            if self.show_modeling_saeHB_dialog:
+                self.show_modeling_saeHB_dialog.set_model(model)
+            if self.show_modeling_sae_unit_dialog:
+                self.show_modeling_sae_unit_dialog.set_model(model)
+            if self.show_modeling_saeHB_normal_dialog:
+                self.show_modeling_saeHB_normal_dialog.set_model(model)
+            if self.show_modellig_sae_pseudo_dialog:
+                self.show_modellig_sae_pseudo_dialog.set_model(model)
+            if self.show_compute_variable_dialog:
+                self.show_compute_variable_dialog.set_model(model)
+            if self.show_projection_variabel_dialog:
+                self.show_projection_variabel_dialog.set_model(model)
+        elif sheet_number == 2:
+            self.table_view2.setModel(model)
+            self.model2 = model
+            self.table_view2.resizeColumnsToContents()
+
+    def keyPressEvent(self, event):
+        &#34;&#34;&#34;Handle keyboard shortcuts for copy, paste, undo, and redo.&#34;&#34;&#34;
+        if event.matches(QKeySequence.StandardKey.Copy):
+            self.copy_selection()
+        elif event.matches(QKeySequence.StandardKey.Paste):
+            self.paste_selection()
+        elif event.matches(QKeySequence.StandardKey.Undo):
+            self.undo_action()
+        elif event.matches(QKeySequence.StandardKey.Redo):
+            self.redo_action()
+        else:
+            super().keyPressEvent(event)
+
+    def copy_selection(self):
+        &#34;&#34;&#34;Copy selected cells to clipboard.&#34;&#34;&#34;
+        selection = self.spreadsheet.selectionModel().selectedIndexes()
+        if selection:
+            data = &#39;\n&#39;.join([&#39;\t&#39;.join([self.model1.data(index, Qt.ItemDataRole.DisplayRole) for index in row]) for row in self.group_by_row(selection)])
+            clipboard = QApplication.clipboard()
+            clipboard.setText(data)
+
+    def paste_selection(self):
+        &#34;&#34;&#34;Paste clipboard content to selected cells.&#34;&#34;&#34;
+        clipboard = QApplication.clipboard()
+        data = clipboard.text().split(&#39;\n&#39;)
+        selection = self.spreadsheet.selectionModel().selectedIndexes()
+        if selection:
+            start_row = selection[0].row()
+            start_col = selection[0].column()
+            for i, row in enumerate(data):
+                for j, value in enumerate(row.split(&#39;\t&#39;)):
+                    index = self.model1.index(start_row + i, start_col + j)
+                    self.model1.setData(index, value, Qt.ItemDataRole.EditRole)
+
+    def undo_action(self):
+        &#34;&#34;&#34;Undo the last action.&#34;&#34;&#34;
+        self.model1.undo()
+
+    def redo_action(self):
+        &#34;&#34;&#34;Redo the last undone action.&#34;&#34;&#34;
+        self.model1.redo()
+
+    def group_by_row(self, selection):
+        &#34;&#34;&#34;Group selected indexes by row.&#34;&#34;&#34;
+        rows = {}
+        for index in selection:
+            if index.row() not in rows:
+                rows[index.row()] = []
+            rows[index.row()].append(index)
+        return [rows[row] for row in sorted(rows)]
+    
+    def show_output(self, title, content):
+        &#34;&#34;&#34;Display output in the Output tab&#34;&#34;&#34;
+        label = QLabel(content)
+        self.output_layout.addWidget(label)
+        self.output_tab_widget.setCurrentIndex(0)
+
+    def show_header_context_menu(self, pos):
+        &#34;&#34;&#34;Show context menu for header.&#34;&#34;&#34;
+        header = self.spreadsheet.horizontalHeader()
+        logical_index = header.logicalIndexAt(pos)
+        menu = QMenu(self)
+        rename_action = QAction(&#34;Rename Column&#34;, self)
+        rename_action.triggered.connect(lambda: self.rename_column(logical_index))
+        menu.addAction(rename_action)
+        
+        edit_type_action = QAction(&#34;Edit Data Type&#34;, self)
+        edit_type_action.triggered.connect(lambda: self.edit_data_type(logical_index))
+        menu.addAction(edit_type_action)
+        
+        selection = self.spreadsheet.selectionModel().selectedIndexes()
+        has_selection = bool(selection)
+        
+        delete_column_action = QAction(&#34;Delete Column&#34;, self)
+        delete_column_action.triggered.connect(lambda : confirm_delete_selected_columns(self))
+        delete_column_action.setEnabled(has_selection)
+        menu.addAction(delete_column_action)
+        
+        add_column_before_action = QAction(&#34;Add Column Before&#34;, self)
+        add_column_before_action.triggered.connect(lambda: show_add_column_before_dialog(self))
+        add_column_before_action.setEnabled(has_selection)
+        menu.addAction(add_column_before_action)
+        
+        add_column_after_action = QAction(&#34;Add Column After&#34;, self)
+        add_column_after_action.triggered.connect(lambda: show_add_column_after_dialog(self))
+        add_column_after_action.setEnabled(has_selection)
+        menu.addAction(add_column_after_action)
+        
+        menu.exec(header.mapToGlobal(pos))
+
+    def rename_column(self, column_index):
+        &#34;&#34;&#34;Rename the column at the given index.&#34;&#34;&#34;
+        current_name = self.model1.headerData(column_index, Qt.Orientation.Horizontal, Qt.ItemDataRole.DisplayRole)
+        new_name, ok = QInputDialog.getText(self, &#34;Rename Column&#34;, &#34;New column name:&#34;, text=current_name)
+        if ok and new_name:
+            self.model1.rename_column(column_index, new_name)
+            self.update_table(1, self.model1)
+
+    def edit_data_type(self, column_index):
+        &#34;&#34;&#34;Edit the data type of the column at the given index.&#34;&#34;&#34;
+        current_type = self.model1.get_column_type(column_index)
+        if current_type==pl.Utf8:
+            current_type = &#34;String&#34;
+        elif current_type==pl.Int64:
+            current_type = &#34;Integer&#34;
+        elif current_type==pl.Float64:
+            current_type = &#34;Float&#34;
+        type_list = [&#34;String&#34;, &#34;Integer&#34;, &#34;Float&#34;]
+        current_index = type_list.index(current_type)
+        new_type, ok = QInputDialog.getItem(self, &#34;Edit Data Type&#34;, &#34;Select new data type:&#34;, type_list, current=current_index)
+        if ok and new_type:
+            self.model1.set_column_type(column_index, new_type)
+            self.update_table(1, self.model1)
+    
+    def set_path(self, path):
+        &#34;&#34;&#34;
+        Sets the path attribute for the MainWindow instance.
+        Args:
+            path (str): The path to be set.
+        &#34;&#34;&#34;
+        
+        self.path=path
+    
+    def add_output(self, script_text, result_text=None, plot_paths=None):
+        &#34;&#34;&#34;Menambahkan output ke layout dalam bentuk card&#34;&#34;&#34;
+
+        card_frame = QFrame()
+        card_frame.setStyleSheet(&#34;&#34;&#34;
+            QFrame {
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 10px;
+            }
+        &#34;&#34;&#34;)
+
+        card_layout = QVBoxLayout(card_frame)
+        card_layout.setSpacing(8)
+
+        label_script = QLabel(&#34;&lt;b&gt;Script R:&lt;/b&gt;&#34;)
+        label_script.setStyleSheet(&#34;color: #333; margin-bottom: 5px;&#34;)
+        script_box = QTextEdit()
+        script_box.setPlainText(script_text)
+        script_box.setReadOnly(True)
+        script_box.setStyleSheet(&#34;&#34;&#34;
+            QTextEdit {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                padding: 5px;
+                font-family: Consolas, Courier New, monospace;
+            }
+        &#34;&#34;&#34;)
+        script_box.setFixedHeight(script_box.fontMetrics().lineSpacing() * (script_text.count(&#39;\n&#39;) + 3))
+
+        card_layout.addWidget(label_script)
+        card_layout.addWidget(script_box)
+
+        if result_text:
+            label_output = QLabel(&#34;&lt;b&gt;Output:&lt;/b&gt;&#34;)
+            label_output.setStyleSheet(&#34;color: #333; margin-top: 10px; margin-bottom: 5px;&#34;)
+            result_box = QTextEdit()
+            result_box.setPlainText(result_text)
+            result_box.setReadOnly(True)
+            result_box.setStyleSheet(&#34;&#34;&#34;
+                QTextEdit {
+                    background-color: #fff;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    padding: 5px;
+                    font-family: Consolas, Courier New, monospace;
+                }
+            &#34;&#34;&#34;)
+            max_height = 400
+            calculated_height = result_box.fontMetrics().lineSpacing() * (result_text.count(&#39;\n&#39;) + 3)
+            result_box.setFixedHeight(min(calculated_height, max_height))
+            result_box.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn if calculated_height &gt; max_height else Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
+            card_layout.addWidget(label_output)
+            card_layout.addWidget(result_box)
+
+        if plot_paths:
+            label_plot = QLabel(&#34;&lt;b&gt;Plot:&lt;/b&gt;&#34;)
+            label_plot.setStyleSheet(&#34;color: #333; margin-top: 10px; margin-bottom: 5px;&#34;)
+            card_layout.addWidget(label_plot)
+
+            for plot_path in plot_paths:
+                if os.path.exists(plot_path):
+                    pixmap = QPixmap(plot_path)
+                    label = QLabel()
+                    label.setPixmap(pixmap)
+                    label.setFixedSize(500, 350) 
+                    label.setScaledContents(True)
+                    label.setStyleSheet(&#34;border: 1px solid #ccc; border-radius: 4px;&#34;)
+                    card_layout.addWidget(label)
+        card_frame.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        card_frame.customContextMenuRequested.connect(lambda pos: self.show_context_menu(pos, card_frame))
+
+        if self.output_layout.count() &gt; 0:
+            last_item = self.output_layout.itemAt(self.output_layout.count() - 1)
+            if isinstance(last_item.spacerItem(), QSpacerItem):
+                self.output_layout.removeItem(last_item)
+
+        self.output_layout.addWidget(card_frame)
+
+        if self.output_layout.count() == 1:
+            self.output_layout.addStretch()
+
+        self.tab_widget.setCurrentWidget(self.tab3)
+
+        if plot_paths:
+            for plot_path in plot_paths:
+                if os.path.exists(plot_path):
+                    os.remove(plot_path)
+
+
+    def add_output(self, script_text, result_text=None, plot_paths=None, error_text=None):
+        &#34;&#34;&#34;Add output to the layout in the form of a card&#34;&#34;&#34;
+
+        # Create a frame as a card
+        card_frame = QFrame()
+        card_frame.setStyleSheet(&#34;&#34;&#34;
+            QFrame {
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 10px;
+            }
+        &#34;&#34;&#34;)
+
+
+        card_layout = QVBoxLayout(card_frame)
+        card_layout.setSpacing(8)
+
+        label_script = QLabel(&#34;&lt;b&gt;R Script:&lt;/b&gt;&#34;)
+        label_script.setStyleSheet(&#34;color: #333; margin-bottom: 5px;&#34;)
+        script_box = QTextEdit()
+        script_box.setPlainText(script_text)
+        script_box.setReadOnly(True)
+        script_box.setStyleSheet(&#34;&#34;&#34;
+            QTextEdit {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                padding: 5px;
+                font-family: Consolas, Courier New, monospace;
+            }
+        &#34;&#34;&#34;)
+        script_box.setFixedHeight(script_box.fontMetrics().lineSpacing() * (script_text.count(&#39;\n&#39;) + 3))
+
+        card_layout.addWidget(label_script)
+        card_layout.addWidget(script_box)
+
+        if result_text:
+            label_output = QLabel(&#34;&lt;b&gt;Output:&lt;/b&gt;&#34;)
+            label_output.setStyleSheet(&#34;color: #333; margin-top: 10px; margin-bottom: 5px;&#34;)
+            result_box = QTextEdit()
+            result_box.setPlainText(result_text)
+            result_box.setReadOnly(True)
+            result_box.setStyleSheet(&#34;&#34;&#34;
+                QTextEdit {
+                    background-color: #fff;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    padding: 5px;
+                    font-family: Consolas, Courier New, monospace;
+                }
+            &#34;&#34;&#34;)
+            max_height = 400
+            calculated_height = result_box.fontMetrics().lineSpacing() * (result_text.count(&#39;\n&#39;) + 3)
+            result_box.setFixedHeight(min(calculated_height, max_height))
+            result_box.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn if calculated_height &gt; max_height else Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
+            card_layout.addWidget(label_output)
+            card_layout.addWidget(result_box)
+
+        if plot_paths:
+            label_plot = QLabel(&#34;&lt;b&gt;Plot:&lt;/b&gt;&#34;)
+            label_plot.setStyleSheet(&#34;color: #333; margin-top: 10px; margin-bottom: 5px;&#34;)
+            card_layout.addWidget(label_plot)
+
+            for plot_path in plot_paths:
+                if os.path.exists(plot_path):
+                    pixmap = QPixmap(plot_path)
+                    label = QLabel()
+                    label.setPixmap(pixmap)
+                    label.setFixedSize(500, 350)
+                    label.setScaledContents(True)
+                    label.setStyleSheet(&#34;border: 1px solid #ccc; border-radius: 4px;&#34;)
+                    card_layout.addWidget(label)
+
+        if error_text:
+            label_error = QLabel(&#34;&lt;b&gt;Error:&lt;/b&gt;&#34;)
+            label_error.setStyleSheet(&#34;color: #a94442; margin-top: 10px; margin-bottom: 5px;&#34;)
+            error_box = QTextEdit()
+            error_box.setPlainText(error_text)
+            error_box.setReadOnly(True)
+            error_box.setStyleSheet(&#34;&#34;&#34;
+                QTextEdit {
+                    background-color: #f8d7da;
+                    border: 1px solid #f5c6cb;
+                    border-radius: 4px;
+                    padding: 5px;
+                    font-family: Consolas, Courier New, monospace;
+                    color: #721c24;
+                }
+            &#34;&#34;&#34;)
+            error_box.setFixedHeight(error_box.fontMetrics().lineSpacing() * (error_text.count(&#39;\n&#39;) + 3))
+
+            card_layout.addWidget(label_error)
+            card_layout.addWidget(error_box)
+
+        card_frame.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        card_frame.customContextMenuRequested.connect(lambda pos: self.show_context_menu(pos, card_frame))
+
+        if self.output_layout.count() &gt; 0:
+            last_item = self.output_layout.itemAt(self.output_layout.count() - 1)
+            if isinstance(last_item.spacerItem(), QSpacerItem):
+                self.output_layout.removeItem(last_item)
+
+        self.output_layout.addWidget(card_frame)
+        if self.output_layout.count() == 1:
+            self.output_layout.addStretch()
+
+        self.tab_widget.setCurrentWidget(self.tab3)
+
+        if plot_paths:
+            for plot_path in plot_paths:
+                if os.path.exists(plot_path):
+                    os.remove(plot_path)
+
+    def remove_output(self, card_frame):
+        &#34;&#34;&#34;Menghapus output dari layout&#34;&#34;&#34;
+        self.output_layout.removeWidget(card_frame)
+        card_frame.deleteLater()
+
+        # Hapus spacer jika masih ada widget lain
+        if self.output_layout.count() &gt; 0:
+            last_item = self.output_layout.itemAt(self.output_layout.count() - 1)
+            if isinstance(last_item.spacerItem(), QSpacerItem):
+                self.output_layout.removeItem(last_item)
+
+        # Tambahkan stretch hanya jika tidak ada output tersisa
+        if self.output_layout.count() == 0:
+            self.output_layout.addStretch()
+
+    def copy_output_image(self, card_frame):
+        &#34;&#34;&#34;Menyalin gambar output ke clipboard&#34;&#34;&#34;
+        for child in card_frame.findChildren(QLabel):
+            pixmap = child.pixmap()
+            
+            if pixmap and not pixmap.isNull():
+                temp_folder = os.path.join(self.path, &#39;temp&#39;)
+                temp_path = os.path.join(temp_folder, &#39;temp_image.png&#39;)
+
+                os.makedirs(temp_folder, exist_ok=True)
+
+                if pixmap.save(temp_path):
+                    print(f&#34;Gambar disimpan di: {temp_path}&#34;)
+                    
+                    clipboard = QApplication.clipboard()
+                    clipboard.setPixmap(QPixmap(temp_path))
+
+                    if os.path.exists(temp_path):  
+                        os.remove(temp_path)
+                break
+
+    def show_context_menu(self, pos, card_frame):
+        &#34;&#34;&#34;Menampilkan menu klik kanan di setiap output&#34;&#34;&#34;
+        menu = QMenu(self)
+        delete_action = menu.addAction(&#34;Hapus Output&#34;)
+        copy_image_action = menu.addAction(&#34;Copy Output Image&#34;)
+        action = menu.exec(card_frame.mapToGlobal(pos))
+
+        if action == delete_action:
+            self.remove_output(card_frame)
+        elif action == copy_image_action:
+            self.copy_output_image(card_frame)</code></pre>
+</details>
+<div class="desc"><p>Main application window for SAE Pisan: Small Area Estimation Programming for Statistical Analysis.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>data1</code></strong> :&ensp;<code>pl.DataFrame</code></dt>
+<dd>DataFrame for the first sheet (Data Editor).</dd>
+<dt><strong><code>data2</code></strong> :&ensp;<code>pl.DataFrame</code></dt>
+<dd>DataFrame for the second sheet (Data Output).</dd>
+<dt><strong><code>model1</code></strong> :&ensp;<code>TableModel</code></dt>
+<dd>Table model for the first sheet.</dd>
+<dt><strong><code>model2</code></strong> :&ensp;<code>TableModel</code></dt>
+<dd>Table model for the second sheet.</dd>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path to the application directory.</dd>
+<dt><strong><code>font_size</code></strong> :&ensp;<code>int</code></dt>
+<dd>Default font size for the application.</dd>
+<dt><strong><code>show_modeling_sae_dialog</code></strong> :&ensp;<code>ModelingSaeDialog</code></dt>
+<dd>Dialog for SAE modeling.</dd>
+<dt><strong><code>show_modeling_saeHB_dialog</code></strong> :&ensp;<code>ModelingSaeHBDialog</code></dt>
+<dd>Dialog for SAE HB modeling.</dd>
+<dt><strong><code>show_modeling_sae_unit_dialog</code></strong> :&ensp;<code>ModelingSaeUnitDialog</code></dt>
+<dd>Dialog for SAE unit modeling.</dd>
+<dt><strong><code>show_modeling_saeHB_normal_dialog</code></strong> :&ensp;<code>ModelingSaeHBNormalDialog</code></dt>
+<dd>Dialog for SAE HB normal modeling.</dd>
+<dt><strong><code>show_modellig_sae_pseudo_dialog</code></strong> :&ensp;<code>ModelingSaePseudoDialog</code></dt>
+<dd>Dialog for SAE pseudo modeling.</dd>
+<dt><strong><code>show_compute_variable_dialog</code></strong> :&ensp;<code>ComputeVariableDialog</code></dt>
+<dd>Dialog for computing new variables.</dd>
+<dt><strong><code>show_projection_variabel_dialog</code></strong> :&ensp;<code>ProjectionDialog</code></dt>
+<dd>Dialog for variable projection.</dd>
+<dt><strong><code>menu_bar</code></strong> :&ensp;<code>QMenuBar</code></dt>
+<dd>Menu bar for the application.</dd>
+<dt><strong><code>toolBar</code></strong> :&ensp;<code>QToolBar</code></dt>
+<dd>Tool bar for the application.</dd>
+<dt><strong><code>tab_widget</code></strong> :&ensp;<code>QTabWidget</code></dt>
+<dd>Tab widget containing the different sheets.</dd>
+<dt><strong><code>spreadsheet</code></strong> :&ensp;<code>QTableView</code></dt>
+<dd>Table view for the first sheet.</dd>
+<dt><strong><code>table_view2</code></strong> :&ensp;<code>QTableView</code></dt>
+<dd>Table view for the second sheet.</dd>
+<dt><strong><code>scroll_area</code></strong> :&ensp;<code>QScrollArea</code></dt>
+<dd>Scroll area for the output tab.</dd>
+<dt><strong><code>output_layout</code></strong> :&ensp;<code>QVBoxLayout</code></dt>
+<dd>Layout for displaying output in the output tab.</dd>
+</dl>
+<h2 id="methods">Methods</h2>
+<p>init_ui(): Initializes the user interface.
+change_font_size(): Opens a dialog to change the font size.
+set_font_size(size): Sets the font size for the application.
+load_stylesheet_with_font_size(size): Loads the stylesheet with the specified font size.
+open_summary_data_dialog_lazy(): Lazily opens the summary data dialog.
+open_normality_test_dialog_lazy(): Lazily opens the normality test dialog.
+open_multicollinearity_dialog_lazy(): Lazily opens the multicollinearity dialog.
+open_variable_selection_dialog_lazy(): Lazily opens the variable selection dialog.
+open_scatter_plot_dialog_lazy(): Lazily opens the scatter plot dialog.
+open_correlation_matrix_dialog_lazy(): Lazily opens the correlation matrix dialog.
+open_box_plot_dialog_lazy(): Lazily opens the box plot dialog.
+open_line_plot_dialog_lazy(): Lazily opens the line plot dialog.
+open_histogram_dialog_lazy(): Lazily opens the histogram dialog.
+open_summary_data_dialog(): Opens the summary data dialog.
+open_normality_test_dialog(): Opens the normality test dialog.
+open_scatter_plot_dialog(): Opens the scatter plot dialog.
+open_line_plot_dialog(): Opens the line plot dialog.
+open_box_plot_dialog(): Opens the box plot dialog.
+open_correlation_matrix_dialog(): Opens the correlation matrix dialog.
+open_multicollinearity_dialog(): Opens the multicollinearity dialog.
+open_histogram_dialog(): Opens the histogram dialog.
+open_variable_selection_dialog(): Opens the variable selection dialog.
+show_modeling_sae_dialog_lazy(): Lazily shows the SAE modeling dialog.
+show_modeling_saeHB_dialog_lazy(): Lazily shows the SAE HB modeling dialog.
+show_modeling_sae_unit_dialog_lazy(): Lazily shows the SAE unit modeling dialog.
+show_modeling_saeHB_normal_dialog_lazy(): Lazily shows the SAE HB normal modeling dialog.
+show_modellig_sae_pseudo_dialog_lazy(): Lazily shows the SAE pseudo modeling dialog.
+show_compute_variable_dialog_lazy(): Lazily shows the compute variable dialog.
+show_projection_variabel_dialog_lazy(): Lazily shows the projection variable dialog.
+open_about_dialog(): Opens the about dialog.
+add_row(sheet_number): Adds a new row to the specified sheet.
+add_column(sheet_number): Adds a new column to the specified sheet.
+update_table(sheet_number, model): Updates the table for the specified sheet with a new model.
+keyPressEvent(event): Handles keyboard shortcuts for copy, paste, undo, and redo.
+copy_selection(): Copies the selected cells to the clipboard.
+paste_selection(): Pastes the clipboard content to the selected cells.
+undo_action(): Undoes the last action.
+redo_action(): Redoes the last undone action.
+group_by_row(selection): Groups selected indexes by row.
+show_output(title, content): Displays output in the Output tab.
+show_header_context_menu(pos): Shows the context menu for the header.
+rename_column(column_index): Renames the column at the given index.
+edit_data_type(column_index): Edits the data type of the column at the given index.
+set_path(path): Sets the path for the application.
+add_output(script_text, result_text=None, plot_paths=None, error_text=None): Adds output to the layout in the form of a card.
+remove_output(card_frame): Removes output from the layout.
+copy_output_image(card_frame): Copies the output image to the clipboard.
+show_context_menu(pos, card_frame): Shows the context menu for each output.</p>
+<p>Initializes the MainWindow class.
+This constructor sets up the main window for the SAE Pisan application,
+including setting the window title, initializing data frames, models,
+and UI components.</p>
+<h2 id="attributes_1">Attributes</h2>
+<dl>
+<dt><strong><code>data1</code></strong> :&ensp;<code>pl.DataFrame</code></dt>
+<dd>A DataFrame with 100 columns and 100 empty rows.</dd>
+<dt><strong><code>data2</code></strong> :&ensp;<code>pl.DataFrame</code></dt>
+<dd>A DataFrame with columns "Estimated Value",
+"Standar Error", and "CV", each with 100 empty rows.</dd>
+<dt><strong><code>model1</code></strong> :&ensp;<code>TableModel</code></dt>
+<dd>The table model for the first data frame.</dd>
+<dt><strong><code>model2</code></strong> :&ensp;<code>TableModel</code></dt>
+<dd>The table model for the second data frame.</dd>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>The path to the parent directory of the current file.</dd>
+<dt><strong><code>font_size</code></strong> :&ensp;<code>int</code></dt>
+<dd>The font size used in the UI.</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PyQt6.QtWidgets.QMainWindow</li>
+<li>PyQt6.QtWidgets.QWidget</li>
+<li>PyQt6.QtCore.QObject</li>
+<li>PyQt6.sip.wrapper</li>
+<li>PyQt6.QtGui.QPaintDevice</li>
+<li>PyQt6.sip.simplewrapper</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="sip-sae.view.MainWindow.MainWindow.add_column"><code class="name flex">
+<span>def <span class="ident">add_column</span></span>(<span>self, sheet_number)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_column(self, sheet_number):
+    &#34;&#34;&#34;Sinkronisasi data ketika kolom baru ditambahkan di SpreadsheetWidget.&#34;&#34;&#34;
+    if sheet_number == 1:
+        # Tambahkan kolom baru di DataFrame data1
+        new_column_name = f&#34;Column {self.data1.shape[1] + 1}&#34;
+        new_column = pl.DataFrame({new_column_name: [&#34;&#34;] * self.data1.shape[0]})
+        self.data1 = pl.concat([self.data1, new_column], how=&#34;horizontal&#34;)
+    elif sheet_number == 2:
+        pass  # Tidak digunakan untuk Sheet 2</code></pre>
+</details>
+<div class="desc"><p>Sinkronisasi data ketika kolom baru ditambahkan di SpreadsheetWidget.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.add_output"><code class="name flex">
+<span>def <span class="ident">add_output</span></span>(<span>self, script_text, result_text=None, plot_paths=None, error_text=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_output(self, script_text, result_text=None, plot_paths=None, error_text=None):
+    &#34;&#34;&#34;Add output to the layout in the form of a card&#34;&#34;&#34;
+
+    # Create a frame as a card
+    card_frame = QFrame()
+    card_frame.setStyleSheet(&#34;&#34;&#34;
+        QFrame {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
+    &#34;&#34;&#34;)
+
+
+    card_layout = QVBoxLayout(card_frame)
+    card_layout.setSpacing(8)
+
+    label_script = QLabel(&#34;&lt;b&gt;R Script:&lt;/b&gt;&#34;)
+    label_script.setStyleSheet(&#34;color: #333; margin-bottom: 5px;&#34;)
+    script_box = QTextEdit()
+    script_box.setPlainText(script_text)
+    script_box.setReadOnly(True)
+    script_box.setStyleSheet(&#34;&#34;&#34;
+        QTextEdit {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+            font-family: Consolas, Courier New, monospace;
+        }
+    &#34;&#34;&#34;)
+    script_box.setFixedHeight(script_box.fontMetrics().lineSpacing() * (script_text.count(&#39;\n&#39;) + 3))
+
+    card_layout.addWidget(label_script)
+    card_layout.addWidget(script_box)
+
+    if result_text:
+        label_output = QLabel(&#34;&lt;b&gt;Output:&lt;/b&gt;&#34;)
+        label_output.setStyleSheet(&#34;color: #333; margin-top: 10px; margin-bottom: 5px;&#34;)
+        result_box = QTextEdit()
+        result_box.setPlainText(result_text)
+        result_box.setReadOnly(True)
+        result_box.setStyleSheet(&#34;&#34;&#34;
+            QTextEdit {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                padding: 5px;
+                font-family: Consolas, Courier New, monospace;
+            }
+        &#34;&#34;&#34;)
+        max_height = 400
+        calculated_height = result_box.fontMetrics().lineSpacing() * (result_text.count(&#39;\n&#39;) + 3)
+        result_box.setFixedHeight(min(calculated_height, max_height))
+        result_box.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn if calculated_height &gt; max_height else Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
+        card_layout.addWidget(label_output)
+        card_layout.addWidget(result_box)
+
+    if plot_paths:
+        label_plot = QLabel(&#34;&lt;b&gt;Plot:&lt;/b&gt;&#34;)
+        label_plot.setStyleSheet(&#34;color: #333; margin-top: 10px; margin-bottom: 5px;&#34;)
+        card_layout.addWidget(label_plot)
+
+        for plot_path in plot_paths:
+            if os.path.exists(plot_path):
+                pixmap = QPixmap(plot_path)
+                label = QLabel()
+                label.setPixmap(pixmap)
+                label.setFixedSize(500, 350)
+                label.setScaledContents(True)
+                label.setStyleSheet(&#34;border: 1px solid #ccc; border-radius: 4px;&#34;)
+                card_layout.addWidget(label)
+
+    if error_text:
+        label_error = QLabel(&#34;&lt;b&gt;Error:&lt;/b&gt;&#34;)
+        label_error.setStyleSheet(&#34;color: #a94442; margin-top: 10px; margin-bottom: 5px;&#34;)
+        error_box = QTextEdit()
+        error_box.setPlainText(error_text)
+        error_box.setReadOnly(True)
+        error_box.setStyleSheet(&#34;&#34;&#34;
+            QTextEdit {
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+                border-radius: 4px;
+                padding: 5px;
+                font-family: Consolas, Courier New, monospace;
+                color: #721c24;
+            }
+        &#34;&#34;&#34;)
+        error_box.setFixedHeight(error_box.fontMetrics().lineSpacing() * (error_text.count(&#39;\n&#39;) + 3))
+
+        card_layout.addWidget(label_error)
+        card_layout.addWidget(error_box)
+
+    card_frame.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+    card_frame.customContextMenuRequested.connect(lambda pos: self.show_context_menu(pos, card_frame))
+
+    if self.output_layout.count() &gt; 0:
+        last_item = self.output_layout.itemAt(self.output_layout.count() - 1)
+        if isinstance(last_item.spacerItem(), QSpacerItem):
+            self.output_layout.removeItem(last_item)
+
+    self.output_layout.addWidget(card_frame)
+    if self.output_layout.count() == 1:
+        self.output_layout.addStretch()
+
+    self.tab_widget.setCurrentWidget(self.tab3)
+
+    if plot_paths:
+        for plot_path in plot_paths:
+            if os.path.exists(plot_path):
+                os.remove(plot_path)</code></pre>
+</details>
+<div class="desc"><p>Add output to the layout in the form of a card</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.add_row"><code class="name flex">
+<span>def <span class="ident">add_row</span></span>(<span>self, sheet_number)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_row(self, sheet_number):
+    &#34;&#34;&#34;Sinkronisasi data ketika baris baru ditambahkan di SpreadsheetWidget.&#34;&#34;&#34;
+    if sheet_number == 1:
+        # Tambahkan baris baru di DataFrame data1
+        new_row = pl.DataFrame({col: [&#34;&#34;] for col in self.data1.columns})
+        self.data1 = pl.concat([self.data1, new_row])
+    elif sheet_number == 2:
+        pass  # Tidak digunakan untuk Sheet 2</code></pre>
+</details>
+<div class="desc"><p>Sinkronisasi data ketika baris baru ditambahkan di SpreadsheetWidget.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.change_font_size"><code class="name flex">
+<span>def <span class="ident">change_font_size</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def change_font_size(self):
+    &#34;&#34;&#34;
+    Opens a dialog to change the font size of the application.
+    The dialog presents three font size options: &#34;Small&#34;, &#34;Medium&#34;, and &#34;Big&#34;.
+    The user can select a font size from a combo box, and the selected size
+    will be applied to the application if the user confirms the selection.
+    The dialog also displays a sample text (&#34;AaBbCc&#34;) that updates in real-time
+    to reflect the selected font size.
+    Attributes:
+        sizes (dict): A dictionary mapping font size names to their corresponding pixel values.
+        items (list): A list of font size names.
+        dialog (QDialog): The dialog window for selecting the font size.
+        layout (QVBoxLayout): The main layout of the dialog.
+        combo_box (QComboBox): The combo box for selecting the font size.
+        display (QLabel): The label displaying the sample text with the selected font size.
+        button_box (QHBoxLayout): The layout containing the OK and Cancel buttons.
+        ok_button (QPushButton): The button to confirm the font size selection.
+        cancel_button (QPushButton): The button to cancel the font size selection.
+    Methods:
+        update_display_font_size: Updates the sample text&#39;s font size based on the selected size in the combo box.
+    &#34;&#34;&#34;
+    
+    sizes = {&#34;Small&#34;: 10, &#34;Medium&#34;: 14, &#34;Big&#34;: 22}
+    items = list(sizes.keys())
+
+    dialog = QDialog(self)
+    dialog.setWindowTitle(&#34;Select Font Size&#34;)
+    dialog.setMinimumWidth(200)
+
+    layout = QVBoxLayout(dialog)
+
+    combo_box = QComboBox()
+    combo_box.addItems(items)
+    default_size = next(key for key, value in sizes.items() if value == self.font_size)
+    combo_box.setCurrentText(default_size)
+    layout.addWidget(combo_box)
+    
+    display = QLabel(&#34;AaBbCc&#34;)
+    display.setAlignment(Qt.AlignmentFlag.AlignCenter)
+    display.setStyleSheet(f&#34;font-size: {self.font_size}px;&#34;)
+    layout.addWidget(display)
+
+    def update_display_font_size():
+        size = combo_box.currentText()
+        display.setStyleSheet(f&#34;font-size: {sizes[size]}px;&#34;)
+
+    combo_box.currentTextChanged.connect(update_display_font_size)
+
+    button_box = QHBoxLayout()
+    ok_button = QPushButton(&#34;OK&#34;)
+    cancel_button = QPushButton(&#34;Cancel&#34;)
+    button_box.addWidget(ok_button)
+    button_box.addWidget(cancel_button)
+    layout.addLayout(button_box)
+
+    ok_button.clicked.connect(dialog.accept)
+    cancel_button.clicked.connect(dialog.reject)
+
+    dialog.setLayout(layout)
+
+    if dialog.exec() == QDialog.DialogCode.Accepted:
+        selected_size = combo_box.currentText()
+        self.set_font_size(sizes[selected_size])
+        self.font_size = sizes[selected_size]</code></pre>
+</details>
+<div class="desc"><p>Opens a dialog to change the font size of the application.
+The dialog presents three font size options: "Small", "Medium", and "Big".
+The user can select a font size from a combo box, and the selected size
+will be applied to the application if the user confirms the selection.
+The dialog also displays a sample text ("AaBbCc") that updates in real-time
+to reflect the selected font size.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>sizes</code></strong> :&ensp;<code>dict</code></dt>
+<dd>A dictionary mapping font size names to their corresponding pixel values.</dd>
+<dt><strong><code>items</code></strong> :&ensp;<code>list</code></dt>
+<dd>A list of font size names.</dd>
+<dt><strong><code>dialog</code></strong> :&ensp;<code>QDialog</code></dt>
+<dd>The dialog window for selecting the font size.</dd>
+<dt><strong><code>layout</code></strong> :&ensp;<code>QVBoxLayout</code></dt>
+<dd>The main layout of the dialog.</dd>
+<dt><strong><code>combo_box</code></strong> :&ensp;<code>QComboBox</code></dt>
+<dd>The combo box for selecting the font size.</dd>
+<dt><strong><code>display</code></strong> :&ensp;<code>QLabel</code></dt>
+<dd>The label displaying the sample text with the selected font size.</dd>
+<dt><strong><code>button_box</code></strong> :&ensp;<code>QHBoxLayout</code></dt>
+<dd>The layout containing the OK and Cancel buttons.</dd>
+<dt><strong><code>ok_button</code></strong> :&ensp;<code>QPushButton</code></dt>
+<dd>The button to confirm the font size selection.</dd>
+<dt><strong><code>cancel_button</code></strong> :&ensp;<code>QPushButton</code></dt>
+<dd>The button to cancel the font size selection.</dd>
+</dl>
+<h2 id="methods">Methods</h2>
+<p>update_display_font_size: Updates the sample text's font size based on the selected size in the combo box.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.copy_output_image"><code class="name flex">
+<span>def <span class="ident">copy_output_image</span></span>(<span>self, card_frame)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy_output_image(self, card_frame):
+    &#34;&#34;&#34;Menyalin gambar output ke clipboard&#34;&#34;&#34;
+    for child in card_frame.findChildren(QLabel):
+        pixmap = child.pixmap()
+        
+        if pixmap and not pixmap.isNull():
+            temp_folder = os.path.join(self.path, &#39;temp&#39;)
+            temp_path = os.path.join(temp_folder, &#39;temp_image.png&#39;)
+
+            os.makedirs(temp_folder, exist_ok=True)
+
+            if pixmap.save(temp_path):
+                print(f&#34;Gambar disimpan di: {temp_path}&#34;)
+                
+                clipboard = QApplication.clipboard()
+                clipboard.setPixmap(QPixmap(temp_path))
+
+                if os.path.exists(temp_path):  
+                    os.remove(temp_path)
+            break</code></pre>
+</details>
+<div class="desc"><p>Menyalin gambar output ke clipboard</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.copy_selection"><code class="name flex">
+<span>def <span class="ident">copy_selection</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy_selection(self):
+    &#34;&#34;&#34;Copy selected cells to clipboard.&#34;&#34;&#34;
+    selection = self.spreadsheet.selectionModel().selectedIndexes()
+    if selection:
+        data = &#39;\n&#39;.join([&#39;\t&#39;.join([self.model1.data(index, Qt.ItemDataRole.DisplayRole) for index in row]) for row in self.group_by_row(selection)])
+        clipboard = QApplication.clipboard()
+        clipboard.setText(data)</code></pre>
+</details>
+<div class="desc"><p>Copy selected cells to clipboard.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.edit_data_type"><code class="name flex">
+<span>def <span class="ident">edit_data_type</span></span>(<span>self, column_index)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def edit_data_type(self, column_index):
+    &#34;&#34;&#34;Edit the data type of the column at the given index.&#34;&#34;&#34;
+    current_type = self.model1.get_column_type(column_index)
+    if current_type==pl.Utf8:
+        current_type = &#34;String&#34;
+    elif current_type==pl.Int64:
+        current_type = &#34;Integer&#34;
+    elif current_type==pl.Float64:
+        current_type = &#34;Float&#34;
+    type_list = [&#34;String&#34;, &#34;Integer&#34;, &#34;Float&#34;]
+    current_index = type_list.index(current_type)
+    new_type, ok = QInputDialog.getItem(self, &#34;Edit Data Type&#34;, &#34;Select new data type:&#34;, type_list, current=current_index)
+    if ok and new_type:
+        self.model1.set_column_type(column_index, new_type)
+        self.update_table(1, self.model1)</code></pre>
+</details>
+<div class="desc"><p>Edit the data type of the column at the given index.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.group_by_row"><code class="name flex">
+<span>def <span class="ident">group_by_row</span></span>(<span>self, selection)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def group_by_row(self, selection):
+    &#34;&#34;&#34;Group selected indexes by row.&#34;&#34;&#34;
+    rows = {}
+    for index in selection:
+        if index.row() not in rows:
+            rows[index.row()] = []
+        rows[index.row()].append(index)
+    return [rows[row] for row in sorted(rows)]</code></pre>
+</details>
+<div class="desc"><p>Group selected indexes by row.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.init_ui"><code class="name flex">
+<span>def <span class="ident">init_ui</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def init_ui(self):
+    &#34;&#34;&#34;
+    Initialize the user interface of the main window.
+    This method sets up the main layout, including a splitter, tab widgets, 
+    and various tabs for data editing, data output, and other functionalities. 
+    It also configures the menu bar with different menus and actions, 
+    and sets up the toolbar with various actions and icons.
+    Tabs:
+        - Data Editor: Allows editing of data in a spreadsheet format.
+        - Data Output: Displays output data in a table view.
+        - Output: Displays output in a scrollable area.
+    Menus:
+        - File: Contains actions to load and save files.
+        - Exploration: Contains actions for data exploration such as summary data, normality test, correlation, etc.
+        - Graph: Contains actions to generate different types of plots.
+        - Model: Contains actions related to different modeling techniques.
+        - Compute: Contains actions to compute new variables.
+        - About: Contains information about the application.
+        - Settings: Contains actions to change application settings.
+    Toolbar:
+        - Load File: Action to load a file.
+        - Save Data: Action to save data.
+        - Undo: Action to undo the last operation.
+        - Redo: Action to redo the last undone operation.
+        - Compute New Variable: Action to compute a new variable.
+        - Setting: Action to open settings.
+    Shortcuts:
+        - Go to Start Row: Ctrl + Up
+        - Go to End Row: Ctrl + Down
+        - Go to Start Column: Ctrl + Left
+        - Go to End Column: Ctrl + Right
+    Layout:
+        - The main layout is a vertical box layout containing the tab widget.
+        - The central widget is set with this layout.
+        - The main window is resized to a default size of 800x600.
+    &#34;&#34;&#34;
+    
+    # Membuat splitter utama untuk membagi halaman menjadi dua bagian (kiri dan kanan)
+    self.splitter_main = QSplitter(Qt.Orientation.Horizontal, self)
+
+    # Bagian kiri: QTabWidget untuk dua sheet
+    self.tab_widget = QTabWidget(self.splitter_main)  # Ditambahkan ke splitter utama
+    self.tab_widget.setTabPosition(QTabWidget.TabPosition.South)
+    
+    self.show_modeling_sae_dialog = None
+    self.show_modeling_saeHB_dialog = None
+    self.show_modeling_sae_unit_dialog = None
+    self.show_modeling_saeHB_normal_dialog = None
+    self.show_modellig_sae_pseudo_dialog = None
+    self.show_compute_variable_dialog = None
+    self.show_projection_variabel_dialog = None
+    
+
+    # Tab pertama (Data Editor)
+    self.tab1 = QWidget()
+    self.spreadsheet = QTableView(self.tab1)
+    self.spreadsheet.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+    self.spreadsheet.customContextMenuRequested.connect(lambda pos: show_context_menu(self, pos))
+    self.spreadsheet.setModel(self.model1)
+    self.spreadsheet.horizontalHeader().setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+    self.spreadsheet.horizontalHeader().customContextMenuRequested.connect(self.show_header_context_menu)
+    self.spreadsheet.horizontalHeader().sectionDoubleClicked.connect(self.rename_column)
+    self.spreadsheet.verticalHeader().setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+    self.spreadsheet.verticalHeader().customContextMenuRequested.connect(lambda pos: show_context_menu(self, pos))
+
+    tab1_layout = QVBoxLayout(self.tab1)
+    tab1_layout.addWidget(self.spreadsheet)
+    self.spreadsheet.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+
+    # Tab kedua (Data Output)
+    self.tab2 = QWidget()
+    self.table_view2 = QTableView(self.tab2)
+    self.table_view2.setModel(self.model2)
+    self.table_view2.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+
+    tab2_layout = QVBoxLayout(self.tab2)
+    tab2_layout.addWidget(self.table_view2)
+
+    # Tab ketiga (Output)
+    self.tab3 = QWidget()
+    self.scroll_area = QScrollArea(self.tab3)
+    
+    # Tab output
+    self.output_tab = QWidget()
+    self.scroll_area = QScrollArea(self.output_tab)
+    self.scroll_area.setWidgetResizable(True)
+    self.output_container = QWidget()
+    self.output_layout = QVBoxLayout(self.output_container)
+    self.scroll_area.verticalScrollBar().rangeChanged.connect(lambda: self.scroll_area.verticalScrollBar().setValue(self.scroll_area.verticalScrollBar().maximum()))
+    self.output_container.setLayout(self.output_layout)
+    self.scroll_area.setWidget(self.output_container)
+    
+    # Atur layout output
+    self.output_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+    self.output_layout.setSpacing(0)
+
+    tab3_layout = QVBoxLayout(self.tab3)
+    tab3_layout.addWidget(self.scroll_area)
+
+    # Menambahkan tab ke QTabWidget
+    self.tab_widget.addTab(self.tab1, &#34;Data Editor&#34;)
+    self.tab_widget.addTab(self.tab2, &#34;Data Output&#34;)
+    self.tab_widget.addTab(self.tab3, &#34;Output&#34;)  # Tab baru untuk output
+
+    # Membuat layout utama
+    layout = QVBoxLayout()
+    layout.addWidget(self.tab_widget)
+    
+
+    # Widget utama dan layout
+    central_widget = QWidget(self)
+    central_widget.setLayout(layout)
+    self.setCentralWidget(central_widget)
+
+    # Membuat menu bar
+    self.menu_bar = self.menuBar()
+
+    # Membuat menu File -&gt; Load dan Save
+    self.file_menu = self.menu_bar.addMenu(&#34;File&#34;)
+
+    self.load_action = QAction(&#34;Load File&#34;, self)
+    self.load_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_O))
+    self.load_action.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;open.svg&#39;)))
+    self.load_action.setStatusTip(&#34;Ctrl+O&#34;)
+    
+    self.save_action = QAction(&#34;Save Data&#34;, self)
+    self.save_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_S))
+    self.save_action.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;savedata.svg&#39;)))
+    self.save_action.setStatusTip(&#34;Ctrl+S&#34;)
+    
+    self.save_data_output_action = QAction(&#34;Save Data Output&#34;, self)
+    self.save_data_output_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Modifier.SHIFT | Qt.Key.Key_S))
+    self.save_data_output_action.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;savedataoutput.svg&#39;)))
+    self.save_action.setStatusTip(&#34;Ctrl+Shift+S&#34;)
+    
+    self.save_output_pdf = QAction(&#34;Save Output to PDF&#34;, self)
+    self.save_output_pdf.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_P))
+    self.save_output_pdf.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;savepdf.svg&#39;)))
+    self.save_output_pdf.setStatusTip(&#34;Ctrl+P&#34;)
+
+    self.file_menu.addAction(self.load_action)
+    self.file_menu.addAction(self.save_action)
+    self.file_menu.addAction(self.save_data_output_action)
+    self.file_menu.addAction(self.save_output_pdf)
+
+    # Menu &#34;Exploration&#34;
+    self.menu_exploration = self.menu_bar.addMenu(&#34;Exploration&#34;)
+
+    self.action_summary_data = QAction(&#34;Summary Data&#34;, self)
+    self.action_summary_data.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;summary.svg&#39;)))
+    self.action_summary_data.triggered.connect(self.open_summary_data_dialog_lazy)
+
+    self.action_normality_test = QAction(&#34;Normality Test&#34;, self)
+    self.action_normality_test.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;normality.svg&#39;)))
+    self.action_normality_test.triggered.connect(self.open_normality_test_dialog_lazy)
+
+    self.action_correlation = QAction(&#34;Correlation&#34;, self)
+    self.action_correlation.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;correlation.svg&#39;)))
+    self.action_correlation.triggered.connect(self.open_correlation_matrix_dialog_lazy)
+
+    self.action_multicollinearity = QAction(&#34;Multicollinearity&#34;, self)
+    self.action_multicollinearity.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;multicolinierity.svg&#39;)))
+    self.action_multicollinearity.triggered.connect(self.open_multicollinearity_dialog_lazy)
+
+    self.action_variable_selection = QAction(&#34;Variable Selection&#34;, self)
+    self.action_variable_selection.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;varselection.svg&#39;)))
+    self.action_variable_selection.triggered.connect(self.open_variable_selection_dialog_lazy)
+
+    self.menu_exploration.addAction(self.action_summary_data)
+    self.menu_exploration.addAction(self.action_normality_test)
+    self.menu_exploration.addAction(self.action_correlation)
+    self.menu_exploration.addAction(self.action_multicollinearity)
+    self.menu_exploration.addAction(self.action_variable_selection)
+
+    # Menu &#34;Graph&#34;
+    self.menu_graph = self.menu_bar.addMenu(&#34;Graph&#34;)
+
+    self.action_scatter_plot = QAction(&#34;Scatter Plot&#34;, self)
+    self.action_scatter_plot.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;scatterplot.svg&#39;)))
+    self.action_scatter_plot.triggered.connect(self.open_scatter_plot_dialog_lazy)
+
+    self.action_box_plot = QAction(&#34;Box Plot&#34;, self)
+    self.action_box_plot.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;boxplot.svg&#39;)))
+    self.action_box_plot.triggered.connect(self.open_box_plot_dialog_lazy)
+
+    self.action_line_plot = QAction(&#34;Line Plot&#34;, self)
+    self.action_line_plot.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;lineplot.svg&#39;)))
+    self.action_line_plot.triggered.connect(self.open_line_plot_dialog_lazy)
+
+    self.action_histogram = QAction(&#34;Histogram&#34;, self)
+    self.action_histogram.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;histogram.svg&#39;)))
+    self.action_histogram.triggered.connect(self.open_histogram_dialog_lazy)
+
+    # Menambahkan plot-plot ke menu Graph
+    self.menu_graph.addAction(self.action_scatter_plot)
+    self.menu_graph.addAction(self.action_box_plot)
+    self.menu_graph.addAction(self.action_line_plot)
+    self.menu_graph.addAction(self.action_histogram)
+    # Menu &#34;Model&#34;
+    menu_model = self.menu_bar.addMenu(&#34;Model&#34;)
+
+    # Submenu &#34;Area Level&#34;
+    menu_area_level = QMenu(&#34;Area Level&#34;, self)
+    menu_area_level.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;arealevel.svg&#39;)))
+    action_eblup_area = QAction(&#34;EBLUP&#34;, self)
+    action_eblup_area.triggered.connect(self.show_modeling_sae_dialog_lazy)
+    action_hb_beta = QAction(&#34;HB Beta&#34;, self)
+    action_hb_beta.triggered.connect(self.show_modeling_saeHB_dialog_lazy)
+    menu_area_level.addAction(action_eblup_area)
+    menu_area_level.addAction(action_hb_beta)
+
+    # Submenu &#34;Unit Level&#34;
+    menu_unit_level = QMenu(&#34;Unit Level&#34;, self)
+    menu_unit_level.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;unitlevel.svg&#39;)))
+    action_eblup_unit = QAction(&#34;EBLUP&#34;, self)
+    action_eblup_unit.triggered.connect(self.show_modeling_sae_unit_dialog_lazy)
+    action_hb_normal = QAction(&#34;HB Normal&#34;, self)
+    action_hb_normal.triggered.connect(self.show_modeling_saeHB_normal_dialog_lazy)
+    menu_unit_level.addAction(action_eblup_unit)
+    menu_unit_level.addAction(action_hb_normal)
+
+    # Submenu &#34;Pseudo&#34;
+    menu_pseudo = QMenu(&#34;Pseudo&#34;, self)
+    action_eblup_pseudo = QAction(&#34;EBLUP&#34;, self)
+    action_eblup_pseudo.triggered.connect(self.show_modellig_sae_pseudo_dialog_lazy)
+    menu_pseudo.addAction(action_eblup_pseudo)
+
+    # Submenu &#34;Projection&#34;
+    menu_projection = QMenu(&#34;Projection&#34;, self)
+    action_projection = QAction(&#34;Projection&#34;, self)
+    action_projection.triggered.connect(self.show_projection_variabel_dialog_lazy)
+    menu_projection.addAction(action_projection)
+
+
+    # Menambahkan submenu ke menu &#34;Model&#34;
+    menu_model.addMenu(menu_area_level)
+    menu_model.addMenu(menu_unit_level)
+    menu_model.addMenu(menu_pseudo)
+    menu_model.addMenu(menu_projection)
+
+
+
+     # Menu &#39;Compute&#39;
+    menu_compute = self.menu_bar.addMenu(&#34;Compute&#34;)
+    compute_new_var = QAction(&#34;Compute New Variable&#34;, self)
+    compute_new_var.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;compute.svg&#39;)))
+    compute_new_var.triggered.connect(self.show_compute_variable_dialog_lazy)
+    menu_compute.addAction(compute_new_var)
+    
+    # Menu &#34;About&#34;
+    menu_about = self.menu_bar.addMenu(&#34;About&#34;)
+    action_about_info = QAction(&#34;About This App&#34;, self)
+    action_about_info.triggered.connect(self.open_about_dialog)
+    action_about_info.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;about.svg&#39;)))
+    menu_about.addAction(action_about_info)
+    
+
+    # Tool Bar
+    self.toolBar = QToolBar(self)
+    self.toolBar.setIconSize(QSize(45, 35))
+    self.toolBar.setObjectName(&#34;toolBar&#34;)
+    self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolBar)  # Perbaikan dilakukan di sini
+    # Actions for Toolbar
+    self.actionLoad_file = QAction(self)  # Menggunakan self untuk referensi instance
+    icon_load = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;open.svg&#39;))
+    self.actionLoad_file.setIcon(icon_load)
+    self.actionLoad_file.setText(&#34;Load File&#34;)
+    self.toolBar.addAction(self.actionLoad_file)
+
+    self.actionSave_Data = QAction(self)  # Menggunakan self untuk referensi instance
+    icon_save = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;save.svg&#39;))
+    self.actionSave_Data.setIcon(icon_save)
+    self.actionSave_Data.setText(&#34;Save Data&#34;)
+    self.toolBar.addAction(self.actionSave_Data)
+
+    self.actionUndo = QAction(self)
+    icon_undo = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;undo.svg&#39;))
+    self.actionUndo.setIcon(icon_undo)
+    self.actionUndo.setText(&#34;Undo&#34;)
+    self.actionUndo.triggered.connect(self.undo_action)
+    self.toolBar.addAction(self.actionUndo)
+
+    self.actionRedo = QAction(self)
+    icon_redo = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;redo.svg&#39;))
+    self.actionRedo.setIcon(icon_redo)
+    self.actionRedo.setText(&#34;Redo&#34;)
+    self.actionRedo.triggered.connect(self.redo_action)
+    self.toolBar.addAction(self.actionRedo)
+    
+    self.actionCompute = QAction(self)
+    icon_compute = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;compute.svg&#39;))
+    self.actionCompute.setIcon(icon_compute)
+    self.actionCompute.setText(&#34;Compute New Variable&#34;)
+    self.actionCompute.triggered.connect(self.show_compute_variable_dialog_lazy)
+    self.toolBar.addAction(self.actionCompute)
+    
+    # Shortcuts for &#34;Go to Start/End Row/Column&#34;
+    self.go_to_start_row_action = QAction(self)
+    self.go_to_start_row_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_Up))
+    self.go_to_start_row_action.triggered.connect(lambda : go_to_start_row(self))
+    self.addAction(self.go_to_start_row_action)
+
+    self.go_to_end_row_action = QAction(self)
+    self.go_to_end_row_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_Down))
+    self.go_to_end_row_action.triggered.connect(lambda : go_to_end_row(self))
+    self.addAction(self.go_to_end_row_action)
+
+    self.go_to_start_column_action = QAction(self)
+    self.go_to_start_column_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_Left))
+    self.go_to_start_column_action.triggered.connect(lambda : go_to_start_column(self))
+    self.addAction(self.go_to_start_column_action)
+
+    self.go_to_end_column_action = QAction(self)
+    self.go_to_end_column_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_Right))
+    self.go_to_end_column_action.triggered.connect(lambda : go_to_end_column(self))
+    self.addAction(self.go_to_end_column_action)
+
+    # Add spacer to push following items to the right
+    spacer = QWidget(self)
+    spacer.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+    self.toolBar.addWidget(spacer)
+
+    # Add &#34;Setting&#34; button to the right
+    self.actionSetting = QAction(self)
+    icon_setting = QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;setting.svg&#39;))
+    self.actionSetting.setIcon(icon_setting)
+    self.actionSetting.setText(&#34;Setting&#34;)
+    self.actionSetting.triggered.connect(self.change_font_size)
+    self.toolBar.addAction(self.actionSetting)
+
+    # Menu &#34;Settings&#34;
+    menu_settings = self.menu_bar.addMenu(&#34;Settings&#34;)
+    action_change_font_size = QAction(&#34;Change Font Size&#34;, self)
+    action_change_font_size.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;setting.svg&#39;)))
+    action_change_font_size.triggered.connect(self.change_font_size)
+    menu_settings.addAction(action_change_font_size)
+
+    # Menetapkan ukuran default
+    self.resize(800, 600)</code></pre>
+</details>
+<div class="desc"><p>Initialize the user interface of the main window.
+This method sets up the main layout, including a splitter, tab widgets,
+and various tabs for data editing, data output, and other functionalities.
+It also configures the menu bar with different menus and actions,
+and sets up the toolbar with various actions and icons.</p>
+<h2 id="tabs">Tabs</h2>
+<ul>
+<li>Data Editor: Allows editing of data in a spreadsheet format.</li>
+<li>Data Output: Displays output data in a table view.</li>
+<li>Output: Displays output in a scrollable area.</li>
+</ul>
+<h2 id="menus">Menus</h2>
+<ul>
+<li>File: Contains actions to load and save files.</li>
+<li>Exploration: Contains actions for data exploration such as summary data, normality test, correlation, etc.</li>
+<li>Graph: Contains actions to generate different types of plots.</li>
+<li>Model: Contains actions related to different modeling techniques.</li>
+<li>Compute: Contains actions to compute new variables.</li>
+<li>About: Contains information about the application.</li>
+<li>Settings: Contains actions to change application settings.</li>
+</ul>
+<h2 id="toolbar">Toolbar</h2>
+<ul>
+<li>Load File: Action to load a file.</li>
+<li>Save Data: Action to save data.</li>
+<li>Undo: Action to undo the last operation.</li>
+<li>Redo: Action to redo the last undone operation.</li>
+<li>Compute New Variable: Action to compute a new variable.</li>
+<li>Setting: Action to open settings.</li>
+</ul>
+<h2 id="shortcuts">Shortcuts</h2>
+<ul>
+<li>Go to Start Row: Ctrl + Up</li>
+<li>Go to End Row: Ctrl + Down</li>
+<li>Go to Start Column: Ctrl + Left</li>
+<li>Go to End Column: Ctrl + Right</li>
+</ul>
+<h2 id="layout">Layout</h2>
+<ul>
+<li>The main layout is a vertical box layout containing the tab widget.</li>
+<li>The central widget is set with this layout.</li>
+<li>The main window is resized to a default size of 800x600.</li>
+</ul></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.keyPressEvent"><code class="name flex">
+<span>def <span class="ident">keyPressEvent</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def keyPressEvent(self, event):
+    &#34;&#34;&#34;Handle keyboard shortcuts for copy, paste, undo, and redo.&#34;&#34;&#34;
+    if event.matches(QKeySequence.StandardKey.Copy):
+        self.copy_selection()
+    elif event.matches(QKeySequence.StandardKey.Paste):
+        self.paste_selection()
+    elif event.matches(QKeySequence.StandardKey.Undo):
+        self.undo_action()
+    elif event.matches(QKeySequence.StandardKey.Redo):
+        self.redo_action()
+    else:
+        super().keyPressEvent(event)</code></pre>
+</details>
+<div class="desc"><p>Handle keyboard shortcuts for copy, paste, undo, and redo.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.load_stylesheet_with_font_size"><code class="name flex">
+<span>def <span class="ident">load_stylesheet_with_font_size</span></span>(<span>self, size)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_stylesheet_with_font_size(self, size):
+    &#34;&#34;&#34;
+    Memuat stylesheet dan mengganti ukuran font global.
+    &#34;&#34;&#34;
+    stylesheet_path = os.path.join(self.path, &#39;assets&#39;, &#39;style&#39;, &#39;style.qss&#39;)
+    if os.path.exists(stylesheet_path):
+        with open(stylesheet_path, &#39;r&#39;) as file:
+            stylesheet = file.read()
+            stylesheet = stylesheet.replace(&#34;font-size: 14px;&#34;, f&#34;font-size: {size}px;&#34;)
+            return stylesheet
+    else:
+        print(f&#34;Stylesheet tidak ditemukan di {stylesheet_path}&#34;)
+        return &#34;&#34;</code></pre>
+</details>
+<div class="desc"><p>Memuat stylesheet dan mengganti ukuran font global.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_about_dialog"><code class="name flex">
+<span>def <span class="ident">open_about_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_about_dialog(self):
+    &#34;&#34;&#34;
+    Opens the About dialog window.
+    This method creates an instance of the AboutDialog class, passing the
+    current instance as the parent, and then executes the dialog.
+    &#34;&#34;&#34;
+    
+    about_dialog = AboutDialog(self)
+    about_dialog.exec()</code></pre>
+</details>
+<div class="desc"><p>Opens the About dialog window.
+This method creates an instance of the AboutDialog class, passing the
+current instance as the parent, and then executes the dialog.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog"><code class="name flex">
+<span>def <span class="ident">open_box_plot_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_box_plot_dialog(self):
+    &#34;&#34;&#34;
+    Opens the box plot dialog and sets the models for the dialog.
+    This method sets the models for the box plot dialog using `self.model1` and `self.model2`,
+    and then displays the dialog.
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    self.show_box_plot_dialog.set_model(self.model1, self.model2)
+    self.show_box_plot_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Opens the box plot dialog and sets the models for the dialog.
+This method sets the models for the box plot dialog using <code>self.model1</code> and <code>self.model2</code>,
+and then displays the dialog.</p>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">open_box_plot_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_box_plot_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and opens the box plot dialog.
+    This method checks if the &#39;show_box_plot_dialog&#39; attribute exists.
+    If it does not, it initializes &#39;show_box_plot_dialog&#39; with an instance
+    of BoxPlotDialog. Then, it calls the method to open the box plot dialog.
+    &#34;&#34;&#34;
+    
+    if not hasattr(self, &#39;show_box_plot_dialog&#39;):
+        self.show_box_plot_dialog = BoxPlotDialog(self)
+    self.open_box_plot_dialog()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and opens the box plot dialog.
+This method checks if the 'show_box_plot_dialog' attribute exists.
+If it does not, it initializes 'show_box_plot_dialog' with an instance
+of BoxPlotDialog. Then, it calls the method to open the box plot dialog.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog"><code class="name flex">
+<span>def <span class="ident">open_correlation_matrix_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_correlation_matrix_dialog(self):
+    &#34;&#34;&#34;
+    Opens the correlation matrix dialog.
+    This method sets the model data for the correlation matrix dialog
+    and then displays the dialog to the user.
+    The models used are `self.model1` and `self.model2`.
+    &#34;&#34;&#34;
+    
+    self.show_correlation_matrix_dialog.set_model(self.model1, self.model2)
+    self.show_correlation_matrix_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Opens the correlation matrix dialog.
+This method sets the model data for the correlation matrix dialog
+and then displays the dialog to the user.
+The models used are <code>self.model1</code> and <code>self.model2</code>.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">open_correlation_matrix_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_correlation_matrix_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and opens the correlation matrix dialog.
+    This method checks if the correlation matrix dialog has already been created.
+    If not, it initializes the dialog. Then, it opens the dialog.
+    Attributes:
+        show_correlation_matrix_dialog (CorrelationMatrixDialog): The correlation matrix dialog instance.
+    &#34;&#34;&#34;
+    
+    if not hasattr(self, &#39;show_correlation_matrix_dialog&#39;):
+        self.show_correlation_matrix_dialog = CorrelationMatrixDialog(self)
+    self.open_correlation_matrix_dialog()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and opens the correlation matrix dialog.
+This method checks if the correlation matrix dialog has already been created.
+If not, it initializes the dialog. Then, it opens the dialog.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>show_correlation_matrix_dialog</code></strong> :&ensp;<code>CorrelationMatrixDialog</code></dt>
+<dd>The correlation matrix dialog instance.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_histogram_dialog"><code class="name flex">
+<span>def <span class="ident">open_histogram_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_histogram_dialog(self):
+    &#34;&#34;&#34;
+    Opens the histogram dialog and sets the models for it.
+    This method sets the models for the histogram dialog using `self.model1` and `self.model2`,
+    and then displays the histogram dialog.
+    &#34;&#34;&#34;
+    
+    self.show_histogram_dialog.set_model(self.model1, self.model2)
+    self.show_histogram_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Opens the histogram dialog and sets the models for it.
+This method sets the models for the histogram dialog using <code>self.model1</code> and <code>self.model2</code>,
+and then displays the histogram dialog.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_histogram_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">open_histogram_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_histogram_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Opens the histogram dialog lazily.
+    This method checks if the histogram dialog has already been created.
+    If not, it initializes the HistogramDialog and assigns it to the 
+    &#39;show_histogram_dialog&#39; attribute. Then, it opens the histogram dialog.
+    &#34;&#34;&#34;
+    
+    if not hasattr(self, &#39;show_histogram_dialog&#39;):
+        self.show_histogram_dialog = HistogramDialog(self)
+    self.open_histogram_dialog()</code></pre>
+</details>
+<div class="desc"><p>Opens the histogram dialog lazily.
+This method checks if the histogram dialog has already been created.
+If not, it initializes the HistogramDialog and assigns it to the
+'show_histogram_dialog' attribute. Then, it opens the histogram dialog.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog"><code class="name flex">
+<span>def <span class="ident">open_line_plot_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_line_plot_dialog(self):
+    &#34;&#34;&#34;
+    Opens the line plot dialog and sets the models for the dialog.
+    This method sets the models for the line plot dialog using `self.model1` 
+    and `self.model2`, and then displays the dialog.
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    self.show_line_plot_dialog.set_model(self.model1, self.model2)
+    self.show_line_plot_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Opens the line plot dialog and sets the models for the dialog.
+This method sets the models for the line plot dialog using <code>self.model1</code>
+and <code>self.model2</code>, and then displays the dialog.</p>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">open_line_plot_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_line_plot_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and opens the line plot dialog.
+    This method checks if the &#39;show_line_plot_dialog&#39; attribute exists.
+    If it does not, it initializes &#39;show_line_plot_dialog&#39; with an instance
+    of LinePlotDialog. Then, it calls the method to open the line plot dialog.
+    &#34;&#34;&#34;
+    
+    if not hasattr(self, &#39;show_line_plot_dialog&#39;):
+        self.show_line_plot_dialog = LinePlotDialog(self)
+    self.open_line_plot_dialog()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and opens the line plot dialog.
+This method checks if the 'show_line_plot_dialog' attribute exists.
+If it does not, it initializes 'show_line_plot_dialog' with an instance
+of LinePlotDialog. Then, it calls the method to open the line plot dialog.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog"><code class="name flex">
+<span>def <span class="ident">open_multicollinearity_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_multicollinearity_dialog(self):
+    &#34;&#34;&#34;
+    Opens the multicollinearity dialog and sets the models for it.
+    This method sets the models for the multicollinearity dialog using
+    `self.model1` and `self.model2`, and then displays the dialog.
+    &#34;&#34;&#34;
+    
+    self.show_multicollinearity_dialog.set_model(self.model1, self.model2)
+    self.show_multicollinearity_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Opens the multicollinearity dialog and sets the models for it.
+This method sets the models for the multicollinearity dialog using
+<code>self.model1</code> and <code>self.model2</code>, and then displays the dialog.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">open_multicollinearity_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_multicollinearity_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and opens the multicollinearity dialog.
+    This method checks if the &#39;show_multicollinearity_dialog&#39; attribute exists.
+    If it does not, it initializes it with an instance of MulticollinearityDialog.
+    Then, it opens the multicollinearity dialog.
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    if not hasattr(self, &#39;show_multicollinearity_dialog&#39;):
+        self.show_multicollinearity_dialog = MulticollinearityDialog(self)
+    self.open_multicollinearity_dialog()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and opens the multicollinearity dialog.
+This method checks if the 'show_multicollinearity_dialog' attribute exists.
+If it does not, it initializes it with an instance of MulticollinearityDialog.
+Then, it opens the multicollinearity dialog.</p>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog"><code class="name flex">
+<span>def <span class="ident">open_normality_test_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_normality_test_dialog(self):
+    &#34;&#34;&#34;
+    Opens the normality test dialog.
+    This method sets the models for the normality test dialog and then displays the dialog.
+    It uses `self.model1` and `self.model2` as the models to be set in the dialog.
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    self.show_normality_test_dialog.set_model( self.model1, self.model2)
+    self.show_normality_test_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Opens the normality test dialog.
+This method sets the models for the normality test dialog and then displays the dialog.
+It uses <code>self.model1</code> and <code>self.model2</code> as the models to be set in the dialog.</p>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">open_normality_test_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_normality_test_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and opens the normality test dialog.
+    This method checks if the normality test dialog has already been created.
+    If not, it initializes the dialog and then opens it. If the dialog has 
+    already been created, it simply opens the existing instance.
+    &#34;&#34;&#34;
+    
+    if not hasattr(self, &#39;show_normality_test_dialog&#39;):
+        self.show_normality_test_dialog = NormalityTestDialog(self)
+    self.open_normality_test_dialog()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and opens the normality test dialog.
+This method checks if the normality test dialog has already been created.
+If not, it initializes the dialog and then opens it. If the dialog has
+already been created, it simply opens the existing instance.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog"><code class="name flex">
+<span>def <span class="ident">open_scatter_plot_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_scatter_plot_dialog(self):
+    &#34;&#34;&#34;
+    Opens the scatter plot dialog and sets the models for the dialog.
+    This method sets the models for the scatter plot dialog using 
+    `self.model1` and `self.model2`, and then displays the dialog.
+    &#34;&#34;&#34;
+    
+    self.show_scatter_plot_dialog.set_model(self.model1, self.model2)
+    self.show_scatter_plot_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Opens the scatter plot dialog and sets the models for the dialog.
+This method sets the models for the scatter plot dialog using
+<code>self.model1</code> and <code>self.model2</code>, and then displays the dialog.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">open_scatter_plot_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_scatter_plot_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and opens the scatter plot dialog.
+    This method checks if the scatter plot dialog has already been created.
+    If not, it initializes the dialog and then opens it. This ensures that
+    the dialog is only created when needed, potentially saving resources.
+    Attributes:
+        show_scatter_plot_dialog (ScatterPlotDialog): The scatter plot dialog instance.
+    &#34;&#34;&#34;
+    
+    if not hasattr(self, &#39;show_scatter_plot_dialog&#39;):
+        self.show_scatter_plot_dialog = ScatterPlotDialog(self)
+    self.open_scatter_plot_dialog()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and opens the scatter plot dialog.
+This method checks if the scatter plot dialog has already been created.
+If not, it initializes the dialog and then opens it. This ensures that
+the dialog is only created when needed, potentially saving resources.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>show_scatter_plot_dialog</code></strong> :&ensp;<code>ScatterPlotDialog</code></dt>
+<dd>The scatter plot dialog instance.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog"><code class="name flex">
+<span>def <span class="ident">open_summary_data_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_summary_data_dialog(self):
+    &#34;&#34;&#34;
+    Opens the summary data dialog.
+    This method sets the models for the summary data dialog and then displays the dialog.
+    It uses `self.model1` and `self.model2` as the models to be set in the dialog.
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    self.show_summary_data_dialog.set_model(self.model1, self.model2)
+    self.show_summary_data_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Opens the summary data dialog.
+This method sets the models for the summary data dialog and then displays the dialog.
+It uses <code>self.model1</code> and <code>self.model2</code> as the models to be set in the dialog.</p>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">open_summary_data_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_summary_data_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and opens the summary data dialog.
+    This method checks if the &#39;show_summary_data_dialog&#39; attribute exists.
+    If it does not exist, it initializes it with an instance of SummaryDataDialog.
+    Then, it calls the &#39;open_summary_data_dialog&#39; method to open the dialog.
+    &#34;&#34;&#34;
+    
+    if not hasattr(self, &#39;show_summary_data_dialog&#39;):
+        self.show_summary_data_dialog = SummaryDataDialog(self)
+    self.open_summary_data_dialog()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and opens the summary data dialog.
+This method checks if the 'show_summary_data_dialog' attribute exists.
+If it does not exist, it initializes it with an instance of SummaryDataDialog.
+Then, it calls the 'open_summary_data_dialog' method to open the dialog.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog"><code class="name flex">
+<span>def <span class="ident">open_variable_selection_dialog</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_variable_selection_dialog(self):
+    &#34;&#34;&#34;
+    Opens the variable selection dialog.
+    This method sets the model for the variable selection dialog using 
+    `self.model1` and `self.model2`, and then displays the dialog.
+    &#34;&#34;&#34;
+    
+    self.show_variable_selection_dialog.set_model(self.model1, self.model2)
+    self.show_variable_selection_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Opens the variable selection dialog.
+This method sets the model for the variable selection dialog using
+<code>self.model1</code> and <code>self.model2</code>, and then displays the dialog.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">open_variable_selection_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_variable_selection_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and opens the variable selection dialog.
+    This method checks if the &#39;show_variable_selection_dialog&#39; attribute
+    exists. If it does not, it initializes it with an instance of 
+    VariableSelectionDialog. Then, it calls the method to open the 
+    variable selection dialog.
+    &#34;&#34;&#34;
+    
+    if not hasattr(self, &#39;show_variable_selection_dialog&#39;):
+        self.show_variable_selection_dialog = VariableSelectionDialog(self)
+    self.open_variable_selection_dialog()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and opens the variable selection dialog.
+This method checks if the 'show_variable_selection_dialog' attribute
+exists. If it does not, it initializes it with an instance of
+VariableSelectionDialog. Then, it calls the method to open the
+variable selection dialog.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.paste_selection"><code class="name flex">
+<span>def <span class="ident">paste_selection</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def paste_selection(self):
+    &#34;&#34;&#34;Paste clipboard content to selected cells.&#34;&#34;&#34;
+    clipboard = QApplication.clipboard()
+    data = clipboard.text().split(&#39;\n&#39;)
+    selection = self.spreadsheet.selectionModel().selectedIndexes()
+    if selection:
+        start_row = selection[0].row()
+        start_col = selection[0].column()
+        for i, row in enumerate(data):
+            for j, value in enumerate(row.split(&#39;\t&#39;)):
+                index = self.model1.index(start_row + i, start_col + j)
+                self.model1.setData(index, value, Qt.ItemDataRole.EditRole)</code></pre>
+</details>
+<div class="desc"><p>Paste clipboard content to selected cells.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.redo_action"><code class="name flex">
+<span>def <span class="ident">redo_action</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def redo_action(self):
+    &#34;&#34;&#34;Redo the last undone action.&#34;&#34;&#34;
+    self.model1.redo()</code></pre>
+</details>
+<div class="desc"><p>Redo the last undone action.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.remove_output"><code class="name flex">
+<span>def <span class="ident">remove_output</span></span>(<span>self, card_frame)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_output(self, card_frame):
+    &#34;&#34;&#34;Menghapus output dari layout&#34;&#34;&#34;
+    self.output_layout.removeWidget(card_frame)
+    card_frame.deleteLater()
+
+    # Hapus spacer jika masih ada widget lain
+    if self.output_layout.count() &gt; 0:
+        last_item = self.output_layout.itemAt(self.output_layout.count() - 1)
+        if isinstance(last_item.spacerItem(), QSpacerItem):
+            self.output_layout.removeItem(last_item)
+
+    # Tambahkan stretch hanya jika tidak ada output tersisa
+    if self.output_layout.count() == 0:
+        self.output_layout.addStretch()</code></pre>
+</details>
+<div class="desc"><p>Menghapus output dari layout</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.rename_column"><code class="name flex">
+<span>def <span class="ident">rename_column</span></span>(<span>self, column_index)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rename_column(self, column_index):
+    &#34;&#34;&#34;Rename the column at the given index.&#34;&#34;&#34;
+    current_name = self.model1.headerData(column_index, Qt.Orientation.Horizontal, Qt.ItemDataRole.DisplayRole)
+    new_name, ok = QInputDialog.getText(self, &#34;Rename Column&#34;, &#34;New column name:&#34;, text=current_name)
+    if ok and new_name:
+        self.model1.rename_column(column_index, new_name)
+        self.update_table(1, self.model1)</code></pre>
+</details>
+<div class="desc"><p>Rename the column at the given index.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.set_font_size"><code class="name flex">
+<span>def <span class="ident">set_font_size</span></span>(<span>self, size)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_font_size(self, size):
+    &#34;&#34;&#34;
+    Sets the font size for the main window.
+    Args:
+        size (int): The desired font size to be set.
+    This method updates the stylesheet of the main window with the specified font size.
+    &#34;&#34;&#34;
+    
+    stylesheet = self.load_stylesheet_with_font_size(size)
+    self.setStyleSheet(stylesheet)</code></pre>
+</details>
+<div class="desc"><p>Sets the font size for the main window.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>size</code></strong> :&ensp;<code>int</code></dt>
+<dd>The desired font size to be set.</dd>
+</dl>
+<p>This method updates the stylesheet of the main window with the specified font size.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.set_path"><code class="name flex">
+<span>def <span class="ident">set_path</span></span>(<span>self, path)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_path(self, path):
+    &#34;&#34;&#34;
+    Sets the path attribute for the MainWindow instance.
+    Args:
+        path (str): The path to be set.
+    &#34;&#34;&#34;
+    
+    self.path=path</code></pre>
+</details>
+<div class="desc"><p>Sets the path attribute for the MainWindow instance.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>The path to be set.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.show_compute_variable_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">show_compute_variable_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_compute_variable_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Displays the Compute Variable dialog lazily.
+    This method initializes the Compute Variable dialog if it hasn&#39;t been created yet,
+    sets its model to `self.model1`, and then shows the dialog.
+    If `self.show_compute_variable_dialog` is already initialized, it simply updates
+    the model and shows the dialog.
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    if self.show_compute_variable_dialog is None:
+        self.show_compute_variable_dialog = ComputeVariableDialog(self)
+    self.show_compute_variable_dialog.set_model(self.model1)
+    self.show_compute_variable_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Displays the Compute Variable dialog lazily.
+This method initializes the Compute Variable dialog if it hasn't been created yet,
+sets its model to <code>self.model1</code>, and then shows the dialog.
+If <code>self.show_compute_variable_dialog</code> is already initialized, it simply updates
+the model and shows the dialog.</p>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.show_context_menu"><code class="name flex">
+<span>def <span class="ident">show_context_menu</span></span>(<span>self, pos, card_frame)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_context_menu(self, pos, card_frame):
+    &#34;&#34;&#34;Menampilkan menu klik kanan di setiap output&#34;&#34;&#34;
+    menu = QMenu(self)
+    delete_action = menu.addAction(&#34;Hapus Output&#34;)
+    copy_image_action = menu.addAction(&#34;Copy Output Image&#34;)
+    action = menu.exec(card_frame.mapToGlobal(pos))
+
+    if action == delete_action:
+        self.remove_output(card_frame)
+    elif action == copy_image_action:
+        self.copy_output_image(card_frame)</code></pre>
+</details>
+<div class="desc"><p>Menampilkan menu klik kanan di setiap output</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.show_header_context_menu"><code class="name flex">
+<span>def <span class="ident">show_header_context_menu</span></span>(<span>self, pos)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_header_context_menu(self, pos):
+    &#34;&#34;&#34;Show context menu for header.&#34;&#34;&#34;
+    header = self.spreadsheet.horizontalHeader()
+    logical_index = header.logicalIndexAt(pos)
+    menu = QMenu(self)
+    rename_action = QAction(&#34;Rename Column&#34;, self)
+    rename_action.triggered.connect(lambda: self.rename_column(logical_index))
+    menu.addAction(rename_action)
+    
+    edit_type_action = QAction(&#34;Edit Data Type&#34;, self)
+    edit_type_action.triggered.connect(lambda: self.edit_data_type(logical_index))
+    menu.addAction(edit_type_action)
+    
+    selection = self.spreadsheet.selectionModel().selectedIndexes()
+    has_selection = bool(selection)
+    
+    delete_column_action = QAction(&#34;Delete Column&#34;, self)
+    delete_column_action.triggered.connect(lambda : confirm_delete_selected_columns(self))
+    delete_column_action.setEnabled(has_selection)
+    menu.addAction(delete_column_action)
+    
+    add_column_before_action = QAction(&#34;Add Column Before&#34;, self)
+    add_column_before_action.triggered.connect(lambda: show_add_column_before_dialog(self))
+    add_column_before_action.setEnabled(has_selection)
+    menu.addAction(add_column_before_action)
+    
+    add_column_after_action = QAction(&#34;Add Column After&#34;, self)
+    add_column_after_action.triggered.connect(lambda: show_add_column_after_dialog(self))
+    add_column_after_action.setEnabled(has_selection)
+    menu.addAction(add_column_after_action)
+    
+    menu.exec(header.mapToGlobal(pos))</code></pre>
+</details>
+<div class="desc"><p>Show context menu for header.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">show_modeling_saeHB_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_modeling_saeHB_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Displays the ModelingSaeHBDialog lazily.
+    This method initializes the ModelingSaeHBDialog if it has not been created yet,
+    sets its model to `self.model1`, and then shows the dialog.
+    Attributes:
+        show_modeling_saeHB_dialog (ModelingSaeHBDialog): The dialog instance to be shown.
+        model1: The model to be set in the dialog.
+    &#34;&#34;&#34;
+    
+    if self.show_modeling_saeHB_dialog is None:
+        self.show_modeling_saeHB_dialog = ModelingSaeHBDialog(self)
+    self.show_modeling_saeHB_dialog.set_model(self.model1)
+    self.show_modeling_saeHB_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Displays the ModelingSaeHBDialog lazily.
+This method initializes the ModelingSaeHBDialog if it has not been created yet,
+sets its model to <code>self.model1</code>, and then shows the dialog.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>show_modeling_saeHB_dialog</code></strong> :&ensp;<code>ModelingSaeHBDialog</code></dt>
+<dd>The dialog instance to be shown.</dd>
+<dt><strong><code>model1</code></strong></dt>
+<dd>The model to be set in the dialog.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_normal_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">show_modeling_saeHB_normal_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_modeling_saeHB_normal_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and displays the ModelingSaeHBNormalDialog.
+    If the dialog has not been created yet, it initializes a new instance
+    of ModelingSaeHBNormalDialog and sets its model to self.model1. 
+    Then, it shows the dialog.
+    Attributes:
+        show_modeling_saeHB_normal_dialog (ModelingSaeHBNormalDialog): 
+        The dialog instance to be displayed.
+        model1: The model to be set in the dialog.
+    &#34;&#34;&#34;
+    
+    if self.show_modeling_saeHB_normal_dialog is None:
+        self.show_modeling_saeHB_normal_dialog = ModelingSaeHBNormalDialog(self)
+    self.show_modeling_saeHB_normal_dialog.set_model(self.model1)
+    self.show_modeling_saeHB_normal_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and displays the ModelingSaeHBNormalDialog.
+If the dialog has not been created yet, it initializes a new instance
+of ModelingSaeHBNormalDialog and sets its model to self.model1.
+Then, it shows the dialog.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>show_modeling_saeHB_normal_dialog</code></strong> :&ensp;<code>ModelingSaeHBNormalDialog</code></dt>
+<dd>&nbsp;</dd>
+<dt>The dialog instance to be displayed.</dt>
+<dt><strong><code>model1</code></strong></dt>
+<dd>The model to be set in the dialog.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.show_modeling_sae_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">show_modeling_sae_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_modeling_sae_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and displays the ModelingSaeDialog.
+    If the ModelingSaeDialog has not been created yet, this method will
+    instantiate it and set its model to `self.model1`. Then, it will
+    display the dialog.
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    if self.show_modeling_sae_dialog is None:
+        self.show_modeling_sae_dialog = ModelingSaeDialog(self)
+    self.show_modeling_sae_dialog.set_model(self.model1)
+    self.show_modeling_sae_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and displays the ModelingSaeDialog.
+If the ModelingSaeDialog has not been created yet, this method will
+instantiate it and set its model to <code>self.model1</code>. Then, it will
+display the dialog.</p>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.show_modeling_sae_unit_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">show_modeling_sae_unit_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_modeling_sae_unit_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and displays the ModelingSaeUnitDialog.
+    If the dialog has not been created yet, it initializes it with the current instance.
+    Then, it sets the model for the dialog and shows it.
+    Attributes:
+        show_modeling_sae_unit_dialog (ModelingSaeUnitDialog): The dialog for modeling SAE units.
+        model1: The model to be set in the dialog.
+    &#34;&#34;&#34;
+    
+    if self.show_modeling_sae_unit_dialog is None:
+        self.show_modeling_sae_unit_dialog = ModelingSaeUnitDialog(self)
+    self.show_modeling_sae_unit_dialog.set_model(self.model1)
+    self.show_modeling_sae_unit_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and displays the ModelingSaeUnitDialog.
+If the dialog has not been created yet, it initializes it with the current instance.
+Then, it sets the model for the dialog and shows it.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>show_modeling_sae_unit_dialog</code></strong> :&ensp;<code>ModelingSaeUnitDialog</code></dt>
+<dd>The dialog for modeling SAE units.</dd>
+<dt><strong><code>model1</code></strong></dt>
+<dd>The model to be set in the dialog.</dd>
+</dl></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.show_modellig_sae_pseudo_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">show_modellig_sae_pseudo_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_modellig_sae_pseudo_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and displays the Modeling SAE Pseudo dialog.
+    This method checks if the `show_modellig_sae_pseudo_dialog` attribute is None.
+    If it is, it initializes a new instance of `ModelingSaePseudoDialog` with the current
+    instance (`self`) as the parent. It then sets the model for the dialog using `self.model1`
+    and displays the dialog.
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    if self.show_modellig_sae_pseudo_dialog is None:
+        self.show_modellig_sae_pseudo_dialog = ModelingSaePseudoDialog(self)
+    self.show_modellig_sae_pseudo_dialog.set_model(self.model1)
+    self.show_modellig_sae_pseudo_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and displays the Modeling SAE Pseudo dialog.
+This method checks if the <code>show_modellig_sae_pseudo_dialog</code> attribute is None.
+If it is, it initializes a new instance of <code>ModelingSaePseudoDialog</code> with the current
+instance (<code>self</code>) as the parent. It then sets the model for the dialog using <code>self.model1</code>
+and displays the dialog.</p>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.show_output"><code class="name flex">
+<span>def <span class="ident">show_output</span></span>(<span>self, title, content)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_output(self, title, content):
+    &#34;&#34;&#34;Display output in the Output tab&#34;&#34;&#34;
+    label = QLabel(content)
+    self.output_layout.addWidget(label)
+    self.output_tab_widget.setCurrentIndex(0)</code></pre>
+</details>
+<div class="desc"><p>Display output in the Output tab</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.show_projection_variabel_dialog_lazy"><code class="name flex">
+<span>def <span class="ident">show_projection_variabel_dialog_lazy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_projection_variabel_dialog_lazy(self):
+    &#34;&#34;&#34;
+    Lazily initializes and displays the ProjectionDialog.
+    This method checks if the `show_projection_variabel_dialog` attribute is None.
+    If it is, it initializes it with a new instance of `ProjectionDialog`.
+    It then sets the model for the dialog and checks if the prerequisites for
+    showing the dialog are met. If they are, it displays the dialog.
+    Attributes:
+        show_projection_variabel_dialog (ProjectionDialog): The dialog to be shown.
+        model1: The model to be set in the dialog.
+    Returns:
+        None
+    &#34;&#34;&#34;
+    
+    if self.show_projection_variabel_dialog is None:
+        self.show_projection_variabel_dialog = ProjectionDialog(self)
+    self.show_projection_variabel_dialog.set_model(self.model1)
+    if self.show_projection_variabel_dialog.show_prerequisites():
+        self.show_projection_variabel_dialog.show()</code></pre>
+</details>
+<div class="desc"><p>Lazily initializes and displays the ProjectionDialog.
+This method checks if the <code>show_projection_variabel_dialog</code> attribute is None.
+If it is, it initializes it with a new instance of <code>ProjectionDialog</code>.
+It then sets the model for the dialog and checks if the prerequisites for
+showing the dialog are met. If they are, it displays the dialog.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>show_projection_variabel_dialog</code></strong> :&ensp;<code>ProjectionDialog</code></dt>
+<dd>The dialog to be shown.</dd>
+<dt><strong><code>model1</code></strong></dt>
+<dd>The model to be set in the dialog.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.undo_action"><code class="name flex">
+<span>def <span class="ident">undo_action</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def undo_action(self):
+    &#34;&#34;&#34;Undo the last action.&#34;&#34;&#34;
+    self.model1.undo()</code></pre>
+</details>
+<div class="desc"><p>Undo the last action.</p></div>
+</dd>
+<dt id="sip-sae.view.MainWindow.MainWindow.update_table"><code class="name flex">
+<span>def <span class="ident">update_table</span></span>(<span>self, sheet_number, model)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_table(self, sheet_number, model):
+    &#34;&#34;&#34;Memperbarui tabel pada sheet tertentu dengan model baru&#34;&#34;&#34;
+    if sheet_number == 1:
+        self.spreadsheet.setModel(model)
+        self.model1 = model
+        self.spreadsheet.resizeColumnsToContents()
+        self.tab_widget.setCurrentWidget(self.tab1)
+        if self.show_modeling_sae_dialog:
+            self.show_modeling_sae_dialog.set_model(model)
+        if self.show_modeling_saeHB_dialog:
+            self.show_modeling_saeHB_dialog.set_model(model)
+        if self.show_modeling_sae_unit_dialog:
+            self.show_modeling_sae_unit_dialog.set_model(model)
+        if self.show_modeling_saeHB_normal_dialog:
+            self.show_modeling_saeHB_normal_dialog.set_model(model)
+        if self.show_modellig_sae_pseudo_dialog:
+            self.show_modellig_sae_pseudo_dialog.set_model(model)
+        if self.show_compute_variable_dialog:
+            self.show_compute_variable_dialog.set_model(model)
+        if self.show_projection_variabel_dialog:
+            self.show_projection_variabel_dialog.set_model(model)
+    elif sheet_number == 2:
+        self.table_view2.setModel(model)
+        self.model2 = model
+        self.table_view2.resizeColumnsToContents()</code></pre>
+</details>
+<div class="desc"><p>Memperbarui tabel pada sheet tertentu dengan model baru</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sip-sae.view" href="index.html">sip-sae.view</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sip-sae.view.MainWindow.MainWindow" href="#sip-sae.view.MainWindow.MainWindow">MainWindow</a></code></h4>
+<ul class="">
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.add_column" href="#sip-sae.view.MainWindow.MainWindow.add_column">add_column</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.add_output" href="#sip-sae.view.MainWindow.MainWindow.add_output">add_output</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.add_row" href="#sip-sae.view.MainWindow.MainWindow.add_row">add_row</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.change_font_size" href="#sip-sae.view.MainWindow.MainWindow.change_font_size">change_font_size</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.copy_output_image" href="#sip-sae.view.MainWindow.MainWindow.copy_output_image">copy_output_image</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.copy_selection" href="#sip-sae.view.MainWindow.MainWindow.copy_selection">copy_selection</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.edit_data_type" href="#sip-sae.view.MainWindow.MainWindow.edit_data_type">edit_data_type</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.group_by_row" href="#sip-sae.view.MainWindow.MainWindow.group_by_row">group_by_row</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.init_ui" href="#sip-sae.view.MainWindow.MainWindow.init_ui">init_ui</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.keyPressEvent" href="#sip-sae.view.MainWindow.MainWindow.keyPressEvent">keyPressEvent</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.load_stylesheet_with_font_size" href="#sip-sae.view.MainWindow.MainWindow.load_stylesheet_with_font_size">load_stylesheet_with_font_size</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_about_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_about_dialog">open_about_dialog</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog">open_box_plot_dialog</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog_lazy">open_box_plot_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog">open_correlation_matrix_dialog</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog_lazy">open_correlation_matrix_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_histogram_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_histogram_dialog">open_histogram_dialog</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_histogram_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_histogram_dialog_lazy">open_histogram_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog">open_line_plot_dialog</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog_lazy">open_line_plot_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog">open_multicollinearity_dialog</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog_lazy">open_multicollinearity_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog">open_normality_test_dialog</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog_lazy">open_normality_test_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog">open_scatter_plot_dialog</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog_lazy">open_scatter_plot_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog">open_summary_data_dialog</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog_lazy">open_summary_data_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog">open_variable_selection_dialog</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog_lazy">open_variable_selection_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.paste_selection" href="#sip-sae.view.MainWindow.MainWindow.paste_selection">paste_selection</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.redo_action" href="#sip-sae.view.MainWindow.MainWindow.redo_action">redo_action</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.remove_output" href="#sip-sae.view.MainWindow.MainWindow.remove_output">remove_output</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.rename_column" href="#sip-sae.view.MainWindow.MainWindow.rename_column">rename_column</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.set_font_size" href="#sip-sae.view.MainWindow.MainWindow.set_font_size">set_font_size</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.set_path" href="#sip-sae.view.MainWindow.MainWindow.set_path">set_path</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_compute_variable_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_compute_variable_dialog_lazy">show_compute_variable_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_context_menu" href="#sip-sae.view.MainWindow.MainWindow.show_context_menu">show_context_menu</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_header_context_menu" href="#sip-sae.view.MainWindow.MainWindow.show_header_context_menu">show_header_context_menu</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_dialog_lazy">show_modeling_saeHB_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_normal_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_normal_dialog_lazy">show_modeling_saeHB_normal_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_modeling_sae_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_modeling_sae_dialog_lazy">show_modeling_sae_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_modeling_sae_unit_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_modeling_sae_unit_dialog_lazy">show_modeling_sae_unit_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_modellig_sae_pseudo_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_modellig_sae_pseudo_dialog_lazy">show_modellig_sae_pseudo_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_output" href="#sip-sae.view.MainWindow.MainWindow.show_output">show_output</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_projection_variabel_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_projection_variabel_dialog_lazy">show_projection_variabel_dialog_lazy</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.undo_action" href="#sip-sae.view.MainWindow.MainWindow.undo_action">undo_action</a></code></li>
+<li><code><a title="sip-sae.view.MainWindow.MainWindow.update_table" href="#sip-sae.view.MainWindow.MainWindow.update_table">update_table</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>
