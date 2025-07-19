@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,34 +33,30 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>sip-sae</code></h1>
+<h1 class="title">Namespace <code>saePisan</code></h1>
 </header>
 <section id="section-intro">
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="sip-sae.controller" href="controller/index.html">sip-sae.controller</a></code></dt>
+<dt><code class="name"><a title="saePisan.controller" href="controller/index.html">saePisan.controller</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sip-sae.data" href="data/index.html">sip-sae.data</a></code></dt>
+<dt><code class="name"><a title="saePisan.main" href="main.html">saePisan.main</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sip-sae.model" href="model/index.html">sip-sae.model</a></code></dt>
+<dt><code class="name"><a title="saePisan.model" href="model/index.html">saePisan.model</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sip-sae.service" href="service/index.html">sip-sae.service</a></code></dt>
+<dt><code class="name"><a title="saePisan.service" href="service/index.html">saePisan.service</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sip-sae.test" href="test/index.html">sip-sae.test</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="sip-sae.view" href="view/index.html">sip-sae.view</a></code></dt>
+<dt><code class="name"><a title="saePisan.view" href="view/index.html">saePisan.view</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -69,99 +65,6 @@ el.replaceWith(d);
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
-<dl>
-<dt id="sip-sae.load_stylesheet"><code class="name flex">
-<span>def <span class="ident">load_stylesheet</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def load_stylesheet():
-    &#34;&#34;&#34;
-    Fungsi untuk memuat stylesheet dari file .qss.
-    &#34;&#34;&#34;
-    stylesheet_path = os.path.join(os.path.dirname(__file__), &#39;assets&#39;, &#39;style&#39;, &#39;style.qss&#39;)
-    if os.path.exists(stylesheet_path):
-        with open(stylesheet_path, &#39;r&#39;) as file:
-            return file.read()
-    else:
-        print(f&#34;Stylesheet tidak ditemukan di {stylesheet_path}&#34;)
-        return &#34;&#34;</code></pre>
-</details>
-<div class="desc"><p>Fungsi untuk memuat stylesheet dari file .qss.</p></div>
-</dd>
-<dt id="sip-sae.main"><code class="name flex">
-<span>def <span class="ident">main</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def main():
-    
-    # Inisialisasi aplikasi PyQt
-    app = QApplication(sys.argv)
-
-    # Buat dan tampilkan splash screen
-    splash_pix = QPixmap(os.path.join(os.path.dirname(__file__), &#39;assets&#39;, &#39;splash.png&#39;))
-    splash = SplashScreen(splash_pix)
-    splash.show()
-    
-    # Cek dan siapkan lingkungan R
-    path = os.path.join(os.path.dirname(__file__), &#39;R&#39;, &#39;R-4.4.2&#39;)
-    original_path = os.path.dirname(__file__)
-    check_environment(path, original_path)
-
-    from service.main.LoadingR import loadR  # Load modul R setelah check_environment
-
-    loadR(splash)
-    
-    from view.MainWindow import MainWindow
-    splash.update_message()
-
-    # Inisialisasi view dan controller
-    view = MainWindow()  # Tampilan utama aplikasi
-    view.setWindowFlags(view.windowFlags() | Qt.WindowType.WindowStaysOnTopHint)  # Set window flag to be on top initially
-    view.show()
-    view.setWindowFlags(view.windowFlags() &amp; ~Qt.WindowType.WindowStaysOnTopHint)  # Remove the always on top flag
-    controller = FileController(view.model1, view.model2, view)
-    # ControllerExploration = ExplorationController(view.model1, view.model2, view)
-    
-    app.setStyleSheet(view.load_stylesheet_with_font_size(14))
-
-    def load_stylesheet():
-        # Gunakan jalur relatif untuk mengakses style.qss
-        stylesheet_path = os.path.join(os.path.dirname(__file__), &#39;assets&#39;,&#39;style&#39;, &#39;style.qss&#39;)
-        with open(stylesheet_path, &#39;r&#39;) as file:
-            return file.read()
-
-    # Muat dan terapkan stylesheet global untuk aplikasi
-    app.setStyleSheet(load_stylesheet())  # Terapkan ke seluruh aplikasi
-
-    # Set icon aplikasi
-    view.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;assets&#39;, &#39;icon.svg&#39;)))
-
-    # Muat stylesheet
-    stylesheet = load_stylesheet()
-    if stylesheet:
-        view.setStyleSheet(stylesheet)
-
-    # Tampilkan window utama
-    view.show()
-
-    # Tutup splash screen setelah aplikasi siap
-    splash.finish(view)
-
-    # Mulai aplikasi
-    sys.exit(app.exec())</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-</dl>
 </section>
 <section>
 </section>
@@ -173,25 +76,18 @@ el.replaceWith(d);
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="sip-sae.controller" href="controller/index.html">sip-sae.controller</a></code></li>
-<li><code><a title="sip-sae.data" href="data/index.html">sip-sae.data</a></code></li>
-<li><code><a title="sip-sae.model" href="model/index.html">sip-sae.model</a></code></li>
-<li><code><a title="sip-sae.service" href="service/index.html">sip-sae.service</a></code></li>
-<li><code><a title="sip-sae.test" href="test/index.html">sip-sae.test</a></code></li>
-<li><code><a title="sip-sae.view" href="view/index.html">sip-sae.view</a></code></li>
-</ul>
-</li>
-<li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
-<li><code><a title="sip-sae.load_stylesheet" href="#sip-sae.load_stylesheet">load_stylesheet</a></code></li>
-<li><code><a title="sip-sae.main" href="#sip-sae.main">main</a></code></li>
+<li><code><a title="saePisan.controller" href="controller/index.html">saePisan.controller</a></code></li>
+<li><code><a title="saePisan.main" href="main.html">saePisan.main</a></code></li>
+<li><code><a title="saePisan.model" href="model/index.html">saePisan.model</a></code></li>
+<li><code><a title="saePisan.service" href="service/index.html">saePisan.service</a></code></li>
+<li><code><a title="saePisan.view" href="view/index.html">saePisan.view</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

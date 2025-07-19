@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>saePisan.view.components.CsvDialogOption API documentation</title>
+<title>saePisan.view.components.ExcelDialogOption API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>saePisan.view.components.CsvDialogOption</code></h1>
+<h1 class="title">Module <code>saePisan.view.components.ExcelDialogOption</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,8 +46,8 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="saePisan.view.components.CsvDialogOption.CSVOptionsDialog"><code class="flex name class">
-<span>class <span class="ident">CSVOptionsDialog</span></span>
+<dt id="saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog"><code class="flex name class">
+<span>class <span class="ident">ExcelOptionsDialog</span></span>
 <span>(</span><span>parent=None)</span>
 </code></dt>
 <dd>
@@ -55,34 +55,16 @@ el.replaceWith(d);
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class CSVOptionsDialog(QDialog):
+<pre><code class="python">class ExcelOptionsDialog(QDialog):
     &#34;&#34;&#34;
-    A dialog for selecting CSV file options and previewing the CSV content.
-    Attributes:
-        file_path (str): The path to the selected CSV file.
-        separator (str): The separator used in the CSV file.
-        header (bool): Whether the first row is treated as a header.
-    Methods:
-        __init__(parent=None):
-            Initializes the dialog with default values and sets up the UI.
-        init_ui():
-            Sets up the user interface components of the dialog.
-        select_file():
-            Opens a file picker dialog to select a CSV file and updates the preview.
-        update_preview():
-            Updates the preview table based on the selected file, separator, and header options.
-        get_csv_options():
-            Returns the selected CSV options if the dialog is accepted.
+    Dialog to select an Excel file, sheet, and preview data.
     &#34;&#34;&#34;
-    
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle(&#34;CSV Options&#34;)
-
+        self.setWindowTitle(&#34;Excel Options&#34;)
         self.file_path = None
-        self.separator = &#34;,&#34;
+        self.sheet_names = []
         self.header = True
-
         self.init_ui()
 
     def init_ui(self):
@@ -91,16 +73,17 @@ el.replaceWith(d);
         # File picker
         self.file_label = QLabel(&#34;No file selected&#34;)
         layout.addWidget(self.file_label)
-        self.file_button = QPushButton(&#34;Select File&#34;)
+        self.file_button = QPushButton(&#34;Select Excel File&#34;)
         self.file_button.clicked.connect(self.select_file)
         layout.addWidget(self.file_button)
 
-        # Separator input
-        layout.addWidget(QLabel(&#34;Separator (e.g. , or ; For tab use \\t)&#34;))
-        self.separator_input = QLineEdit(&#34;,&#34;)
-        self.separator_input.textChanged.connect(self.update_preview)
-        layout.addWidget(self.separator_input)
-
+        # Sheet selector
+        self.sheet_combo = QComboBox()
+        self.sheet_combo.addItems(self.sheet_names)
+        self.sheet_combo.currentIndexChanged.connect(self.update_preview)
+        layout.addWidget(QLabel(&#34;Select Sheet&#34;))
+        layout.addWidget(self.sheet_combo)
+        
         # Header checkbox
         self.header_checkbox = QCheckBox(&#34;First row as header&#34;)
         self.header_checkbox.setChecked(True)  # Default header True
@@ -122,65 +105,50 @@ el.replaceWith(d);
         self.setLayout(layout)
 
     def select_file(self):
-        &#34;&#34;&#34;File picker untuk memilih file CSV.&#34;&#34;&#34;
-        file_path, _ = QFileDialog.getOpenFileName(self, &#34;Open CSV File&#34;, &#34;&#34;, &#34;CSV Files (*.csv)&#34;)
+        &#34;&#34;&#34;File picker to select an Excel file.&#34;&#34;&#34;
+        file_path, _ = QFileDialog.getOpenFileName(self, &#34;Open Excel File&#34;, &#34;&#34;, &#34;Excel Files (*.xlsx *.xls)&#34;)
         if file_path:
             self.file_path = file_path
             self.file_label.setText(f&#34;Selected: {file_path}&#34;)
-            self.update_preview()
+            try:
+                import pandas as pd
+                xls = pd.ExcelFile(file_path)
+                self.sheet_names = xls.sheet_names
+                self.sheet_combo.clear()
+                self.sheet_combo.addItems(self.sheet_names)
+                self.update_preview()
+            except Exception as e:
+                self.sheet_combo.clear()
+                self.preview_table.setModel(None)
+                self.file_label.setText(f&#34;Error: {e}&#34;)
 
     def update_preview(self):
-        &#34;&#34;&#34;Perbarui preview tabel berdasarkan input.&#34;&#34;&#34;
+        &#34;&#34;&#34;Update the preview table based on the selected sheet.&#34;&#34;&#34;
         if not self.file_path:
             self.preview_table.setModel(None)
             return
-
-        sep = self.separator_input.text()
-        if sep == r&#34;\t&#34;:  # Jika input adalah string literal &#34;\t&#34;
-            sep = &#34;\t&#34;
+        
+        sheet = self.sheet_combo.currentText()
         hdr = True if self.header_checkbox.isChecked() else False
         try:
-            preview_data = pl.read_csv(self.file_path, separator=sep, has_header=hdr, ignore_errors=True, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;]).head(10)
+            df = pl.read_excel(source=self.file_path, sheet_name=sheet, has_header=hdr).head(10)
             model = QStandardItemModel()
-            
-            model.setHorizontalHeaderLabels(preview_data.columns)
-
-            for row in preview_data.to_numpy():
+            model.setHorizontalHeaderLabels(df.columns)
+            for row in df.to_numpy():
                 items = [QStandardItem(str(cell)) for cell in row]
                 model.appendRow(items)
-
             self.preview_table.setModel(model)
         except Exception as e:
             print(f&#34;Error: {e}&#34;)
             self.preview_table.setModel(None)
-
-    def get_csv_options(self):
-        &#34;&#34;&#34;Mengembalikan opsi CSV jika dialog diterima.&#34;&#34;&#34;
-        if self.exec() == QDialog.DialogCode.Accepted and self.file_path:
-            return self.file_path, self.separator_input.text(), self.header_checkbox.isChecked()
+    
+    def get_excel_options(self):
+        &#34;&#34;&#34;Return path file dan name selected sheet&#34;&#34;&#34;
+        if self.exec()== QDialog.DialogCode.Accepted and self.file_path and self.sheet_combo.currentText():
+            return self.file_path, self.sheet_combo.currentText(), self.header_checkbox.isChecked()
         return None, None, None</code></pre>
 </details>
-<div class="desc"><p>A dialog for selecting CSV file options and previewing the CSV content.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>file_path</code></strong> :&ensp;<code>str</code></dt>
-<dd>The path to the selected CSV file.</dd>
-<dt><strong><code>separator</code></strong> :&ensp;<code>str</code></dt>
-<dd>The separator used in the CSV file.</dd>
-<dt><strong><code>header</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Whether the first row is treated as a header.</dd>
-</dl>
-<h2 id="methods">Methods</h2>
-<p><strong>init</strong>(parent=None):
-Initializes the dialog with default values and sets up the UI.
-init_ui():
-Sets up the user interface components of the dialog.
-select_file():
-Opens a file picker dialog to select a CSV file and updates the preview.
-update_preview():
-Updates the preview table based on the selected file, separator, and header options.
-get_csv_options():
-Returns the selected CSV options if the dialog is accepted.</p></div>
+<div class="desc"><p>Dialog to select an Excel file, sheet, and preview data.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>PyQt6.QtWidgets.QDialog</li>
@@ -192,23 +160,23 @@ Returns the selected CSV options if the dialog is accepted.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="saePisan.view.components.CsvDialogOption.CSVOptionsDialog.get_csv_options"><code class="name flex">
-<span>def <span class="ident">get_csv_options</span></span>(<span>self)</span>
+<dt id="saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.get_excel_options"><code class="name flex">
+<span>def <span class="ident">get_excel_options</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_csv_options(self):
-    &#34;&#34;&#34;Mengembalikan opsi CSV jika dialog diterima.&#34;&#34;&#34;
-    if self.exec() == QDialog.DialogCode.Accepted and self.file_path:
-        return self.file_path, self.separator_input.text(), self.header_checkbox.isChecked()
+<pre><code class="python">def get_excel_options(self):
+    &#34;&#34;&#34;Return path file dan name selected sheet&#34;&#34;&#34;
+    if self.exec()== QDialog.DialogCode.Accepted and self.file_path and self.sheet_combo.currentText():
+        return self.file_path, self.sheet_combo.currentText(), self.header_checkbox.isChecked()
     return None, None, None</code></pre>
 </details>
-<div class="desc"><p>Mengembalikan opsi CSV jika dialog diterima.</p></div>
+<div class="desc"><p>Return path file dan name selected sheet</p></div>
 </dd>
-<dt id="saePisan.view.components.CsvDialogOption.CSVOptionsDialog.init_ui"><code class="name flex">
+<dt id="saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.init_ui"><code class="name flex">
 <span>def <span class="ident">init_ui</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -222,16 +190,17 @@ Returns the selected CSV options if the dialog is accepted.</p></div>
     # File picker
     self.file_label = QLabel(&#34;No file selected&#34;)
     layout.addWidget(self.file_label)
-    self.file_button = QPushButton(&#34;Select File&#34;)
+    self.file_button = QPushButton(&#34;Select Excel File&#34;)
     self.file_button.clicked.connect(self.select_file)
     layout.addWidget(self.file_button)
 
-    # Separator input
-    layout.addWidget(QLabel(&#34;Separator (e.g. , or ; For tab use \\t)&#34;))
-    self.separator_input = QLineEdit(&#34;,&#34;)
-    self.separator_input.textChanged.connect(self.update_preview)
-    layout.addWidget(self.separator_input)
-
+    # Sheet selector
+    self.sheet_combo = QComboBox()
+    self.sheet_combo.addItems(self.sheet_names)
+    self.sheet_combo.currentIndexChanged.connect(self.update_preview)
+    layout.addWidget(QLabel(&#34;Select Sheet&#34;))
+    layout.addWidget(self.sheet_combo)
+    
     # Header checkbox
     self.header_checkbox = QCheckBox(&#34;First row as header&#34;)
     self.header_checkbox.setChecked(True)  # Default header True
@@ -254,7 +223,7 @@ Returns the selected CSV options if the dialog is accepted.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="saePisan.view.components.CsvDialogOption.CSVOptionsDialog.select_file"><code class="name flex">
+<dt id="saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.select_file"><code class="name flex">
 <span>def <span class="ident">select_file</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -263,16 +232,26 @@ Returns the selected CSV options if the dialog is accepted.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def select_file(self):
-    &#34;&#34;&#34;File picker untuk memilih file CSV.&#34;&#34;&#34;
-    file_path, _ = QFileDialog.getOpenFileName(self, &#34;Open CSV File&#34;, &#34;&#34;, &#34;CSV Files (*.csv)&#34;)
+    &#34;&#34;&#34;File picker to select an Excel file.&#34;&#34;&#34;
+    file_path, _ = QFileDialog.getOpenFileName(self, &#34;Open Excel File&#34;, &#34;&#34;, &#34;Excel Files (*.xlsx *.xls)&#34;)
     if file_path:
         self.file_path = file_path
         self.file_label.setText(f&#34;Selected: {file_path}&#34;)
-        self.update_preview()</code></pre>
+        try:
+            import pandas as pd
+            xls = pd.ExcelFile(file_path)
+            self.sheet_names = xls.sheet_names
+            self.sheet_combo.clear()
+            self.sheet_combo.addItems(self.sheet_names)
+            self.update_preview()
+        except Exception as e:
+            self.sheet_combo.clear()
+            self.preview_table.setModel(None)
+            self.file_label.setText(f&#34;Error: {e}&#34;)</code></pre>
 </details>
-<div class="desc"><p>File picker untuk memilih file CSV.</p></div>
+<div class="desc"><p>File picker to select an Excel file.</p></div>
 </dd>
-<dt id="saePisan.view.components.CsvDialogOption.CSVOptionsDialog.update_preview"><code class="name flex">
+<dt id="saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.update_preview"><code class="name flex">
 <span>def <span class="ident">update_preview</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -281,31 +260,26 @@ Returns the selected CSV options if the dialog is accepted.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def update_preview(self):
-    &#34;&#34;&#34;Perbarui preview tabel berdasarkan input.&#34;&#34;&#34;
+    &#34;&#34;&#34;Update the preview table based on the selected sheet.&#34;&#34;&#34;
     if not self.file_path:
         self.preview_table.setModel(None)
         return
-
-    sep = self.separator_input.text()
-    if sep == r&#34;\t&#34;:  # Jika input adalah string literal &#34;\t&#34;
-        sep = &#34;\t&#34;
+    
+    sheet = self.sheet_combo.currentText()
     hdr = True if self.header_checkbox.isChecked() else False
     try:
-        preview_data = pl.read_csv(self.file_path, separator=sep, has_header=hdr, ignore_errors=True, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;]).head(10)
+        df = pl.read_excel(source=self.file_path, sheet_name=sheet, has_header=hdr).head(10)
         model = QStandardItemModel()
-        
-        model.setHorizontalHeaderLabels(preview_data.columns)
-
-        for row in preview_data.to_numpy():
+        model.setHorizontalHeaderLabels(df.columns)
+        for row in df.to_numpy():
             items = [QStandardItem(str(cell)) for cell in row]
             model.appendRow(items)
-
         self.preview_table.setModel(model)
     except Exception as e:
         print(f&#34;Error: {e}&#34;)
         self.preview_table.setModel(None)</code></pre>
 </details>
-<div class="desc"><p>Perbarui preview tabel berdasarkan input.</p></div>
+<div class="desc"><p>Update the preview table based on the selected sheet.</p></div>
 </dd>
 </dl>
 </dd>
@@ -325,12 +299,12 @@ Returns the selected CSV options if the dialog is accepted.</p></div>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="saePisan.view.components.CsvDialogOption.CSVOptionsDialog" href="#saePisan.view.components.CsvDialogOption.CSVOptionsDialog">CSVOptionsDialog</a></code></h4>
+<h4><code><a title="saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog" href="#saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog">ExcelOptionsDialog</a></code></h4>
 <ul class="">
-<li><code><a title="saePisan.view.components.CsvDialogOption.CSVOptionsDialog.get_csv_options" href="#saePisan.view.components.CsvDialogOption.CSVOptionsDialog.get_csv_options">get_csv_options</a></code></li>
-<li><code><a title="saePisan.view.components.CsvDialogOption.CSVOptionsDialog.init_ui" href="#saePisan.view.components.CsvDialogOption.CSVOptionsDialog.init_ui">init_ui</a></code></li>
-<li><code><a title="saePisan.view.components.CsvDialogOption.CSVOptionsDialog.select_file" href="#saePisan.view.components.CsvDialogOption.CSVOptionsDialog.select_file">select_file</a></code></li>
-<li><code><a title="saePisan.view.components.CsvDialogOption.CSVOptionsDialog.update_preview" href="#saePisan.view.components.CsvDialogOption.CSVOptionsDialog.update_preview">update_preview</a></code></li>
+<li><code><a title="saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.get_excel_options" href="#saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.get_excel_options">get_excel_options</a></code></li>
+<li><code><a title="saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.init_ui" href="#saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.init_ui">init_ui</a></code></li>
+<li><code><a title="saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.select_file" href="#saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.select_file">select_file</a></code></li>
+<li><code><a title="saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.update_preview" href="#saePisan.view.components.ExcelDialogOption.ExcelOptionsDialog.update_preview">update_preview</a></code></li>
 </ul>
 </li>
 </ul>

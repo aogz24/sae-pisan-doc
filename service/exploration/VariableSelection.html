@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.service.exploration.VariableSelection API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.service.exploration.VariableSelection API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.service.exploration.VariableSelection</code></h1>
+<h1 class="title">Module <code>saePisan.service.exploration.VariableSelection</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -44,7 +44,153 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sip-sae.service.exploration.VariableSelection.run_variable_selection"><code class="name flex">
+<dt id="saePisan.service.exploration.VariableSelection.extract_formatted"><code class="name flex">
+<span>def <span class="ident">extract_formatted</span></span>(<span>r_output: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_formatted(r_output: str):
+    lines = r_output.strip().split(&#39;\n&#39;)
+    # print(&#34;Lines:&#34;, lines)
+    call = &#34;&#34;
+    residuals = []
+    coef_lines = []
+    summary_info = {}
+
+    i = 0
+    while i &lt; len(lines):
+        line = lines[i].strip()
+
+        # Call
+        if line.startswith(&#34;Call:&#34;):
+            call = lines[i + 1].strip()
+            i += 2
+            continue
+
+        # Residuals
+        elif line.startswith(&#34;Residuals:&#34;):
+            i += 1
+            while i &lt; len(lines) and lines[i].strip():
+                residuals.append(lines[i].strip())
+                i += 1
+            continue
+
+        # Coefficients
+        elif line.startswith(&#34;Coefficients:&#34;):
+            i += 1
+            while i &lt; len(lines) and not lines[i].startswith(&#34;---&#34;) and not lines[i].startswith(&#34;Signif. codes:&#34;):
+                coef_lines.append(lines[i].strip())
+                i += 1
+            continue
+
+        # Residual std error
+        elif &#34;Residual standard error&#34; in line:
+            match = re.search(r&#34;Residual standard error:\s+([\d.]+) on (\d+) degrees of freedom&#34;, line)
+            if match:
+                summary_info[&#34;Residual Std Error&#34;] = float(match.group(1))
+                summary_info[&#34;DF&#34;] = int(match.group(2))
+
+        # R-squared
+        elif &#34;Multiple R-squared&#34; in line:
+            match = re.search(r&#34;Multiple R-squared:\s+([\d.]+),\s+Adjusted R-squared:\s+([\d.]+)&#34;, line)
+            if match:
+                summary_info[&#34;R-squared&#34;] = float(match.group(1))
+                summary_info[&#34;Adj R-squared&#34;] = float(match.group(2))
+
+        # F-statistic
+        elif &#34;F-statistic&#34; in line:
+            match = re.search(r&#34;F-statistic:\s+([\d.]+) on (\d+) and (\d+) DF,\s+p-value:\s+([^\s]+)&#34;, line)
+            if match:
+                summary_info[&#34;F-statistic&#34;] = float(match.group(1))
+                summary_info[&#34;DF1&#34;] = int(match.group(2))
+                summary_info[&#34;DF2&#34;] = int(match.group(3))
+                summary_info[&#34;p-value&#34;] = match.group(4)
+
+        i += 1
+
+    def extract_residuals(residuals: list[str]) -&gt; pl.DataFrame:
+        labels = residuals[0].split()
+        # Ubah nama kolom sesuai permintaan
+        labels = [label.replace(&#34;Min&#34;, &#34;Minimum&#34;).replace(&#34;1Q&#34;, &#34;Quartile 1&#34;).replace(&#34;3Q&#34;, &#34;Quartile 3&#34;).replace(&#34;Max&#34;, &#34;Maximum&#34;) for label in labels]
+        values = list(map(float, residuals[1].split()))
+        return pl.DataFrame([dict(zip(labels, values))])
+    
+    residual_df = extract_residuals(residuals)
+
+
+    def extract_coefficients(coef_lines: list[str]) -&gt; pl.DataFrame:
+        import re
+
+        columns = [&#34;Variable&#34;, &#34;Estimate&#34;, &#34;Std. Error&#34;, &#34;t statistic&#34;, &#34;p-value&#34;, &#34;Significance&#34;]
+        rows = []
+
+        signif_map = {
+            &#39;***&#39;: &#34;Significant at 0.1% level&#34;,
+            &#39;**&#39;: &#34;Significant at 1% level&#34;,
+            &#39;*&#39;: &#34;Significant at 5% level&#34;,
+            &#39;.&#39;: &#34;significant at 10% level&#34;,
+            &#39;&#39;: &#34;Not significant at 10% level&#34;
+        }
+
+        for line in coef_lines[1:]:
+            match = re.match(
+                r&#34;^(`[^`]+`|\S+)\s+&#34;  
+                r&#34;([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?|\d+)\s+&#34;
+                r&#34;([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?|\d+)\s+&#34;
+                r&#34;([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?|\d+)\s+&#34;
+                r&#34;([&lt;&gt;=]*\s*[\d.eE+-]+)\s*&#34;
+                r&#34;(\*\*\*|\*\*|\*|\.|)?&#34;,
+                line
+            )
+            if match:
+                variable = match.group(1).strip(&#39;`&#39;)
+                estimate = float(match.group(2))
+                std_error = float(match.group(3))
+                t_value = float(match.group(4))
+                p_value = match.group(5).strip()
+                signif_code = match.group(6).strip() if match.group(6) else &#39;&#39;
+                significance = signif_map.get(signif_code, &#34;Not significant&#34;)
+
+                rows.append({
+                    &#34;Variable&#34;: variable,
+                    &#34;Estimate&#34;: estimate,
+                    &#34;Std. Error&#34;: std_error,
+                    &#34;t statistic&#34;: t_value,
+                    &#34;P-value&#34;: p_value,
+                    &#34;Significance&#34;: significance
+                })
+
+        return pl.DataFrame(rows)
+    coef_df = extract_coefficients(coef_lines)
+
+    def summary_info_to_table(summary_info: dict) -&gt; pl.DataFrame:
+        &#34;&#34;&#34;
+        Convert summary info dictionary to a Polars DataFrame with float values.
+        &#34;&#34;&#34;
+        return pl.DataFrame({
+            &#34;Description&#34;: list(summary_info.keys()),
+            &#34;Value&#34;: [float(v) for v in summary_info.values()]
+        })
+
+    summary_table = summary_info_to_table(summary_info)
+    # print(&#34;Call:&#34;, call)
+    # print(&#34;Residuals DataFrame:&#34;, residual_df)
+    # print(&#34;Coefficients DataFrame:&#34;, coef_df)
+    # print(&#34;Summary Table:&#34;, summary_table)
+
+    return {
+        &#34;call&#34;: call,
+        &#34;residuals&#34;: residual_df,
+        &#34;coefficients&#34;: coef_df,
+        &#34;summary&#34;: summary_table,
+    }</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="saePisan.service.exploration.VariableSelection.run_variable_selection"><code class="name flex">
 <span>def <span class="ident">run_variable_selection</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -53,65 +199,79 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def run_variable_selection(parent):
-    &#34;&#34;&#34;
-    Run data summary using Python (Polars) and R with additional debugging.
-    &#34;&#34;&#34;
-    parent.activate_R()  # Activate R if needed
+    parent.activate_R()
 
-    # Get data from the model
     df1 = parent.model1.get_data()
     df2 = parent.model2.get_data()
 
-    # Merge data using Polars
+    # Gabungkan dan filter data kosong
     df = pl.concat([df1, df2], how=&#34;horizontal&#34;)
-    df = df.drop_nulls()  # Remove null data
-
-    # Convert Polars DataFrame to R DataFrame
-    try:
-        with rpy2polars.converter.context() as cv_ctx:
-            r_df = rpy2polars.converter.py2rpy(df)
-            ro.globalenv[&#39;r_df&#39;] = r_df
-    except Exception as e:
-        print(&#34;[ERROR] Failed to convert to R DataFrame:&#34;, str(e))
-        return
+    df = df.filter(~pl.all_horizontal(pl.all().is_null()))
+    get_data(parent,df)
 
     try:
         ro.r(&#39;suppressMessages(library(car))&#39;)
         ro.r(&#39;rm(list=ls()[ls() != &#34;r_df&#34;])&#39;)
         ro.r(&#39;data &lt;- as.data.frame(r_df)&#39;)
 
-        # Run R script
+        # Jalankan R script dari parent
         ro.r(parent.r_script)
 
-        # Check objects in the R environment
-        existing_objects = ro.r(&#39;ls()&#39;)
+        result_dict = {}
+        existing_objects = list(ro.r(&#34;ls()&#34;))
 
-        result_strings = []
-
-        # List of methods used
+        # Daftar metode seleksi variabel
         methods = [&#34;forward&#34;, &#34;backward&#34;, &#34;both&#34;]
 
+        method_label_map = {
+            &#34;forward&#34;: &#34;Forward&#34;,
+            &#34;backward&#34;: &#34;Backward&#34;,
+            &#34;both&#34;: &#34;Stepwise&#34;
+        }
+
         for method in methods:
+            model_var = f&#34;{method}_model&#34;
             result_var = f&#34;{method}_result&#34;
+            prefix = method_label_map[method]  
+
+
+            if model_var in existing_objects:
+                # 1. ANOVA Table
+                try:
+                    anova_r = ro.r(f&#34;{model_var}$anova&#34;)
+                    anova_pd = pandas2ri.rpy2py(anova_r)
+                    if anova_pd.index.name and anova_pd.index.name not in anova_pd.columns:
+                        anova_pd = anova_pd.reset_index()
+                    if &#39;Step&#39; in anova_pd.columns:
+                        anova_pd[&#39;Step&#39;] = anova_pd[&#39;Step&#39;].astype(str).str.replace(&#39;`&#39;, &#39;&#39;, regex=False)
+                    result_dict[f&#34;Anova {method.capitalize()} Selection&#34;] = pl.from_pandas(anova_pd)
+                except Exception as e:
+                    result_dict[f&#34;Anova {method.capitalize()} Selection&#34;] = f&#34;[ERROR] {e}&#34;
             if result_var in existing_objects:
-                result_output = ro.r(f&#39;capture.output(print({result_var}))&#39;)
-                result_strings.append(f&#34;{method.capitalize()} Result:\n&#34; + &#34;\n&#34;.join(result_output) + &#34;\n&#34;)
+                try:
+                    # Tangkap output summary sebagai string
+                    summary_text = ro.r(f&#39;capture.output(print({result_var}))&#39;)
+                    summary_text_joined = &#34;\n&#34;.join(summary_text)
+                    # print(f&#34;Summary Text for {method}:&#34;, summary_text_joined)
+                    parsed = extract_formatted(summary_text_joined)
 
-            # If trace is not active, only display result
-            else:
-                if result_var in existing_objects:
-                    result_output = ro.r(f&#39;capture.output(print({result_var}))&#39;)
-                    result_strings.append(f&#34;{method.capitalize()} Result:\n&#34; + &#34;\n&#34;.join(result_output) + &#34;\n&#34;)
+                    # Masukkan ke result_dict satu per satu dengan key terpisah
+                    result_dict[f&#34;Regression Model {prefix} Selection&#34;] = parsed[&#34;call&#34;]
+                    result_dict[f&#34;Residual {prefix} Selection&#34;] = parsed[&#34;residuals&#34;]
+                    result_dict[f&#34;Coefficients {prefix} Selection&#34;] = parsed[&#34;coefficients&#34;]
+                    result_dict[f&#34;Summary {prefix} Selection&#34;] = parsed[&#34;summary&#34;]
 
-        # Save the result to parent.result
-        parent.result = &#34;\n\n&#34;.join(result_strings)
+                except Exception as e:
+                    result_dict[f&#34;Regression Summary {prefix} Selection&#34;] = f&#34;[ERROR] {e}&#34;
+
+            parent.result = result_dict
 
     except Exception as e:
         parent.error = True
         parent.result = str(e)
         return</code></pre>
 </details>
-<div class="desc"><p>Run data summary using Python (Polars) and R with additional debugging.</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 </section>
@@ -125,19 +285,20 @@ el.replaceWith(d);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.service.exploration" href="index.html">sip-sae.service.exploration</a></code></li>
+<li><code><a title="saePisan.service.exploration" href="index.html">saePisan.service.exploration</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sip-sae.service.exploration.VariableSelection.run_variable_selection" href="#sip-sae.service.exploration.VariableSelection.run_variable_selection">run_variable_selection</a></code></li>
+<li><code><a title="saePisan.service.exploration.VariableSelection.extract_formatted" href="#saePisan.service.exploration.VariableSelection.extract_formatted">extract_formatted</a></code></li>
+<li><code><a title="saePisan.service.exploration.VariableSelection.run_variable_selection" href="#saePisan.service.exploration.VariableSelection.run_variable_selection">run_variable_selection</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

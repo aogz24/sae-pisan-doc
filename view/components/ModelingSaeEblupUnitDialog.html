@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.view.components.ModelingSaeEblupUnitDialog API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.view.components.ModelingSaeEblupUnitDialog API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.view.components.ModelingSaeEblupUnitDialog</code></h1>
+<h1 class="title">Module <code>saePisan.view.components.ModelingSaeEblupUnitDialog</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,7 +46,57 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog"><code class="flex name class">
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ConsoleStream"><code class="flex name class">
+<span>class <span class="ident">ConsoleStream</span></span>
+<span>(</span><span>signal)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ConsoleStream:
+    def __init__(self, signal):
+        self.signal = signal
+    def write(self, text):
+        if text.strip():
+            self.signal.emit(text)
+    def flush(self):
+        pass</code></pre>
+</details>
+<div class="desc"></div>
+<h3>Methods</h3>
+<dl>
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ConsoleStream.flush"><code class="name flex">
+<span>def <span class="ident">flush</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def flush(self):
+    pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ConsoleStream.write"><code class="name flex">
+<span>def <span class="ident">write</span></span>(<span>self, text)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write(self, text):
+    if text.strip():
+        self.signal.emit(text)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog"><code class="flex name class">
 <span>class <span class="ident">ModelingSaeUnitDialog</span></span>
 <span>(</span><span>parent)</span>
 </code></dt>
@@ -121,48 +171,55 @@ el.replaceWith(d);
     &#34;&#34;&#34;
     
     run_model_finished = pyqtSignal(object, object, object, object)
+    update_console = pyqtSignal(str)
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
         self.model2 = parent.model2
         self.setWindowTitle(&#34;SAE Eblup&#34;)
-        self.setFixedHeight(700)
+        screen_height = self.parent.screen().size().height()
+        self.setMinimumHeight(int(round(screen_height * 0.82)))
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
 
         self.columns = []
 
-        main_layout = QVBoxLayout()
+        self.main_layout = QVBoxLayout()
 
         # Create a scroll area
-        scroll_area = QScrollArea()
-        scroll_area.setWidgetResizable(True)
-        scroll_content = QWidget()
-        scroll_layout = QVBoxLayout(scroll_content)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_content = QWidget()
+        self.scroll_layout = QVBoxLayout(self.scroll_content)
+        self.console_dialog = None
+        self.update_console.connect(self._append_console)
 
         # Layout utama untuk membagi area menjadi dua bagian (kiri dan kanan)
-        split_layout = QHBoxLayout()
+        self.split_layout = QHBoxLayout()
 
         # Layout kiri untuk daftar variabel
-        left_layout = QVBoxLayout()
+        self.left_layout = QVBoxLayout()
         self.variables_label = QLabel(&#34;Select Variables:&#34;)
-        self.variables_list = QListView()
+        self.variables_list = DragDropListView(parent=self)
         self.variables_model = QStringListModel(self.columns)
         self.variables_list.setModel(self.variables_model)
         self.variables_list.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-        left_layout.addWidget(self.variables_label)
-        left_layout.addWidget(self.variables_list)
+        self.left_layout.addWidget(self.variables_label)
+        self.left_layout.addWidget(self.variables_list)
         
-        middle_layout1 = QVBoxLayout()
+        self.middle_layout1 = QVBoxLayout()
         self.unassign_button = QPushButton(&#34;🡄&#34;)
         self.unassign_button.setObjectName(&#34;arrow_button&#34;)
-        middle_layout1.addWidget(self.unassign_button)
+        self.middle_layout1.addWidget(self.unassign_button)
 
         # Layout tengah untuk tombol panah
-        middle_layout = QVBoxLayout()
+        self.middle_layout = QVBoxLayout()
         self.assign_of_interest_button = QPushButton(&#34;🡆&#34;)
         self.assign_of_interest_button.setObjectName(&#34;arrow_button&#34;)
         self.assign_aux_button = QPushButton(&#34;🡆&#34;)
         self.assign_aux_button.setObjectName(&#34;arrow_button&#34;)
         self.assign_as_factor_button = QPushButton(&#34;🡆&#34;)
+        self.assign_as_factor_button.setVisible(False)
+        self.assign_as_factor_button.setEnabled(False)
         self.assign_as_factor_button.setObjectName(&#34;arrow_button&#34;)
         self.assign_domains_button = QPushButton(&#34;🡆&#34;)
         self.assign_domains_button.setObjectName(&#34;arrow_button&#34;)
@@ -181,84 +238,86 @@ el.replaceWith(d);
         self.assign_aux_mean_button.clicked.connect(lambda: assign_aux_mean(self))
         self.assign_population_sample_size_button.clicked.connect(lambda: assign_population_sample_size(self))
         self.unassign_button.clicked.connect(lambda: unassign_variable(self))
-        middle_layout.addWidget(self.assign_of_interest_button)
-        middle_layout.addWidget(self.assign_aux_button)
-        middle_layout.addWidget(self.assign_as_factor_button)
-        middle_layout.addWidget(self.assign_domains_button)
-        middle_layout.addWidget(self.assign_index_button)
-        middle_layout.addWidget(self.assign_aux_mean_button)
-        middle_layout.addWidget(self.assign_population_sample_size_button)
+        self.middle_layout.addWidget(self.assign_of_interest_button)
+        self.middle_layout.addWidget(self.assign_aux_button)
+        self.middle_layout.addWidget(self.assign_as_factor_button)
+        self.middle_layout.addWidget(self.assign_domains_button)
+        self.middle_layout.addWidget(self.assign_index_button)
+        self.middle_layout.addWidget(self.assign_aux_mean_button)
+        self.middle_layout.addWidget(self.assign_population_sample_size_button)
 
         # Layout kanan untuk daftar dependen, independen, vardir, dan major area
-        right_layout = QVBoxLayout()
+        self.right_layout = QVBoxLayout()
         self.of_interest_label = QLabel(&#34;Variable of interest:&#34;)
-        self.of_interest_list = QListView()
+        self.of_interest_list = DragDropListView(parent=self)
         self.of_interest_model = QStringListModel()
         self.of_interest_list.setModel(self.of_interest_model)
         self.of_interest_list.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.of_interest_list.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        right_layout.addWidget(self.of_interest_label)
-        right_layout.addWidget(self.of_interest_list)
+        self.right_layout.addWidget(self.of_interest_label)
+        self.right_layout.addWidget(self.of_interest_list)
 
         self.auxilary_label = QLabel(&#34;Auxilary Variable(s):&#34;)
-        self.auxilary_list = QListView()
+        self.auxilary_list = DragDropListView(parent=self)
         self.auxilary_model = QStringListModel()
         self.auxilary_list.setModel(self.auxilary_model)
         self.auxilary_list.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.auxilary_list.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        right_layout.addWidget(self.auxilary_label)
-        right_layout.addWidget(self.auxilary_list)
+        self.right_layout.addWidget(self.auxilary_label)
+        self.right_layout.addWidget(self.auxilary_list)
 
         self.as_factor_label = QLabel(&#34;as Factor of Auxilary Variable(s):&#34;)
-        self.as_factor_list = QListView()
+        self.as_factor_list = DragDropListView(parent=self)
         self.as_factor_model = QStringListModel()
         self.as_factor_list.setModel(self.as_factor_model)
         self.as_factor_list.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        right_layout.addWidget(self.as_factor_label)
-        right_layout.addWidget(self.as_factor_list)
+        self.right_layout.addWidget(self.as_factor_label)
+        self.right_layout.addWidget(self.as_factor_list)
+        self.as_factor_label.setVisible(False)
+        self.as_factor_list.setVisible(False)
+        self.as_factor_model.setStringList([])
         
         self.domain_label = QLabel(&#34;Domain:&#34;)
-        self.domain_list = QListView()
+        self.domain_list = DragDropListView(parent=self)
         self.domain_model = QStringListModel()
         self.domain_list.setModel(self.domain_model)
         self.domain_list.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        right_layout.addWidget(self.domain_label)
-        right_layout.addWidget(self.domain_list)
+        self.right_layout.addWidget(self.domain_label)
+        self.right_layout.addWidget(self.domain_list)
         
         self.index_label = QLabel(&#34;Index number of Area:&#34;)
-        self.index_list = QListView()
+        self.index_list = DragDropListView(parent=self)
         self.index_model = QStringListModel()
         self.index_list.setModel(self.index_model)
         self.index_list.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        right_layout.addWidget(self.index_label)
-        right_layout.addWidget(self.index_list)
+        self.right_layout.addWidget(self.index_label)
+        self.right_layout.addWidget(self.index_list)
         
         self.auxilary_vars_mean = QLabel(&#34;Auxilary Variable(s) Mean:&#34;)
-        self.auxilary_vars_mean_list = QListView()
+        self.auxilary_vars_mean_list = DragDropListView(parent=self)
         self.aux_mean_model = QStringListModel()
-        self.auxilary_vars_mean_list.setMinimumHeight(80)
         self.auxilary_vars_mean_list.setModel(self.aux_mean_model)
         self.auxilary_vars_mean_list.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        right_layout.addWidget(self.auxilary_vars_mean)
-        right_layout.addWidget(self.auxilary_vars_mean_list)
+        self.right_layout.addWidget(self.auxilary_vars_mean)
+        self.right_layout.addWidget(self.auxilary_vars_mean_list)
         
         self.population_sample_size = QLabel(&#34;Population Sample Size:&#34;)
-        self.population_sample_size_list = QListView()
+        self.population_sample_size_list = DragDropListView(parent=self)
         self.population_sample_size_model = QStringListModel()
         self.population_sample_size_list.setModel(self.population_sample_size_model)
         self.population_sample_size_list.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        right_layout.addWidget(self.population_sample_size)
-        right_layout.addWidget(self.population_sample_size_list)
+        self.right_layout.addWidget(self.population_sample_size)
+        self.right_layout.addWidget(self.population_sample_size_list)
         
         # Menambahkan layout kiri, tengah, dan kanan ke layout utama
-        split_layout.addLayout(left_layout)
-        split_layout.addLayout(middle_layout1)
-        split_layout.addLayout(middle_layout)
-        split_layout.addLayout(right_layout)
+        self.split_layout.addLayout(self.left_layout)
+        self.split_layout.addLayout(self.middle_layout1)
+        self.split_layout.addLayout(self.middle_layout)
+        self.split_layout.addLayout(self.right_layout)
 
-        scroll_layout.addLayout(split_layout)
-        scroll_area.setWidget(scroll_content)
-        main_layout.addWidget(scroll_area)
+        self.scroll_layout.addLayout(self.split_layout)
+        self.scroll_area.setWidget(self.scroll_content)
+        self.main_layout.addWidget(self.scroll_area)
 
         # Tombol untuk menghasilkan skrip R
         self.option_button = QPushButton(&#34;Option&#34;)
@@ -270,33 +329,54 @@ el.replaceWith(d);
         self.icon_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop)
 
         # Create a horizontal layout to place the text_script and icon_label in one row
-        script_layout = QHBoxLayout()
-        script_layout.addWidget(self.text_script)
-        script_layout.addWidget(self.icon_label)
+        self.toggle_script_button = QToolButton()
+        self.toggle_script_button.setIcon(QIcon(&#34;assets/more.svg&#34;))
+        self.toggle_script_button.setIconSize(QSize(16, 16))
+        self.toggle_script_button.setCheckable(True)
+        self.toggle_script_button.setChecked(False)
+        self.toggle_script_button.clicked.connect(self.toggle_r_script_visibility)
+        
+        self.button_layout = QHBoxLayout()
+        self.button_layout.addWidget(self.text_script)
+        self.button_layout.addWidget(self.toggle_script_button)
+        self.button_layout.setAlignment(self.text_script, Qt.AlignmentFlag.AlignLeft)
+        self.button_layout.setAlignment(self.toggle_script_button, Qt.AlignmentFlag.AlignLeft)
+        
+        # Create a horizontal layout to place the text_script and icon_label in one row
+        self.script_layout = QHBoxLayout()
+        self.script_layout.addLayout(self.button_layout)
+        self.script_layout.addStretch()
+        self.script_layout.addWidget(self.icon_label)
         self.icon_label.setVisible(False)
-        script_layout.setAlignment(self.text_script, Qt.AlignmentFlag.AlignLeft)
-        script_layout.setAlignment(self.icon_label, Qt.AlignmentFlag.AlignRight)
+        self.script_layout.setAlignment(self.text_script, Qt.AlignmentFlag.AlignLeft)
 
-        main_layout.addLayout(script_layout)
+        self.show_console_first_checkbox = QCheckBox(&#34;Show R Console&#34;)
+        self.show_console_first_checkbox.setChecked(False)  # default: show before
+        # Tambahkan ke layout sebelum tombol Option
+        self.main_layout.addWidget(self.show_console_first_checkbox)
+        
+        self.main_layout.addLayout(self.script_layout)
         self.option_button.clicked.connect(lambda : show_options(self))
         
         # Area teks untuk menampilkan dan mengedit skrip R
         self.r_script_edit = QTextEdit()
-        self.r_script_edit.setFixedHeight(150)
+        self.r_script_edit.setFixedHeight(round(screen_height*0.20))
+        self.r_script_edit.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         self.r_script_edit.setReadOnly(False)
-        main_layout.addWidget(self.r_script_edit)
+        self.r_script_edit.setVisible(False)
+        self.main_layout.addWidget(self.r_script_edit)
 
         # Tombol untuk tindakan dialog
-        button_layout = QHBoxLayout()
-        button_layout.setObjectName(&#34;button_layout&#34;)
+        self.button_layout = QHBoxLayout()
+        self.button_layout.setObjectName(&#34;button_layout&#34;)
         self.ok_button = QPushButton(&#34;Run Model&#34;)
         self.ok_button.setFixedWidth(150)
         self.ok_button.clicked.connect(self.accept)
-        button_layout.addWidget(self.option_button)
-        button_layout.addWidget(self.ok_button)
-        main_layout.addLayout(button_layout)
+        self.button_layout.addWidget(self.option_button)
+        self.button_layout.addWidget(self.ok_button)
+        self.main_layout.addLayout(self.button_layout)
 
-        self.setLayout(main_layout)
+        self.setLayout(self.main_layout)
 
         self.of_interest_var = []
         self.auxilary_vars = []
@@ -312,22 +392,211 @@ el.replaceWith(d);
         
         self.run_model_finished.connect(self.on_run_model_finished)
         
+        self.reply=None
         self.stop_thread = threading.Event()
         
+    def _append_console(self, text):
+        if self.console_dialog:
+            if any(char.isdigit() for char in text):
+                text = f&#34;Bootstrap={text}&#34;
+            self.console_dialog.append_text(text)
+    
+    def toggle_r_script_visibility(self):
+        &#34;&#34;&#34;
+        Toggles the visibility of the R script text edit area and updates the toggle button text.
+        &#34;&#34;&#34;
+        is_visible = self.r_script_edit.isVisible()
+        self.r_script_edit.setVisible(not is_visible)
+        if not is_visible:
+            self.toggle_script_button.setIcon(QIcon(&#34;assets/less.svg&#34;))
+        else:
+            self.toggle_script_button.setIcon(QIcon(&#34;assets/more.svg&#34;))
+    
+    def handle_drop(self, target_list, items):
+        &#34;&#34;&#34;
+        Handle drag and drop between variable lists.
+        &#34;&#34;&#34;
+        from PyQt6.QtCore import QItemSelectionModel
+
+        mapping = {
+            self.variables_list: &#34;variables&#34;,
+            self.of_interest_list: &#34;of_interest&#34;,
+            self.auxilary_list: &#34;auxilary&#34;,
+            self.as_factor_list: &#34;as_factor&#34;,
+            self.domain_list: &#34;domain&#34;,
+            self.index_list: &#34;index&#34;,
+            self.auxilary_vars_mean_list: &#34;aux_mean&#34;,
+            self.population_sample_size_list: &#34;population_sample_size&#34;
+        }
+        source_list = None
+        for lst in mapping:
+            if any(item in lst.model().stringList() for item in items):
+                source_list = lst
+                break
+
+        # Drag dari variables_list ke kanan (assign)
+        if source_list == self.variables_list:
+            if target_list == self.of_interest_list:
+                self.variables_list.clearSelection()
+                for idx, val in enumerate(self.variables_model.stringList()):
+                    if val in items:
+                        self.variables_list.selectionModel().select(
+                            self.variables_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                assign_of_interest(self)
+            elif target_list == self.auxilary_list:
+                self.variables_list.clearSelection()
+                for idx, val in enumerate(self.variables_model.stringList()):
+                    if val in items:
+                        self.variables_list.selectionModel().select(
+                            self.variables_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                assign_auxilary(self)
+            elif target_list == self.as_factor_list:
+                self.variables_list.clearSelection()
+                for idx, val in enumerate(self.variables_model.stringList()):
+                    if val in items:
+                        self.variables_list.selectionModel().select(
+                            self.variables_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                assign_as_factor(self)
+            elif target_list == self.domain_list:
+                self.variables_list.clearSelection()
+                for idx, val in enumerate(self.variables_model.stringList()):
+                    if val in items:
+                        self.variables_list.selectionModel().select(
+                            self.variables_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                assign_domains(self)
+            elif target_list == self.index_list:
+                self.variables_list.clearSelection()
+                for idx, val in enumerate(self.variables_model.stringList()):
+                    if val in items:
+                        self.variables_list.selectionModel().select(
+                            self.variables_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                assign_index(self)
+            elif target_list == self.auxilary_vars_mean_list:
+                self.variables_list.clearSelection()
+                for idx, val in enumerate(self.variables_model.stringList()):
+                    if val in items:
+                        self.variables_list.selectionModel().select(
+                            self.variables_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                assign_aux_mean(self)
+            elif target_list == self.population_sample_size_list:
+                self.variables_list.clearSelection()
+                for idx, val in enumerate(self.variables_model.stringList()):
+                    if val in items:
+                        self.variables_list.selectionModel().select(
+                            self.variables_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                assign_population_sample_size(self)
+
+        # Drag dari kanan ke variables_list (unassign)
+        elif target_list == self.variables_list:
+            if source_list == self.of_interest_list:
+                self.of_interest_list.clearSelection()
+                for idx, val in enumerate(self.of_interest_model.stringList()):
+                    if val in items:
+                        self.of_interest_list.selectionModel().select(
+                            self.of_interest_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                unassign_variable(self)
+            elif source_list == self.auxilary_list:
+                self.auxilary_list.clearSelection()
+                for idx, val in enumerate(self.auxilary_model.stringList()):
+                    if val in items:
+                        self.auxilary_list.selectionModel().select(
+                            self.auxilary_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                unassign_variable(self)
+            elif source_list == self.as_factor_list:
+                self.as_factor_list.clearSelection()
+                for idx, val in enumerate(self.as_factor_model.stringList()):
+                    if val in items:
+                        self.as_factor_list.selectionModel().select(
+                            self.as_factor_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                unassign_variable(self)
+            elif source_list == self.domain_list:
+                self.domain_list.clearSelection()
+                for idx, val in enumerate(self.domain_model.stringList()):
+                    if val in items:
+                        self.domain_list.selectionModel().select(
+                            self.domain_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                unassign_variable(self)
+            elif source_list == self.index_list:
+                self.index_list.clearSelection()
+                for idx, val in enumerate(self.index_model.stringList()):
+                    if val in items:
+                        self.index_list.selectionModel().select(
+                            self.index_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                unassign_variable(self)
+            elif source_list == self.auxilary_vars_mean_list:
+                self.auxilary_vars_mean_list.clearSelection()
+                for idx, val in enumerate(self.aux_mean_model.stringList()):
+                    if val in items:
+                        self.auxilary_vars_mean_list.selectionModel().select(
+                            self.aux_mean_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                unassign_variable(self)
+            elif source_list == self.population_sample_size_list:
+                self.population_sample_size_list.clearSelection()
+                for idx, val in enumerate(self.population_sample_size_model.stringList()):
+                    if val in items:
+                        self.population_sample_size_list.selectionModel().select(
+                            self.population_sample_size_model.index(idx),
+                            QItemSelectionModel.SelectionFlag.Select
+                        )
+                unassign_variable(self)
+    
     def closeEvent(self, event):
+        if self.console_dialog:
+            self.console_dialog.close()
         threads = threading.enumerate()
         for thread in threads:
             if thread.name == &#34;Unit Level&#34; and thread.is_alive():
-                reply = QMessageBox.question(self, &#39;Run in Background&#39;, &#39;Do you want to run the model in the background?&#39;, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
-                if reply != QMessageBox.StandardButton.Yes and not self.finnish:
+                self.parent.autosave_data()
+                if self.reply is None:
+                    self.reply = QMessageBox(self)
+                    self.reply.setWindowTitle(&#39;Run in Background&#39;)
+                    self.reply.setText(&#39;Do you want to run the model in the background?&#39;)
+                    self.reply.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+                    self.reply.setDefaultButton(QMessageBox.StandardButton.No)
+                if self.reply.exec() != QMessageBox.StandardButton.Yes and not self.finnish:
                     self.stop_thread.set()
                     self.run_model_finished.emit(&#34;Threads are stopped&#34;, True, &#34;sae_model&#34;, &#34;&#34;)
+        self.finnish=False
+        self.reply=None
         event.accept()
         
 
     def set_model(self, model):
         self.model = model
-        self.columns = [f&#34;{col} [{dtype}]&#34; if dtype == pl.Utf8 else f&#34;{col} [Numeric]&#34; for col, dtype in zip(self.model.get_data().columns, self.model.get_data().dtypes)]
+        self.columns = [
+            f&#34;{col} [{dtype}]&#34; if dtype == pl.Utf8 else
+            f&#34;{col} [NULL]&#34; if dtype == pl.Null else
+            f&#34;{col} [Categorical]&#34; if dtype == pl.Categorical else
+            f&#34;{col} [Boolean]&#34; if dtype == pl.Boolean else
+            f&#34;{col} [Numeric]&#34;
+            for col, dtype in zip(self.model.get_data().columns, self.model.get_data().dtypes)
+        ]
         self.variables_model.setStringList(self.columns)
         self.aux_mean_model.setStringList([])
         self.auxilary_model.setStringList([])
@@ -366,17 +635,28 @@ el.replaceWith(d);
         
         current_context = contextvars.copy_context()
         
+        show_console_first = self.show_console_first_checkbox.isChecked()
+        if show_console_first:
+            self.console_dialog = ConsoleDialog(self)
+            self.console_dialog.show()
+        
         def run_model_thread():
-            result, error, df = None, None, None
+            results, error, df = None, None, None
             try:
-                result, error, df = current_context.run(controller.run_model, r_script)
+                if self.console_dialog:
+                    import sys
+                    old_stdout = sys.stdout
+                    sys.stdout = ConsoleStream(self.update_console)
+                results, error, df = current_context.run(controller.run_model, r_script)
+                if self.console_dialog:
+                    sys.stdout = old_stdout
                 if not error:
                     sae_model.model2.set_data(df)
             except Exception as e:
                 error = e
             finally:
                 if not self.stop_thread.is_set():
-                    self.run_model_finished.emit(result, error, sae_model, r_script)
+                    self.run_model_finished.emit(results, error, sae_model, r_script)
                     self.finnish = True
 
         def check_run_time():
@@ -396,11 +676,17 @@ el.replaceWith(d);
         timer.timeout.connect(check_run_time)
         timer.start(60000)
     
-    def on_run_model_finished(self, result, error, sae_model, r_script):
+    def on_run_model_finished(self, results, error, sae_model, r_script):
+        if self.console_dialog:
+            self.console_dialog.stop_loading()
+            self.console_dialog.close()
         if not error:
             self.parent.update_table(2, sae_model.get_model2())
-        display_script_and_output(self.parent, r_script, result)
-        enable_service(self, error, result)
+        if self.reply is not None:
+            self.reply.reject()
+        display_script_and_output(self.parent, r_script, results)
+        self.console_dialog.close()
+        enable_service(self, error, results)
         self.finnish = True
         self.close()</code></pre>
 </details>
@@ -530,7 +816,7 @@ on_run_model_finished(result, error, sae_model, r_script): Handles the completio
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.accept"><code class="name flex">
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.accept"><code class="name flex">
 <span>def <span class="ident">accept</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -557,17 +843,28 @@ on_run_model_finished(result, error, sae_model, r_script): Handles the completio
     
     current_context = contextvars.copy_context()
     
+    show_console_first = self.show_console_first_checkbox.isChecked()
+    if show_console_first:
+        self.console_dialog = ConsoleDialog(self)
+        self.console_dialog.show()
+    
     def run_model_thread():
-        result, error, df = None, None, None
+        results, error, df = None, None, None
         try:
-            result, error, df = current_context.run(controller.run_model, r_script)
+            if self.console_dialog:
+                import sys
+                old_stdout = sys.stdout
+                sys.stdout = ConsoleStream(self.update_console)
+            results, error, df = current_context.run(controller.run_model, r_script)
+            if self.console_dialog:
+                sys.stdout = old_stdout
             if not error:
                 sae_model.model2.set_data(df)
         except Exception as e:
             error = e
         finally:
             if not self.stop_thread.is_set():
-                self.run_model_finished.emit(result, error, sae_model, r_script)
+                self.run_model_finished.emit(results, error, sae_model, r_script)
                 self.finnish = True
 
     def check_run_time():
@@ -589,7 +886,7 @@ on_run_model_finished(result, error, sae_model, r_script): Handles the completio
 </details>
 <div class="desc"><p>accept(self)</p></div>
 </dd>
-<dt id="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.closeEvent"><code class="name flex">
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.closeEvent"><code class="name flex">
 <span>def <span class="ident">closeEvent</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
@@ -598,36 +895,216 @@ on_run_model_finished(result, error, sae_model, r_script): Handles the completio
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def closeEvent(self, event):
+    if self.console_dialog:
+        self.console_dialog.close()
     threads = threading.enumerate()
     for thread in threads:
         if thread.name == &#34;Unit Level&#34; and thread.is_alive():
-            reply = QMessageBox.question(self, &#39;Run in Background&#39;, &#39;Do you want to run the model in the background?&#39;, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
-            if reply != QMessageBox.StandardButton.Yes and not self.finnish:
+            self.parent.autosave_data()
+            if self.reply is None:
+                self.reply = QMessageBox(self)
+                self.reply.setWindowTitle(&#39;Run in Background&#39;)
+                self.reply.setText(&#39;Do you want to run the model in the background?&#39;)
+                self.reply.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+                self.reply.setDefaultButton(QMessageBox.StandardButton.No)
+            if self.reply.exec() != QMessageBox.StandardButton.Yes and not self.finnish:
                 self.stop_thread.set()
                 self.run_model_finished.emit(&#34;Threads are stopped&#34;, True, &#34;sae_model&#34;, &#34;&#34;)
+    self.finnish=False
+    self.reply=None
     event.accept()</code></pre>
 </details>
 <div class="desc"><p>closeEvent(self, a0: Optional[QCloseEvent])</p></div>
 </dd>
-<dt id="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.on_run_model_finished"><code class="name flex">
-<span>def <span class="ident">on_run_model_finished</span></span>(<span>self, result, error, sae_model, r_script)</span>
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.handle_drop"><code class="name flex">
+<span>def <span class="ident">handle_drop</span></span>(<span>self, target_list, items)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def on_run_model_finished(self, result, error, sae_model, r_script):
+<pre><code class="python">def handle_drop(self, target_list, items):
+    &#34;&#34;&#34;
+    Handle drag and drop between variable lists.
+    &#34;&#34;&#34;
+    from PyQt6.QtCore import QItemSelectionModel
+
+    mapping = {
+        self.variables_list: &#34;variables&#34;,
+        self.of_interest_list: &#34;of_interest&#34;,
+        self.auxilary_list: &#34;auxilary&#34;,
+        self.as_factor_list: &#34;as_factor&#34;,
+        self.domain_list: &#34;domain&#34;,
+        self.index_list: &#34;index&#34;,
+        self.auxilary_vars_mean_list: &#34;aux_mean&#34;,
+        self.population_sample_size_list: &#34;population_sample_size&#34;
+    }
+    source_list = None
+    for lst in mapping:
+        if any(item in lst.model().stringList() for item in items):
+            source_list = lst
+            break
+
+    # Drag dari variables_list ke kanan (assign)
+    if source_list == self.variables_list:
+        if target_list == self.of_interest_list:
+            self.variables_list.clearSelection()
+            for idx, val in enumerate(self.variables_model.stringList()):
+                if val in items:
+                    self.variables_list.selectionModel().select(
+                        self.variables_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            assign_of_interest(self)
+        elif target_list == self.auxilary_list:
+            self.variables_list.clearSelection()
+            for idx, val in enumerate(self.variables_model.stringList()):
+                if val in items:
+                    self.variables_list.selectionModel().select(
+                        self.variables_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            assign_auxilary(self)
+        elif target_list == self.as_factor_list:
+            self.variables_list.clearSelection()
+            for idx, val in enumerate(self.variables_model.stringList()):
+                if val in items:
+                    self.variables_list.selectionModel().select(
+                        self.variables_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            assign_as_factor(self)
+        elif target_list == self.domain_list:
+            self.variables_list.clearSelection()
+            for idx, val in enumerate(self.variables_model.stringList()):
+                if val in items:
+                    self.variables_list.selectionModel().select(
+                        self.variables_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            assign_domains(self)
+        elif target_list == self.index_list:
+            self.variables_list.clearSelection()
+            for idx, val in enumerate(self.variables_model.stringList()):
+                if val in items:
+                    self.variables_list.selectionModel().select(
+                        self.variables_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            assign_index(self)
+        elif target_list == self.auxilary_vars_mean_list:
+            self.variables_list.clearSelection()
+            for idx, val in enumerate(self.variables_model.stringList()):
+                if val in items:
+                    self.variables_list.selectionModel().select(
+                        self.variables_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            assign_aux_mean(self)
+        elif target_list == self.population_sample_size_list:
+            self.variables_list.clearSelection()
+            for idx, val in enumerate(self.variables_model.stringList()):
+                if val in items:
+                    self.variables_list.selectionModel().select(
+                        self.variables_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            assign_population_sample_size(self)
+
+    # Drag dari kanan ke variables_list (unassign)
+    elif target_list == self.variables_list:
+        if source_list == self.of_interest_list:
+            self.of_interest_list.clearSelection()
+            for idx, val in enumerate(self.of_interest_model.stringList()):
+                if val in items:
+                    self.of_interest_list.selectionModel().select(
+                        self.of_interest_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            unassign_variable(self)
+        elif source_list == self.auxilary_list:
+            self.auxilary_list.clearSelection()
+            for idx, val in enumerate(self.auxilary_model.stringList()):
+                if val in items:
+                    self.auxilary_list.selectionModel().select(
+                        self.auxilary_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            unassign_variable(self)
+        elif source_list == self.as_factor_list:
+            self.as_factor_list.clearSelection()
+            for idx, val in enumerate(self.as_factor_model.stringList()):
+                if val in items:
+                    self.as_factor_list.selectionModel().select(
+                        self.as_factor_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            unassign_variable(self)
+        elif source_list == self.domain_list:
+            self.domain_list.clearSelection()
+            for idx, val in enumerate(self.domain_model.stringList()):
+                if val in items:
+                    self.domain_list.selectionModel().select(
+                        self.domain_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            unassign_variable(self)
+        elif source_list == self.index_list:
+            self.index_list.clearSelection()
+            for idx, val in enumerate(self.index_model.stringList()):
+                if val in items:
+                    self.index_list.selectionModel().select(
+                        self.index_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            unassign_variable(self)
+        elif source_list == self.auxilary_vars_mean_list:
+            self.auxilary_vars_mean_list.clearSelection()
+            for idx, val in enumerate(self.aux_mean_model.stringList()):
+                if val in items:
+                    self.auxilary_vars_mean_list.selectionModel().select(
+                        self.aux_mean_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            unassign_variable(self)
+        elif source_list == self.population_sample_size_list:
+            self.population_sample_size_list.clearSelection()
+            for idx, val in enumerate(self.population_sample_size_model.stringList()):
+                if val in items:
+                    self.population_sample_size_list.selectionModel().select(
+                        self.population_sample_size_model.index(idx),
+                        QItemSelectionModel.SelectionFlag.Select
+                    )
+            unassign_variable(self)</code></pre>
+</details>
+<div class="desc"><p>Handle drag and drop between variable lists.</p></div>
+</dd>
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.on_run_model_finished"><code class="name flex">
+<span>def <span class="ident">on_run_model_finished</span></span>(<span>self, results, error, sae_model, r_script)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_run_model_finished(self, results, error, sae_model, r_script):
+    if self.console_dialog:
+        self.console_dialog.stop_loading()
+        self.console_dialog.close()
     if not error:
         self.parent.update_table(2, sae_model.get_model2())
-    display_script_and_output(self.parent, r_script, result)
-    enable_service(self, error, result)
+    if self.reply is not None:
+        self.reply.reject()
+    display_script_and_output(self.parent, r_script, results)
+    self.console_dialog.close()
+    enable_service(self, error, results)
     self.finnish = True
     self.close()</code></pre>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.run_model_finished"><code class="name flex">
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.run_model_finished"><code class="name flex">
 <span>def <span class="ident">run_model_finished</span></span>(<span>...)</span>
 </code></dt>
 <dd>
@@ -645,7 +1122,7 @@ revision is the optional revision of the signal that is exported to QML.
 If it is not specified then 0 is used.
 arguments is the optional sequence of the names of the signal's arguments.</p></div>
 </dd>
-<dt id="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.set_model"><code class="name flex">
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.set_model"><code class="name flex">
 <span>def <span class="ident">set_model</span></span>(<span>self, model)</span>
 </code></dt>
 <dd>
@@ -655,7 +1132,14 @@ arguments is the optional sequence of the names of the signal's arguments.</p></
 </summary>
 <pre><code class="python">def set_model(self, model):
     self.model = model
-    self.columns = [f&#34;{col} [{dtype}]&#34; if dtype == pl.Utf8 else f&#34;{col} [Numeric]&#34; for col, dtype in zip(self.model.get_data().columns, self.model.get_data().dtypes)]
+    self.columns = [
+        f&#34;{col} [{dtype}]&#34; if dtype == pl.Utf8 else
+        f&#34;{col} [NULL]&#34; if dtype == pl.Null else
+        f&#34;{col} [Categorical]&#34; if dtype == pl.Categorical else
+        f&#34;{col} [Boolean]&#34; if dtype == pl.Boolean else
+        f&#34;{col} [Numeric]&#34;
+        for col, dtype in zip(self.model.get_data().columns, self.model.get_data().dtypes)
+    ]
     self.variables_model.setStringList(self.columns)
     self.aux_mean_model.setStringList([])
     self.auxilary_model.setStringList([])
@@ -677,6 +1161,45 @@ arguments is the optional sequence of the names of the signal's arguments.</p></
 </details>
 <div class="desc"></div>
 </dd>
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.toggle_r_script_visibility"><code class="name flex">
+<span>def <span class="ident">toggle_r_script_visibility</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def toggle_r_script_visibility(self):
+    &#34;&#34;&#34;
+    Toggles the visibility of the R script text edit area and updates the toggle button text.
+    &#34;&#34;&#34;
+    is_visible = self.r_script_edit.isVisible()
+    self.r_script_edit.setVisible(not is_visible)
+    if not is_visible:
+        self.toggle_script_button.setIcon(QIcon(&#34;assets/less.svg&#34;))
+    else:
+        self.toggle_script_button.setIcon(QIcon(&#34;assets/more.svg&#34;))</code></pre>
+</details>
+<div class="desc"><p>Toggles the visibility of the R script text edit area and updates the toggle button text.</p></div>
+</dd>
+<dt id="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.update_console"><code class="name flex">
+<span>def <span class="ident">update_console</span></span>(<span>...)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>pyqtSignal(*types, name: str = &hellip;, revision: int = &hellip;, arguments: Sequence = &hellip;) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.
+Each type is either a
+type object or a string that is the name of a C++ type.
+Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.
+If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal's arguments.</p></div>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -689,19 +1212,29 @@ arguments is the optional sequence of the names of the signal's arguments.</p></
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.view.components" href="index.html">sip-sae.view.components</a></code></li>
+<li><code><a title="saePisan.view.components" href="index.html">saePisan.view.components</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog" href="#sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog">ModelingSaeUnitDialog</a></code></h4>
+<h4><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ConsoleStream" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ConsoleStream">ConsoleStream</a></code></h4>
 <ul class="">
-<li><code><a title="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.accept" href="#sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.accept">accept</a></code></li>
-<li><code><a title="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.closeEvent" href="#sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.closeEvent">closeEvent</a></code></li>
-<li><code><a title="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.on_run_model_finished" href="#sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.on_run_model_finished">on_run_model_finished</a></code></li>
-<li><code><a title="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.run_model_finished" href="#sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.run_model_finished">run_model_finished</a></code></li>
-<li><code><a title="sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.set_model" href="#sip-sae.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.set_model">set_model</a></code></li>
+<li><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ConsoleStream.flush" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ConsoleStream.flush">flush</a></code></li>
+<li><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ConsoleStream.write" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ConsoleStream.write">write</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog">ModelingSaeUnitDialog</a></code></h4>
+<ul class="">
+<li><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.accept" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.accept">accept</a></code></li>
+<li><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.closeEvent" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.closeEvent">closeEvent</a></code></li>
+<li><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.handle_drop" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.handle_drop">handle_drop</a></code></li>
+<li><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.on_run_model_finished" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.on_run_model_finished">on_run_model_finished</a></code></li>
+<li><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.run_model_finished" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.run_model_finished">run_model_finished</a></code></li>
+<li><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.set_model" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.set_model">set_model</a></code></li>
+<li><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.toggle_r_script_visibility" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.toggle_r_script_visibility">toggle_r_script_visibility</a></code></li>
+<li><code><a title="saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.update_console" href="#saePisan.view.components.ModelingSaeEblupUnitDialog.ModelingSaeUnitDialog.update_console">update_console</a></code></li>
 </ul>
 </li>
 </ul>
@@ -710,7 +1243,7 @@ arguments is the optional sequence of the names of the signal's arguments.</p></
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

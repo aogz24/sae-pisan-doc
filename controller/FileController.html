@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.controller.FileController API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.controller.FileController API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.controller.FileController</code></h1>
+<h1 class="title">Module <code>saePisan.controller.FileController</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,7 +46,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sip-sae.controller.FileController.FileController"><code class="flex name class">
+<dt id="saePisan.controller.FileController.FileController"><code class="flex name class">
 <span>class <span class="ident">FileController</span></span>
 <span>(</span><span>model1, model2, view)</span>
 </code></dt>
@@ -94,20 +94,22 @@ el.replaceWith(d);
         self.view.save_data_output_action.triggered.connect(self.save_data_output)
         self.view.actionLoad_file.triggered.connect(self.load_file)
         self.view.actionSave_Data.triggered.connect(self.save_data)
-        self.view.save_output_pdf.triggered.connect(self.export_output_to_pdf)  
+        self.view.save_output_pdf.triggered.connect(self.export_output_to_pdf)
+        self.view.recent_data.triggered.connect(self.view.load_temp_data)
+        self.view.load_secondary_data.triggered.connect(self.load_secondary_data)  
 
-    def load_file(self):
-        &#34;&#34;&#34;Muat file CSV atau Excel ke model pertama.&#34;&#34;&#34;
+    def open_file(self):
+        &#34;&#34;&#34;Open file CSV, Excel, atau Text and load to first model&#34;&#34;&#34;
         file_path, selected_filter = QFileDialog.getOpenFileName(
             self.view, &#34;Open File&#34;, &#34;&#34;,
-            &#34;CSV Files (*.csv);;Excel Files (*.xlsx)&#34;
+            &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;Text Files (*.txt);;TSV Files (*.tsv);;JSON Files (*.json)&#34;
         )
 
         if not file_path:  # Jika file tidak dipilih
             return
 
         try:
-            if selected_filter == &#34;CSV Files (*.csv)&#34;:
+            if selected_filter in [&#34;CSV Files (*.csv)&#34;, &#34;Text Files (*.txt)&#34;, &#34;TSV Files (*.tsv)&#34;]:
                 dialog = CSVOptionsDialog(self.view)
                 dialog.file_path = file_path
                 dialog.file_label.setText(f&#34;Selected: {file_path}&#34;)
@@ -116,6 +118,9 @@ el.replaceWith(d);
 
                 if not file_path:  # Jika file tidak dipilih
                     return
+                
+                if separator == r&#34;\t&#34;:  # Jika input adalah string literal &#34;\t&#34;
+                    separator = &#34;\t&#34;
 
                 # Baca data dari CSV dengan atau tanpa header
                 if header:
@@ -123,21 +128,106 @@ el.replaceWith(d);
                 else:
                     data = pl.read_csv(file_path, separator=separator, ignore_errors=True, has_header=False, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;])
                     data.columns = [f&#34;Column {i+1}&#34; for i in range(data.shape[1])]
+            
             elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+                dialog = ExcelOptionsDialog(self.view)
+                dialog.file_path = file_path
                 import pandas as pd
-                sheet_names = pd.ExcelFile(file_path).sheet_names
-                sheet_name, ok = QInputDialog.getItem(self.view, &#34;Select Sheet&#34;, &#34;Sheet:&#34;, sheet_names, 0, False)
-                if not ok:
+                xls = pd.ExcelFile(file_path)
+                dialog.sheet_names = xls.sheet_names
+                dialog.sheet_combo.addItems(dialog.sheet_names)
+                dialog.file_label.setText(f&#34;Selected: {file_path}&#34;)
+                dialog.update_preview()
+                
+                file_path, selected_sheet, hdr = dialog.get_excel_options()
+                
+                if not file_path or not selected_sheet:  # Jika file tidak dipilih
                     return
-                data = pl.read_excel(file_path, sheet_name=sheet_name)
-
-            self.model1.set_data(data)
-            self.view.update_table(1, self.model1)
+                data = pl.read_excel(file_path, sheet_name=selected_sheet, has_header=hdr)
+                
+            elif selected_filter == &#34;JSON Files (*.json)&#34;:
+                data = pl.read_json(file_path)
+            
+            return data
         except Exception as e:
             QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to load file: {str(e)}&#34;)
+    
+    def load_file(self):
+        &#34;&#34;&#34;Load file CSV, Excel, atau Text to first model (Sheet 1) and update tabel.&#34;&#34;&#34;
+        data = self.open_file()
+        if data is None:
+            return
+        else:    
+            self.model1.set_data(data)
+            self.view.update_table(1, self.model1)
+            QMessageBox.information(self.view, &#34;Success&#34;, &#34;File loaded successfully!&#34;)
+            self.view.autosave_data()
+        
+    
+    def load_secondary_data(self):
+        &#34;&#34;&#34;_summary_
+        Load file CSV, Excel, atau Text to first model (Sheet 2) for secondary data and update tabel.
+        &#34;&#34;&#34;
+        main_df = self.model1.get_data()
+        if main_df is None:
+            QMessageBox.warning(self.view, &#34;Warning&#34;, &#34;No data loaded in Sheet 1. Please load data first.&#34;)
+            return
+        data = self.open_file()
+        if data is None:
+            return
 
+        class MergeOptionDialog(QDialog):
+            def __init__(self, parent=None):
+                super().__init__(parent)
+                self.setWindowTitle(&#34;Select Merge Method&#34;)
+                layout = QVBoxLayout(self)
+                label = QLabel(&#34;Select data merge method:&#34;, self)
+                self.combo = QComboBox(self)
+                self.combo.addItems([&#34;Horizontal&#34;, &#34;Diagonal&#34;])
+                explanation = QLabel(
+                    &#34;&lt;b&gt;Explanation:&lt;/b&gt;&lt;br&gt;&#34;
+                    &#34;&lt;b&gt;Horizontal (Merge Columns):&lt;/b&gt; Combines data horizontally by adding columns from the second file to the main file. &#34;
+                    &#34;If there are columns with the same name, the columns from the second file will be suffixed with &#39;_duplicate&#39;.&lt;br&gt;&lt;br&gt;&#34;
+                    &#34;&lt;b&gt;Diagonal (Merge ColRows):&lt;/b&gt; Combines data vertically by adding rows where column has same name and adding columns where column has different name from the second file to the main file. &#34;
+                    &#34;If the number of columns is different, the columns will be automatically adjusted.&#34;
+                )
+                explanation.setWordWrap(True)
+                ok_btn = QPushButton(&#34;OK&#34;, self)
+                ok_btn.clicked.connect(self.accept)
+                layout.addWidget(label)
+                layout.addWidget(self.combo)
+                layout.addWidget(ok_btn)
+                layout.addWidget(explanation)
+                layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+                self.setLayout(layout)
+
+            def get_option(self):
+                return self.combo.currentIndex()
+
+        dialog = MergeOptionDialog(self.view)
+        if dialog.exec():
+            option = dialog.get_option()
+        else:
+            return
+        if option == 0:
+            common_cols = set(main_df.columns) &amp; set(data.columns)
+            rename_map = {col: f&#34;{col}_duplicate&#34; for col in common_cols}
+            data = data.rename(rename_map)
+            merged_data = pl.concat([main_df, data], how=&#34;horizontal&#34;)
+        else:
+            for col in set(main_df.columns) &amp; set(data.columns):
+                main_dtype = main_df[col].dtype
+                try:
+                    data = data.with_columns(pl.col(col).cast(main_dtype, strict=False))
+                except Exception as e:
+                    QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to cast column &#39;{col}&#39;: {e}&#34;)
+            merged_data = pl.concat([main_df, data], how=&#34;diagonal&#34;)
+        self.model1.set_data(merged_data)
+        self.view.update_table(1, self.model1)
+        self.view.autosave_data()
+        
     def save_data(self):
-        &#34;&#34;&#34;Simpan data dari model pertama (Sheet 1).&#34;&#34;&#34;
+        &#34;&#34;&#34;Save data from the first model (Sheet 1).&#34;&#34;&#34;
         file_path, selected_filter = QFileDialog.getSaveFileName(
             self.view, &#34;Save File&#34;, &#34;&#34;,
             &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
@@ -160,7 +250,7 @@ el.replaceWith(d);
                 QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)
 
     def save_data_output(self):
-        &#34;&#34;&#34;Simpan data dari model kedua (Sheet 2).&#34;&#34;&#34;
+        &#34;&#34;&#34;Save data from the first model (Sheet 1).&#34;&#34;&#34;
         file_path, selected_filter = QFileDialog.getSaveFileName(
             self.view, &#34;Save Output Data&#34;, &#34;&#34;,
             &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
@@ -183,92 +273,175 @@ el.replaceWith(d);
                 QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)
 
     def save_as_csv(self, file_path, model):
-        &#34;&#34;&#34;Simpan data sebagai CSV.&#34;&#34;&#34;
+        &#34;&#34;&#34;Save data as CSV.&#34;&#34;&#34;
         data = model.get_data()
         data.write_csv(file_path)
 
     def save_as_excel(self, file_path, model):
-        &#34;&#34;&#34;Simpan data sebagai Excel.&#34;&#34;&#34;
+        &#34;&#34;&#34;Save data as Excel.&#34;&#34;&#34;
         data = model.get_data()
         data.write_excel(file_path)
 
     def save_as_json(self, file_path, model):
-        &#34;&#34;&#34;Simpan data sebagai JSON.&#34;&#34;&#34;
+        &#34;&#34;&#34;Save data as JSON.&#34;&#34;&#34;
         data = model.get_data()
         data.write_json(file_path, orient=&#34;records&#34;, lines=True)
 
     def save_as_txt(self, file_path, model):
-        &#34;&#34;&#34;Simpan data sebagai file teks.&#34;&#34;&#34;
+        &#34;&#34;&#34;Save data as file teks.&#34;&#34;&#34;
         data = model.get_data()
         data.write_csv(file_path, separator=&#34;\t&#34;)
-    
+
+
     def export_output_to_pdf(self):
-        &#34;&#34;&#34;Export the content of all widgets in the output layout to a PDF file.&#34;&#34;&#34;
+        &#34;&#34;&#34;Export the content of all widgets in the output layout to a PDF file (menggunakan reportlab untuk tabel).&#34;&#34;&#34;
         file_path, _ = QFileDialog.getSaveFileName(
             self.view, &#34;Save PDF&#34;, &#34;&#34;, &#34;PDF Files (*.pdf)&#34;
         )
 
         if not file_path:
             return
-
-        pdf_writer = QPdfWriter(file_path)
-        painter = QPainter(pdf_writer)
-
-        # Convert cm to points (1 cm = 28.3465 points)
-        top_margin = 4 * 28.3465
-        side_margin = 3 * 28.3465
-
-        y_offset = top_margin
-        page_height = pdf_writer.height()
-        page_width = pdf_writer.width()
-
-        def draw_text_multiline(text, y_offset):
-            &#34;&#34;&#34;Helper function to split text and draw it across multiple pages if needed.&#34;&#34;&#34;
-            font_metrics = painter.fontMetrics()
-            line_height = font_metrics.lineSpacing()
-            lines = text.splitlines()
-            for line in lines:
-                if y_offset + line_height &gt; page_height - top_margin:
-                    pdf_writer.newPage()
-                    y_offset = top_margin
-                painter.drawText(QRectF(side_margin, y_offset, page_width - 2 * side_margin, line_height),
-                                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, line)
-                y_offset += line_height
-            return y_offset
-
+        
+        def add_footer(canvas, doc):
+            canvas.saveState()
+            import datetime
+            timestamp = datetime.datetime.now().strftime(&#34;%H:%M:%S %d-%m-%Y&#34;)
+            footer_text = f&#34;Generated by saePisan at {timestamp}&#34;
+            canvas.setFont(&#34;Helvetica-Oblique&#34;, 8)
+            width, height = A4
+            canvas.drawRightString(width - 30, 20, footer_text)
+            canvas.restoreState()
+        
+        doc = SimpleDocTemplate(
+            file_path, pagesize=A4, leftMargin=30, rightMargin=30, topMargin=40, bottomMargin=40
+        )
+        frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id=&#39;normal&#39;)
+        doc.addPageTemplates([PageTemplate(id=&#39;footer&#39;, frames=frame, onPage=add_footer)])
+        
+        elements = []
+        styles = getSampleStyleSheet()
+        normal_style = styles[&#34;Normal&#34;]
+        
         for i in range(self.view.output_layout.count()):
-            widget = self.view.output_layout.itemAt(i).widget()
+            item = self.view.output_layout.itemAt(i)
+            widget = item.widget()
+            if widget is None:
+                continue
+
             if isinstance(widget, QFrame):
                 for j in range(widget.layout().count()):
                     sub_widget = widget.layout().itemAt(j).widget()
-                    if isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Script R:&lt;/b&gt;&#34; in sub_widget.text():
+                    if isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;R Script:&lt;/b&gt;&#34; in sub_widget.text():
                         script_box = widget.layout().itemAt(j + 1).widget()
                         text = script_box.toPlainText()
-                        y_offset = draw_text_multiline(text, y_offset)
-                    elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Output:&lt;/b&gt;&#34; in sub_widget.text():
+                        elements.append(Paragraph(&#34;R Script:&#34;, styles[&#34;Heading4&#34;]))
+                        script_style = ParagraphStyle(
+                            name=&#34;ScriptStyle&#34;,
+                            parent=styles[&#34;Normal&#34;],
+                            fontName=&#34;Courier&#34;,
+                            fontSize=9,
+                            leading=12,
+                        )
+                        elements.append(Paragraph(text.replace(&#34;\n&#34;, &#34;&lt;br/&gt;&#34;), script_style))
+                        elements.append(Spacer(1, 12))
+                    elif isinstance(sub_widget, QLabel) and &#34;Output&#34; in sub_widget.text():
                         result_box = widget.layout().itemAt(j + 1).widget()
-                        text = result_box.toPlainText()
-                        y_offset = draw_text_multiline(text, y_offset)
+                        if isinstance(result_box, QTextEdit):
+                            text = result_box.toPlainText()
+                            elements.append(Paragraph(&#34;Output:&#34;, styles[&#34;Heading4&#34;]))
+                            elements.append(Paragraph(text.replace(&#34;\n&#34;, &#34;&lt;br/&gt;&#34;), normal_style))
+                            elements.append(Spacer(1, 12))
+                        else:
+                            elements.append(Paragraph(&#34;Output:&#34;, styles[&#34;Heading4&#34;]))
+                            elements.append(Spacer(1, 12))
+                    elif isinstance(sub_widget, QTableView):
+                        model = sub_widget.model()
+                        if model:
+                            columns = [model.headerData(col, Qt.Orientation.Horizontal) for col in range(model.columnCount())]
+                            data_rows = []
+                            max_col_lens = [len(str(col)) for col in columns]
+                            for row in range(model.rowCount()):
+                                row_data = []
+                                for row in range(model.rowCount()):
+                                    row_data = []
+                                    for col in range(model.columnCount()):
+                                        index = model.index(row, col)
+                                        value = model.data(index)
+                                        value_str = str(value)
+                                        try:
+                                            float_val = float(value)
+                                            if &#39;.&#39; in value_str and len(value_str) &gt; max_col_lens[col]:
+                                                value_str = f&#34;{float_val:.5f}&#34;
+                                        except Exception:
+                                            pass
+                                        row_data.append(value_str)
+                                        if len(value_str) &gt; max_col_lens[col]:
+                                            max_col_lens[col] = len(value_str)
+                                    data_rows.append(row_data)
+                            if data_rows:
+                                table_data = [columns] + data_rows
+                                total_len = sum(max_col_lens)
+                                max_width = doc.width
+                                col_widths = [
+                                    max(40, (l / total_len) * max_width) for l in max_col_lens
+                                ]
+                                table = Table(table_data, repeatRows=1, colWidths=col_widths)
+                                table.setStyle(TableStyle([
+                                    (&#39;BACKGROUND&#39;, (0, 0), (-1, 0), colors.lightgrey),
+                                    (&#39;TEXTCOLOR&#39;, (0, 0), (-1, 0), colors.black),
+                                    (&#39;ALIGN&#39;, (0, 0), (-1, -1), &#39;LEFT&#39;),
+                                    (&#39;FONTNAME&#39;, (0, 0), (-1, 0), &#39;Helvetica-Bold&#39;),
+                                    (&#39;FONTSIZE&#39;, (0, 0), (-1, -1), 8),
+                                    (&#39;BOTTOMPADDING&#39;, (0, 0), (-1, 0), 6),
+                                    (&#39;GRID&#39;, (0, 0), (-1, -1), 0.5, colors.grey),
+                                    (&#39;VALIGN&#39;, (0, 0), (-1, -1), &#39;TOP&#39;),
+                                ]))
+                                elements.append(table)
+                                elements.append(Spacer(1, 12))
                     elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Plot:&lt;/b&gt;&#34; in sub_widget.text():
                         for k in range(j + 1, widget.layout().count()):
                             plot_label = widget.layout().itemAt(k).widget()
                             if isinstance(plot_label, QLabel):
-                                image = plot_label.pixmap().toImage()
-                                image_height = image.height() * (page_width - 2 * side_margin) / image.width()
-                                if y_offset + image_height &gt; page_height - top_margin:
-                                    pdf_writer.newPage()
-                                    y_offset = top_margin
-                                rect = QRectF(side_margin, y_offset, page_width - 2 * side_margin, image_height)
-                                painter.drawImage(rect, image)
-                                y_offset += image_height
+                                pixmap = plot_label.pixmap()
+                                if pixmap:
+                                    buffer = QBuffer()
+                                    buffer.open(QIODevice.OpenModeFlag.ReadWrite)
+                                    pixmap.toImage().save(buffer, &#34;PNG&#34;)
+                                    buffer.seek(0)
+                                    # Resize image to fit page width if needed
+                                    img_width = min(400, doc.width)
+                                    img_height = 250 * (img_width / 400)  # maintain aspect ratio
+                                    img = Image(io.BytesIO(buffer.data()), width=img_width, height=img_height)
+                                    elements.append(img)
+                                    elements.append(Spacer(1, 12))
+                    elif isinstance(sub_widget, QLabel):
+                        text = sub_widget.text().replace(&#34;&lt;b&gt;&#34;, &#34;&#34;).replace(&#34;&lt;/b&gt;&#34;, &#34;&#34;)
+                        text = text.replace(&#34;&lt;i&gt;&#34;, &#34;&#34;).replace(&#34;&lt;/i&gt;&#34;, &#34;&#34;)
+                        if &#34;Summary of&#34; in sub_widget.text():
+                            summary_style = ParagraphStyle(
+                                name=&#34;SummaryHeading&#34;,
+                                parent=styles[&#34;Heading1&#34;],
+                                alignment=TA_CENTER,
+                                fontName=&#34;Helvetica-Bold&#34;
+                            )
+                            elements.append(Paragraph(text, summary_style))
+                            elements.append(Spacer(1, 12))
+                        elif &#34;Generated on&#34; in sub_widget.text():
+                            generated_style = ParagraphStyle(
+                                name=&#34;GeneratedHeading&#34;,
+                                parent=styles[&#34;Normal&#34;],
+                                alignment=2,
+                                fontName=&#34;Helvetica-Oblique&#34;,  # Italic
+                                fontSize=10,
+                                textColor=colors.black
+                            )
+                            elements.append(Paragraph(text, generated_style))
+                            elements.append(Spacer(1, 12))
+                        else:
+                            elements.append(Paragraph(text, normal_style))
+                            elements.append(Spacer(1, 12))
 
-            # Check if y_offset exceeds page height for next widget
-            if y_offset &gt; page_height - top_margin:
-                pdf_writer.newPage()
-                y_offset = top_margin
-
-        painter.end()
-
+        doc.build(elements)
         QMessageBox.information(self.view, &#34;Success&#34;, &#34;PDF exported successfully!&#34;)</code></pre>
 </details>
 <div class="desc"><p>Controller class to handle file operations such as loading, saving, and exporting data.</p>
@@ -302,7 +475,7 @@ export_output_to_pdf():
 Exports the content of all widgets in the output layout to a PDF file.</p></div>
 <h3>Methods</h3>
 <dl>
-<dt id="sip-sae.controller.FileController.FileController.export_output_to_pdf"><code class="name flex">
+<dt id="saePisan.controller.FileController.FileController.export_output_to_pdf"><code class="name flex">
 <span>def <span class="ident">export_output_to_pdf</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -311,77 +484,159 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def export_output_to_pdf(self):
-    &#34;&#34;&#34;Export the content of all widgets in the output layout to a PDF file.&#34;&#34;&#34;
+    &#34;&#34;&#34;Export the content of all widgets in the output layout to a PDF file (menggunakan reportlab untuk tabel).&#34;&#34;&#34;
     file_path, _ = QFileDialog.getSaveFileName(
         self.view, &#34;Save PDF&#34;, &#34;&#34;, &#34;PDF Files (*.pdf)&#34;
     )
 
     if not file_path:
         return
-
-    pdf_writer = QPdfWriter(file_path)
-    painter = QPainter(pdf_writer)
-
-    # Convert cm to points (1 cm = 28.3465 points)
-    top_margin = 4 * 28.3465
-    side_margin = 3 * 28.3465
-
-    y_offset = top_margin
-    page_height = pdf_writer.height()
-    page_width = pdf_writer.width()
-
-    def draw_text_multiline(text, y_offset):
-        &#34;&#34;&#34;Helper function to split text and draw it across multiple pages if needed.&#34;&#34;&#34;
-        font_metrics = painter.fontMetrics()
-        line_height = font_metrics.lineSpacing()
-        lines = text.splitlines()
-        for line in lines:
-            if y_offset + line_height &gt; page_height - top_margin:
-                pdf_writer.newPage()
-                y_offset = top_margin
-            painter.drawText(QRectF(side_margin, y_offset, page_width - 2 * side_margin, line_height),
-                            Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, line)
-            y_offset += line_height
-        return y_offset
-
+    
+    def add_footer(canvas, doc):
+        canvas.saveState()
+        import datetime
+        timestamp = datetime.datetime.now().strftime(&#34;%H:%M:%S %d-%m-%Y&#34;)
+        footer_text = f&#34;Generated by saePisan at {timestamp}&#34;
+        canvas.setFont(&#34;Helvetica-Oblique&#34;, 8)
+        width, height = A4
+        canvas.drawRightString(width - 30, 20, footer_text)
+        canvas.restoreState()
+    
+    doc = SimpleDocTemplate(
+        file_path, pagesize=A4, leftMargin=30, rightMargin=30, topMargin=40, bottomMargin=40
+    )
+    frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id=&#39;normal&#39;)
+    doc.addPageTemplates([PageTemplate(id=&#39;footer&#39;, frames=frame, onPage=add_footer)])
+    
+    elements = []
+    styles = getSampleStyleSheet()
+    normal_style = styles[&#34;Normal&#34;]
+    
     for i in range(self.view.output_layout.count()):
-        widget = self.view.output_layout.itemAt(i).widget()
+        item = self.view.output_layout.itemAt(i)
+        widget = item.widget()
+        if widget is None:
+            continue
+
         if isinstance(widget, QFrame):
             for j in range(widget.layout().count()):
                 sub_widget = widget.layout().itemAt(j).widget()
-                if isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Script R:&lt;/b&gt;&#34; in sub_widget.text():
+                if isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;R Script:&lt;/b&gt;&#34; in sub_widget.text():
                     script_box = widget.layout().itemAt(j + 1).widget()
                     text = script_box.toPlainText()
-                    y_offset = draw_text_multiline(text, y_offset)
-                elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Output:&lt;/b&gt;&#34; in sub_widget.text():
+                    elements.append(Paragraph(&#34;R Script:&#34;, styles[&#34;Heading4&#34;]))
+                    script_style = ParagraphStyle(
+                        name=&#34;ScriptStyle&#34;,
+                        parent=styles[&#34;Normal&#34;],
+                        fontName=&#34;Courier&#34;,
+                        fontSize=9,
+                        leading=12,
+                    )
+                    elements.append(Paragraph(text.replace(&#34;\n&#34;, &#34;&lt;br/&gt;&#34;), script_style))
+                    elements.append(Spacer(1, 12))
+                elif isinstance(sub_widget, QLabel) and &#34;Output&#34; in sub_widget.text():
                     result_box = widget.layout().itemAt(j + 1).widget()
-                    text = result_box.toPlainText()
-                    y_offset = draw_text_multiline(text, y_offset)
+                    if isinstance(result_box, QTextEdit):
+                        text = result_box.toPlainText()
+                        elements.append(Paragraph(&#34;Output:&#34;, styles[&#34;Heading4&#34;]))
+                        elements.append(Paragraph(text.replace(&#34;\n&#34;, &#34;&lt;br/&gt;&#34;), normal_style))
+                        elements.append(Spacer(1, 12))
+                    else:
+                        elements.append(Paragraph(&#34;Output:&#34;, styles[&#34;Heading4&#34;]))
+                        elements.append(Spacer(1, 12))
+                elif isinstance(sub_widget, QTableView):
+                    model = sub_widget.model()
+                    if model:
+                        columns = [model.headerData(col, Qt.Orientation.Horizontal) for col in range(model.columnCount())]
+                        data_rows = []
+                        max_col_lens = [len(str(col)) for col in columns]
+                        for row in range(model.rowCount()):
+                            row_data = []
+                            for row in range(model.rowCount()):
+                                row_data = []
+                                for col in range(model.columnCount()):
+                                    index = model.index(row, col)
+                                    value = model.data(index)
+                                    value_str = str(value)
+                                    try:
+                                        float_val = float(value)
+                                        if &#39;.&#39; in value_str and len(value_str) &gt; max_col_lens[col]:
+                                            value_str = f&#34;{float_val:.5f}&#34;
+                                    except Exception:
+                                        pass
+                                    row_data.append(value_str)
+                                    if len(value_str) &gt; max_col_lens[col]:
+                                        max_col_lens[col] = len(value_str)
+                                data_rows.append(row_data)
+                        if data_rows:
+                            table_data = [columns] + data_rows
+                            total_len = sum(max_col_lens)
+                            max_width = doc.width
+                            col_widths = [
+                                max(40, (l / total_len) * max_width) for l in max_col_lens
+                            ]
+                            table = Table(table_data, repeatRows=1, colWidths=col_widths)
+                            table.setStyle(TableStyle([
+                                (&#39;BACKGROUND&#39;, (0, 0), (-1, 0), colors.lightgrey),
+                                (&#39;TEXTCOLOR&#39;, (0, 0), (-1, 0), colors.black),
+                                (&#39;ALIGN&#39;, (0, 0), (-1, -1), &#39;LEFT&#39;),
+                                (&#39;FONTNAME&#39;, (0, 0), (-1, 0), &#39;Helvetica-Bold&#39;),
+                                (&#39;FONTSIZE&#39;, (0, 0), (-1, -1), 8),
+                                (&#39;BOTTOMPADDING&#39;, (0, 0), (-1, 0), 6),
+                                (&#39;GRID&#39;, (0, 0), (-1, -1), 0.5, colors.grey),
+                                (&#39;VALIGN&#39;, (0, 0), (-1, -1), &#39;TOP&#39;),
+                            ]))
+                            elements.append(table)
+                            elements.append(Spacer(1, 12))
                 elif isinstance(sub_widget, QLabel) and &#34;&lt;b&gt;Plot:&lt;/b&gt;&#34; in sub_widget.text():
                     for k in range(j + 1, widget.layout().count()):
                         plot_label = widget.layout().itemAt(k).widget()
                         if isinstance(plot_label, QLabel):
-                            image = plot_label.pixmap().toImage()
-                            image_height = image.height() * (page_width - 2 * side_margin) / image.width()
-                            if y_offset + image_height &gt; page_height - top_margin:
-                                pdf_writer.newPage()
-                                y_offset = top_margin
-                            rect = QRectF(side_margin, y_offset, page_width - 2 * side_margin, image_height)
-                            painter.drawImage(rect, image)
-                            y_offset += image_height
+                            pixmap = plot_label.pixmap()
+                            if pixmap:
+                                buffer = QBuffer()
+                                buffer.open(QIODevice.OpenModeFlag.ReadWrite)
+                                pixmap.toImage().save(buffer, &#34;PNG&#34;)
+                                buffer.seek(0)
+                                # Resize image to fit page width if needed
+                                img_width = min(400, doc.width)
+                                img_height = 250 * (img_width / 400)  # maintain aspect ratio
+                                img = Image(io.BytesIO(buffer.data()), width=img_width, height=img_height)
+                                elements.append(img)
+                                elements.append(Spacer(1, 12))
+                elif isinstance(sub_widget, QLabel):
+                    text = sub_widget.text().replace(&#34;&lt;b&gt;&#34;, &#34;&#34;).replace(&#34;&lt;/b&gt;&#34;, &#34;&#34;)
+                    text = text.replace(&#34;&lt;i&gt;&#34;, &#34;&#34;).replace(&#34;&lt;/i&gt;&#34;, &#34;&#34;)
+                    if &#34;Summary of&#34; in sub_widget.text():
+                        summary_style = ParagraphStyle(
+                            name=&#34;SummaryHeading&#34;,
+                            parent=styles[&#34;Heading1&#34;],
+                            alignment=TA_CENTER,
+                            fontName=&#34;Helvetica-Bold&#34;
+                        )
+                        elements.append(Paragraph(text, summary_style))
+                        elements.append(Spacer(1, 12))
+                    elif &#34;Generated on&#34; in sub_widget.text():
+                        generated_style = ParagraphStyle(
+                            name=&#34;GeneratedHeading&#34;,
+                            parent=styles[&#34;Normal&#34;],
+                            alignment=2,
+                            fontName=&#34;Helvetica-Oblique&#34;,  # Italic
+                            fontSize=10,
+                            textColor=colors.black
+                        )
+                        elements.append(Paragraph(text, generated_style))
+                        elements.append(Spacer(1, 12))
+                    else:
+                        elements.append(Paragraph(text, normal_style))
+                        elements.append(Spacer(1, 12))
 
-        # Check if y_offset exceeds page height for next widget
-        if y_offset &gt; page_height - top_margin:
-            pdf_writer.newPage()
-            y_offset = top_margin
-
-    painter.end()
-
+    doc.build(elements)
     QMessageBox.information(self.view, &#34;Success&#34;, &#34;PDF exported successfully!&#34;)</code></pre>
 </details>
-<div class="desc"><p>Export the content of all widgets in the output layout to a PDF file.</p></div>
+<div class="desc"><p>Export the content of all widgets in the output layout to a PDF file (menggunakan reportlab untuk tabel).</p></div>
 </dd>
-<dt id="sip-sae.controller.FileController.FileController.load_file"><code class="name flex">
+<dt id="saePisan.controller.FileController.FileController.load_file"><code class="name flex">
 <span>def <span class="ident">load_file</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -390,17 +645,111 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_file(self):
-    &#34;&#34;&#34;Muat file CSV atau Excel ke model pertama.&#34;&#34;&#34;
+    &#34;&#34;&#34;Load file CSV, Excel, atau Text to first model (Sheet 1) and update tabel.&#34;&#34;&#34;
+    data = self.open_file()
+    if data is None:
+        return
+    else:    
+        self.model1.set_data(data)
+        self.view.update_table(1, self.model1)
+        QMessageBox.information(self.view, &#34;Success&#34;, &#34;File loaded successfully!&#34;)
+        self.view.autosave_data()</code></pre>
+</details>
+<div class="desc"><p>Load file CSV, Excel, atau Text to first model (Sheet 1) and update tabel.</p></div>
+</dd>
+<dt id="saePisan.controller.FileController.FileController.load_secondary_data"><code class="name flex">
+<span>def <span class="ident">load_secondary_data</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_secondary_data(self):
+    &#34;&#34;&#34;_summary_
+    Load file CSV, Excel, atau Text to first model (Sheet 2) for secondary data and update tabel.
+    &#34;&#34;&#34;
+    main_df = self.model1.get_data()
+    if main_df is None:
+        QMessageBox.warning(self.view, &#34;Warning&#34;, &#34;No data loaded in Sheet 1. Please load data first.&#34;)
+        return
+    data = self.open_file()
+    if data is None:
+        return
+
+    class MergeOptionDialog(QDialog):
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.setWindowTitle(&#34;Select Merge Method&#34;)
+            layout = QVBoxLayout(self)
+            label = QLabel(&#34;Select data merge method:&#34;, self)
+            self.combo = QComboBox(self)
+            self.combo.addItems([&#34;Horizontal&#34;, &#34;Diagonal&#34;])
+            explanation = QLabel(
+                &#34;&lt;b&gt;Explanation:&lt;/b&gt;&lt;br&gt;&#34;
+                &#34;&lt;b&gt;Horizontal (Merge Columns):&lt;/b&gt; Combines data horizontally by adding columns from the second file to the main file. &#34;
+                &#34;If there are columns with the same name, the columns from the second file will be suffixed with &#39;_duplicate&#39;.&lt;br&gt;&lt;br&gt;&#34;
+                &#34;&lt;b&gt;Diagonal (Merge ColRows):&lt;/b&gt; Combines data vertically by adding rows where column has same name and adding columns where column has different name from the second file to the main file. &#34;
+                &#34;If the number of columns is different, the columns will be automatically adjusted.&#34;
+            )
+            explanation.setWordWrap(True)
+            ok_btn = QPushButton(&#34;OK&#34;, self)
+            ok_btn.clicked.connect(self.accept)
+            layout.addWidget(label)
+            layout.addWidget(self.combo)
+            layout.addWidget(ok_btn)
+            layout.addWidget(explanation)
+            layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+            self.setLayout(layout)
+
+        def get_option(self):
+            return self.combo.currentIndex()
+
+    dialog = MergeOptionDialog(self.view)
+    if dialog.exec():
+        option = dialog.get_option()
+    else:
+        return
+    if option == 0:
+        common_cols = set(main_df.columns) &amp; set(data.columns)
+        rename_map = {col: f&#34;{col}_duplicate&#34; for col in common_cols}
+        data = data.rename(rename_map)
+        merged_data = pl.concat([main_df, data], how=&#34;horizontal&#34;)
+    else:
+        for col in set(main_df.columns) &amp; set(data.columns):
+            main_dtype = main_df[col].dtype
+            try:
+                data = data.with_columns(pl.col(col).cast(main_dtype, strict=False))
+            except Exception as e:
+                QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to cast column &#39;{col}&#39;: {e}&#34;)
+        merged_data = pl.concat([main_df, data], how=&#34;diagonal&#34;)
+    self.model1.set_data(merged_data)
+    self.view.update_table(1, self.model1)
+    self.view.autosave_data()</code></pre>
+</details>
+<div class="desc"><p><em>summary</em>
+Load file CSV, Excel, atau Text to first model (Sheet 2) for secondary data and update tabel.</p></div>
+</dd>
+<dt id="saePisan.controller.FileController.FileController.open_file"><code class="name flex">
+<span>def <span class="ident">open_file</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_file(self):
+    &#34;&#34;&#34;Open file CSV, Excel, atau Text and load to first model&#34;&#34;&#34;
     file_path, selected_filter = QFileDialog.getOpenFileName(
         self.view, &#34;Open File&#34;, &#34;&#34;,
-        &#34;CSV Files (*.csv);;Excel Files (*.xlsx)&#34;
+        &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;Text Files (*.txt);;TSV Files (*.tsv);;JSON Files (*.json)&#34;
     )
 
     if not file_path:  # Jika file tidak dipilih
         return
 
     try:
-        if selected_filter == &#34;CSV Files (*.csv)&#34;:
+        if selected_filter in [&#34;CSV Files (*.csv)&#34;, &#34;Text Files (*.txt)&#34;, &#34;TSV Files (*.tsv)&#34;]:
             dialog = CSVOptionsDialog(self.view)
             dialog.file_path = file_path
             dialog.file_label.setText(f&#34;Selected: {file_path}&#34;)
@@ -409,6 +758,9 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 
             if not file_path:  # Jika file tidak dipilih
                 return
+            
+            if separator == r&#34;\t&#34;:  # Jika input adalah string literal &#34;\t&#34;
+                separator = &#34;\t&#34;
 
             # Baca data dari CSV dengan atau tanpa header
             if header:
@@ -416,22 +768,33 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
             else:
                 data = pl.read_csv(file_path, separator=separator, ignore_errors=True, has_header=False, null_values=[&#34;NA&#34;, &#34;NULL&#34;, &#34;na&#34;, &#34;null&#34;])
                 data.columns = [f&#34;Column {i+1}&#34; for i in range(data.shape[1])]
+        
         elif selected_filter == &#34;Excel Files (*.xlsx)&#34;:
+            dialog = ExcelOptionsDialog(self.view)
+            dialog.file_path = file_path
             import pandas as pd
-            sheet_names = pd.ExcelFile(file_path).sheet_names
-            sheet_name, ok = QInputDialog.getItem(self.view, &#34;Select Sheet&#34;, &#34;Sheet:&#34;, sheet_names, 0, False)
-            if not ok:
+            xls = pd.ExcelFile(file_path)
+            dialog.sheet_names = xls.sheet_names
+            dialog.sheet_combo.addItems(dialog.sheet_names)
+            dialog.file_label.setText(f&#34;Selected: {file_path}&#34;)
+            dialog.update_preview()
+            
+            file_path, selected_sheet, hdr = dialog.get_excel_options()
+            
+            if not file_path or not selected_sheet:  # Jika file tidak dipilih
                 return
-            data = pl.read_excel(file_path, sheet_name=sheet_name)
-
-        self.model1.set_data(data)
-        self.view.update_table(1, self.model1)
+            data = pl.read_excel(file_path, sheet_name=selected_sheet, has_header=hdr)
+            
+        elif selected_filter == &#34;JSON Files (*.json)&#34;:
+            data = pl.read_json(file_path)
+        
+        return data
     except Exception as e:
         QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to load file: {str(e)}&#34;)</code></pre>
 </details>
-<div class="desc"><p>Muat file CSV atau Excel ke model pertama.</p></div>
+<div class="desc"><p>Open file CSV, Excel, atau Text and load to first model</p></div>
 </dd>
-<dt id="sip-sae.controller.FileController.FileController.save_as_csv"><code class="name flex">
+<dt id="saePisan.controller.FileController.FileController.save_as_csv"><code class="name flex">
 <span>def <span class="ident">save_as_csv</span></span>(<span>self, file_path, model)</span>
 </code></dt>
 <dd>
@@ -440,13 +803,13 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def save_as_csv(self, file_path, model):
-    &#34;&#34;&#34;Simpan data sebagai CSV.&#34;&#34;&#34;
+    &#34;&#34;&#34;Save data as CSV.&#34;&#34;&#34;
     data = model.get_data()
     data.write_csv(file_path)</code></pre>
 </details>
-<div class="desc"><p>Simpan data sebagai CSV.</p></div>
+<div class="desc"><p>Save data as CSV.</p></div>
 </dd>
-<dt id="sip-sae.controller.FileController.FileController.save_as_excel"><code class="name flex">
+<dt id="saePisan.controller.FileController.FileController.save_as_excel"><code class="name flex">
 <span>def <span class="ident">save_as_excel</span></span>(<span>self, file_path, model)</span>
 </code></dt>
 <dd>
@@ -455,13 +818,13 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def save_as_excel(self, file_path, model):
-    &#34;&#34;&#34;Simpan data sebagai Excel.&#34;&#34;&#34;
+    &#34;&#34;&#34;Save data as Excel.&#34;&#34;&#34;
     data = model.get_data()
     data.write_excel(file_path)</code></pre>
 </details>
-<div class="desc"><p>Simpan data sebagai Excel.</p></div>
+<div class="desc"><p>Save data as Excel.</p></div>
 </dd>
-<dt id="sip-sae.controller.FileController.FileController.save_as_json"><code class="name flex">
+<dt id="saePisan.controller.FileController.FileController.save_as_json"><code class="name flex">
 <span>def <span class="ident">save_as_json</span></span>(<span>self, file_path, model)</span>
 </code></dt>
 <dd>
@@ -470,13 +833,13 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def save_as_json(self, file_path, model):
-    &#34;&#34;&#34;Simpan data sebagai JSON.&#34;&#34;&#34;
+    &#34;&#34;&#34;Save data as JSON.&#34;&#34;&#34;
     data = model.get_data()
     data.write_json(file_path, orient=&#34;records&#34;, lines=True)</code></pre>
 </details>
-<div class="desc"><p>Simpan data sebagai JSON.</p></div>
+<div class="desc"><p>Save data as JSON.</p></div>
 </dd>
-<dt id="sip-sae.controller.FileController.FileController.save_as_txt"><code class="name flex">
+<dt id="saePisan.controller.FileController.FileController.save_as_txt"><code class="name flex">
 <span>def <span class="ident">save_as_txt</span></span>(<span>self, file_path, model)</span>
 </code></dt>
 <dd>
@@ -485,13 +848,13 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def save_as_txt(self, file_path, model):
-    &#34;&#34;&#34;Simpan data sebagai file teks.&#34;&#34;&#34;
+    &#34;&#34;&#34;Save data as file teks.&#34;&#34;&#34;
     data = model.get_data()
     data.write_csv(file_path, separator=&#34;\t&#34;)</code></pre>
 </details>
-<div class="desc"><p>Simpan data sebagai file teks.</p></div>
+<div class="desc"><p>Save data as file teks.</p></div>
 </dd>
-<dt id="sip-sae.controller.FileController.FileController.save_data"><code class="name flex">
+<dt id="saePisan.controller.FileController.FileController.save_data"><code class="name flex">
 <span>def <span class="ident">save_data</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -500,7 +863,7 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def save_data(self):
-    &#34;&#34;&#34;Simpan data dari model pertama (Sheet 1).&#34;&#34;&#34;
+    &#34;&#34;&#34;Save data from the first model (Sheet 1).&#34;&#34;&#34;
     file_path, selected_filter = QFileDialog.getSaveFileName(
         self.view, &#34;Save File&#34;, &#34;&#34;,
         &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
@@ -522,9 +885,9 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
         except Exception as e:
             QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)</code></pre>
 </details>
-<div class="desc"><p>Simpan data dari model pertama (Sheet 1).</p></div>
+<div class="desc"><p>Save data from the first model (Sheet 1).</p></div>
 </dd>
-<dt id="sip-sae.controller.FileController.FileController.save_data_output"><code class="name flex">
+<dt id="saePisan.controller.FileController.FileController.save_data_output"><code class="name flex">
 <span>def <span class="ident">save_data_output</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -533,7 +896,7 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def save_data_output(self):
-    &#34;&#34;&#34;Simpan data dari model kedua (Sheet 2).&#34;&#34;&#34;
+    &#34;&#34;&#34;Save data from the first model (Sheet 1).&#34;&#34;&#34;
     file_path, selected_filter = QFileDialog.getSaveFileName(
         self.view, &#34;Save Output Data&#34;, &#34;&#34;,
         &#34;CSV Files (*.csv);;Excel Files (*.xlsx);;JSON Files (*.json);;Text Files (*.txt)&#34;
@@ -555,7 +918,7 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
         except Exception as e:
             QMessageBox.critical(self.view, &#34;Error&#34;, f&#34;Failed to save file: {str(e)}&#34;)</code></pre>
 </details>
-<div class="desc"><p>Simpan data dari model kedua (Sheet 2).</p></div>
+<div class="desc"><p>Save data from the first model (Sheet 1).</p></div>
 </dd>
 </dl>
 </dd>
@@ -569,22 +932,24 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.controller" href="index.html">sip-sae.controller</a></code></li>
+<li><code><a title="saePisan.controller" href="index.html">saePisan.controller</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sip-sae.controller.FileController.FileController" href="#sip-sae.controller.FileController.FileController">FileController</a></code></h4>
+<h4><code><a title="saePisan.controller.FileController.FileController" href="#saePisan.controller.FileController.FileController">FileController</a></code></h4>
 <ul class="">
-<li><code><a title="sip-sae.controller.FileController.FileController.export_output_to_pdf" href="#sip-sae.controller.FileController.FileController.export_output_to_pdf">export_output_to_pdf</a></code></li>
-<li><code><a title="sip-sae.controller.FileController.FileController.load_file" href="#sip-sae.controller.FileController.FileController.load_file">load_file</a></code></li>
-<li><code><a title="sip-sae.controller.FileController.FileController.save_as_csv" href="#sip-sae.controller.FileController.FileController.save_as_csv">save_as_csv</a></code></li>
-<li><code><a title="sip-sae.controller.FileController.FileController.save_as_excel" href="#sip-sae.controller.FileController.FileController.save_as_excel">save_as_excel</a></code></li>
-<li><code><a title="sip-sae.controller.FileController.FileController.save_as_json" href="#sip-sae.controller.FileController.FileController.save_as_json">save_as_json</a></code></li>
-<li><code><a title="sip-sae.controller.FileController.FileController.save_as_txt" href="#sip-sae.controller.FileController.FileController.save_as_txt">save_as_txt</a></code></li>
-<li><code><a title="sip-sae.controller.FileController.FileController.save_data" href="#sip-sae.controller.FileController.FileController.save_data">save_data</a></code></li>
-<li><code><a title="sip-sae.controller.FileController.FileController.save_data_output" href="#sip-sae.controller.FileController.FileController.save_data_output">save_data_output</a></code></li>
+<li><code><a title="saePisan.controller.FileController.FileController.export_output_to_pdf" href="#saePisan.controller.FileController.FileController.export_output_to_pdf">export_output_to_pdf</a></code></li>
+<li><code><a title="saePisan.controller.FileController.FileController.load_file" href="#saePisan.controller.FileController.FileController.load_file">load_file</a></code></li>
+<li><code><a title="saePisan.controller.FileController.FileController.load_secondary_data" href="#saePisan.controller.FileController.FileController.load_secondary_data">load_secondary_data</a></code></li>
+<li><code><a title="saePisan.controller.FileController.FileController.open_file" href="#saePisan.controller.FileController.FileController.open_file">open_file</a></code></li>
+<li><code><a title="saePisan.controller.FileController.FileController.save_as_csv" href="#saePisan.controller.FileController.FileController.save_as_csv">save_as_csv</a></code></li>
+<li><code><a title="saePisan.controller.FileController.FileController.save_as_excel" href="#saePisan.controller.FileController.FileController.save_as_excel">save_as_excel</a></code></li>
+<li><code><a title="saePisan.controller.FileController.FileController.save_as_json" href="#saePisan.controller.FileController.FileController.save_as_json">save_as_json</a></code></li>
+<li><code><a title="saePisan.controller.FileController.FileController.save_as_txt" href="#saePisan.controller.FileController.FileController.save_as_txt">save_as_txt</a></code></li>
+<li><code><a title="saePisan.controller.FileController.FileController.save_data" href="#saePisan.controller.FileController.FileController.save_data">save_data</a></code></li>
+<li><code><a title="saePisan.controller.FileController.FileController.save_data_output" href="#saePisan.controller.FileController.FileController.save_data_output">save_data_output</a></code></li>
 </ul>
 </li>
 </ul>
@@ -593,7 +958,7 @@ Exports the content of all widgets in the output layout to a PDF file.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.service.modelling.SaeEblupPseudo API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.service.modelling.SaeEblupPseudo API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.service.modelling.SaeEblupPseudo</code></h1>
+<h1 class="title">Module <code>saePisan.service.modelling.SaeEblupPseudo</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -44,7 +44,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.assign_as_factor"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.assign_as_factor"><code class="name flex">
 <span>def <span class="ident">assign_as_factor</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -71,13 +71,11 @@ el.replaceWith(d);
     
     selected_indexes = parent.variables_list.selectedIndexes()
     if selected_indexes:
-        new_vars = []
-        for index in selected_indexes:
-            new_vars.append(index.data())
-        parent.as_factor_var = list(set(parent.as_factor_var + new_vars))  # Add new variables if they are different
+        last_index = selected_indexes[-1]  # Get the last selected index
+        new_var = last_index.data()  # Get the data of the last selected variable
+        parent.as_factor_var = [new_var]  # Assign only the last variable
         parent.as_factor_model.setStringList(parent.as_factor_var)
-        for index in sorted(selected_indexes, reverse=True):
-            parent.variables_list.model().removeRow(index.row())  # Remove from variables list
+        parent.variables_list.model().removeRow(last_index.row())  # Remove the last selected variable from the list
         show_r_script(parent)</code></pre>
 </details>
 <div class="desc"><p>Assigns selected variables as factors and updates the parent object's factor variables list and model.</p>
@@ -97,7 +95,7 @@ el.replaceWith(d);
 5. Removes the selected variables from the variables_list.
 6. Calls the show_r_script function with the parent object to update the R script.</p></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.assign_auxilary"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.assign_auxilary"><code class="name flex">
 <span>def <span class="ident">assign_auxilary</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -150,9 +148,9 @@ Functionality:
 - Adds the new numeric variables to the parent's auxiliary variables list, ensuring no duplicates.
 - Updates the parent's auxiliary model with the new list of auxiliary variables.
 - Removes the selected variables from the parent's variables list.
-- Calls the <code><a title="sip-sae.service.modelling.SaeEblupPseudo.show_r_script" href="#sip-sae.service.modelling.SaeEblupPseudo.show_r_script">show_r_script()</a></code> function with the parent object to update the R script display.</p></div>
+- Calls the <code><a title="saePisan.service.modelling.SaeEblupPseudo.show_r_script" href="#saePisan.service.modelling.SaeEblupPseudo.show_r_script">show_r_script()</a></code> function with the parent object to update the R script display.</p></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.assign_domain"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.assign_domain"><code class="name flex">
 <span>def <span class="ident">assign_domain</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -175,9 +173,13 @@ Functionality:
     
     selected_indexes = parent.variables_list.selectedIndexes()
     if selected_indexes:
+        old_var = parent.domain_var[0] if parent.domain_var else None
         parent.domain_var = [selected_indexes[0].data()]
         parent.domain_model.setStringList(parent.domain_var)
         parent.variables_list.model().removeRow(selected_indexes[0].row())  # Remove from variables list
+        if old_var:
+            parent.variables_list.model().insertRow(0)
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), old_var)
         show_r_script(parent)</code></pre>
 </details>
 <div class="desc"><p>Assigns a selected domain variable from the variables list to the domain variable of the parent object.
@@ -190,7 +192,7 @@ The function performs the following steps:
 4. Removes the selected index from the variables list.
 5. Calls the show_r_script function with the parent object.</p></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.assign_of_interest"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.assign_of_interest"><code class="name flex">
 <span>def <span class="ident">assign_of_interest</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -219,9 +221,13 @@ The function performs the following steps:
             type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
             if type_of_var != &#34;String&#34;:
                 all_string = False
+                old_var = parent.of_interest_var[0] if parent.of_interest_var else None
                 parent.of_interest_var = [index.data()]
                 parent.of_interest_model.setStringList(parent.of_interest_var)
                 parent.variables_list.model().removeRow(selected_indexes[-1].row())  # Remove from variables list
+                if old_var:
+                    parent.variables_list.model().insertRow(0)
+                    parent.variables_list.model().setData(parent.variables_list.model().index(0), old_var)
                 show_r_script(parent)
                 break
         if all_string:
@@ -248,7 +254,7 @@ displays a warning message indicating that the variable of interest must be of t
 <dd>Displays a warning message if all selected variables are of type String.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.assign_vardir"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.assign_vardir"><code class="name flex">
 <span>def <span class="ident">assign_vardir</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -276,9 +282,13 @@ displays a warning message indicating that the variable of interest must be of t
             type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
             if type_of_var != &#34;String&#34;:
                 all_string = False
+                old_var = parent.vardir_var[0] if parent.vardir_var else None
                 parent.vardir_var = [index.data()]
                 parent.vardir_model.setStringList(parent.vardir_var)
                 parent.variables_list.model().removeRow(selected_indexes[-1].row())  # Remove from variables list
+                if old_var:
+                    parent.variables_list.model().insertRow(0)
+                    parent.variables_list.model().setData(parent.variables_list.model().index(0), old_var)
                 show_r_script(parent)
                 break
         if all_string:
@@ -301,7 +311,7 @@ variables are of type "String", it displays a warning message.</p>
 <h2 id="raises">Raises</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.generate_r_script"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.generate_r_script"><code class="name flex">
 <span>def <span class="ident">generate_r_script</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -339,17 +349,17 @@ variables are of type "String", it displays a warning message.</p>
     else:
         formula = f&#39;{of_interest_var} ~ {auxilary_vars} + {as_factor_var}&#39;
 
-    r_script = f&#39;names(data) &lt;- gsub(&#34; &#34;, &#34;_&#34;, names(data)); #Replace space with underscore\n&#39;
+    r_script = f&#39;names(data_pseudo) &lt;- gsub(&#34; &#34;, &#34;_&#34;, names(data_pseudo)); #Replace space with underscore\n&#39;
     r_script += f&#39;formula &lt;- {formula}\n&#39;
-    r_script += f&#39;vardir_var &lt;- data[&#34;{vardir_var}&#34;]\n&#39;
+    r_script += f&#39;vardir_var_pseudo &lt;- data_pseudo[&#34;{vardir_var}&#34;]\n&#39;
     if parent.selection_method==&#34;Stepwise&#34;:
         parent.selection_method = &#34;both&#34;
     if parent.selection_method and parent.selection_method != &#34;None&#34; and auxilary_vars:
         r_script += f&#39;stepwise_model &lt;- step(formula, direction=&#34;{parent.selection_method.lower()}&#34;)\n&#39;
         r_script += f&#39;final_formula &lt;- formula(stepwise_model)\n&#39;
-        r_script += f&#39;model&lt;-fh(final_formula, vardir=&#34;{vardir_var}&#34;, combined_data =data, domains={domain_var}, method = &#34;reblupbc&#34;, MSE=TRUE, mse_type = &#34;pseudo&#34;)&#39;
+        r_script += f&#39;model_pseudo&lt;-fh(final_formula, vardir=&#34;{vardir_var}&#34;, combined_data =data_pseudo, domains={domain_var}, method = &#34;reblupbc&#34;, MSE=TRUE, mse_type = &#34;pseudo&#34;)&#39;
     else:
-        r_script += f&#39;model&lt;-fh(formula, vardir=&#34;{vardir_var}&#34;, combined_data =data, domains={domain_var}, method = &#34;reblupbc&#34;, MSE=TRUE, mse_type = &#34;pseudo&#34;)&#39;
+        r_script += f&#39;model_pseudo&lt;-fh(formula, vardir=&#34;{vardir_var}&#34;, combined_data =data_pseudo, domains={domain_var}, method = &#34;reblupbc&#34;, MSE=TRUE, mse_type = &#34;pseudo&#34;)&#39;
     return r_script</code></pre>
 </details>
 <div class="desc"><p>Generates an R script for fitting a Fay-Herriot model with optional stepwise selection.</p>
@@ -370,7 +380,7 @@ variables are of type "String", it displays a warning message.</p>
 <dd>The generated R script as a string.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.get_script"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.get_script"><code class="name flex">
 <span>def <span class="ident">get_script</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -401,7 +411,7 @@ variables are of type "String", it displays a warning message.</p>
 <dd>The text content of the <code>r_script_edit</code> widget as a plain string.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.get_selected_variables"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.get_selected_variables"><code class="name flex">
 <span>def <span class="ident">get_selected_variables</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -440,7 +450,7 @@ variables are of type "String", it displays a warning message.</p>
 - as_factor_var: The factor variable.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.set_selection_method"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.set_selection_method"><code class="name flex">
 <span>def <span class="ident">set_selection_method</span></span>(<span>parent, dialog)</span>
 </code></dt>
 <dd>
@@ -479,7 +489,7 @@ and calls the show_r_script function with the parent object as an argument.</p>
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.show_options"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.show_options"><code class="name flex">
 <span>def <span class="ident">show_options</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -528,10 +538,10 @@ and calls the show_r_script function with the parent object as an argument.</p>
 Parameters:
 parent (QWidget): The parent widget for the dialog.
 The dialog allows the user to confirm or cancel their selection.
-When the OK button is clicked, the <code><a title="sip-sae.service.modelling.SaeEblupPseudo.set_selection_method" href="#sip-sae.service.modelling.SaeEblupPseudo.set_selection_method">set_selection_method()</a></code> function is called.
+When the OK button is clicked, the <code><a title="saePisan.service.modelling.SaeEblupPseudo.set_selection_method" href="#saePisan.service.modelling.SaeEblupPseudo.set_selection_method">set_selection_method()</a></code> function is called.
 When the Cancel button is clicked, the dialog is rejected.</p></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.show_r_script"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.show_r_script"><code class="name flex">
 <span>def <span class="ident">show_r_script</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -555,12 +565,12 @@ When the Cancel button is clicked, the dialog is rejected.</p></div>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>parent</code></strong></dt>
-<dd>An object that contains the method <code><a title="sip-sae.service.modelling.SaeEblupPseudo.generate_r_script" href="#sip-sae.service.modelling.SaeEblupPseudo.generate_r_script">generate_r_script()</a></code> and the attribute <code>r_script_edit</code>.
-<code><a title="sip-sae.service.modelling.SaeEblupPseudo.generate_r_script" href="#sip-sae.service.modelling.SaeEblupPseudo.generate_r_script">generate_r_script()</a>(parent)</code> is expected to return a string representing the R script.
+<dd>An object that contains the method <code><a title="saePisan.service.modelling.SaeEblupPseudo.generate_r_script" href="#saePisan.service.modelling.SaeEblupPseudo.generate_r_script">generate_r_script()</a></code> and the attribute <code>r_script_edit</code>.
+<code><a title="saePisan.service.modelling.SaeEblupPseudo.generate_r_script" href="#saePisan.service.modelling.SaeEblupPseudo.generate_r_script">generate_r_script()</a>(parent)</code> is expected to return a string representing the R script.
 <code>parent.r_script_edit</code> is expected to have a method <code>setText</code> to set the generated R script.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeEblupPseudo.unassign_variable"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeEblupPseudo.unassign_variable"><code class="name flex">
 <span>def <span class="ident">unassign_variable</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -632,7 +642,9 @@ When the Cancel button is clicked, the dialog is rejected.</p></div>
         parent.domain_var = [var for var in parent.domain_var if var not in selected_items]
         parent.domain_model.setStringList(parent.domain_var)
         for item in selected_items:
-            parent.variables_list.model().insertRow(0)</code></pre>
+            parent.variables_list.model().insertRow(0)
+            parent.variables_list.model().setData(parent.variables_list.model().index(0), item)
+        show_r_script()</code></pre>
 </details>
 <div class="desc"><p>Unassigns selected variables from various lists in the parent object and adds them back to the variables list.
 This function checks for selected items in the following lists of the parent object:
@@ -642,7 +654,7 @@ This function checks for selected items in the following lists of the parent obj
 - as_factor_list
 - domain_list
 For each list, if there are selected items, it removes these items from the corresponding variable list in the parent object,
-updates the associated model, and adds the items back to the variables list model. Finally, it calls the <code><a title="sip-sae.service.modelling.SaeEblupPseudo.show_r_script" href="#sip-sae.service.modelling.SaeEblupPseudo.show_r_script">show_r_script()</a></code> function
+updates the associated model, and adds the items back to the variables list model. Finally, it calls the <code><a title="saePisan.service.modelling.SaeEblupPseudo.show_r_script" href="#saePisan.service.modelling.SaeEblupPseudo.show_r_script">show_r_script()</a></code> function
 to update the R script display.</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -662,30 +674,30 @@ to update the R script display.</p>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.service.modelling" href="index.html">sip-sae.service.modelling</a></code></li>
+<li><code><a title="saePisan.service.modelling" href="index.html">saePisan.service.modelling</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.assign_as_factor" href="#sip-sae.service.modelling.SaeEblupPseudo.assign_as_factor">assign_as_factor</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.assign_auxilary" href="#sip-sae.service.modelling.SaeEblupPseudo.assign_auxilary">assign_auxilary</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.assign_domain" href="#sip-sae.service.modelling.SaeEblupPseudo.assign_domain">assign_domain</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.assign_of_interest" href="#sip-sae.service.modelling.SaeEblupPseudo.assign_of_interest">assign_of_interest</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.assign_vardir" href="#sip-sae.service.modelling.SaeEblupPseudo.assign_vardir">assign_vardir</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.generate_r_script" href="#sip-sae.service.modelling.SaeEblupPseudo.generate_r_script">generate_r_script</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.get_script" href="#sip-sae.service.modelling.SaeEblupPseudo.get_script">get_script</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.get_selected_variables" href="#sip-sae.service.modelling.SaeEblupPseudo.get_selected_variables">get_selected_variables</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.set_selection_method" href="#sip-sae.service.modelling.SaeEblupPseudo.set_selection_method">set_selection_method</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.show_options" href="#sip-sae.service.modelling.SaeEblupPseudo.show_options">show_options</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.show_r_script" href="#sip-sae.service.modelling.SaeEblupPseudo.show_r_script">show_r_script</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeEblupPseudo.unassign_variable" href="#sip-sae.service.modelling.SaeEblupPseudo.unassign_variable">unassign_variable</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.assign_as_factor" href="#saePisan.service.modelling.SaeEblupPseudo.assign_as_factor">assign_as_factor</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.assign_auxilary" href="#saePisan.service.modelling.SaeEblupPseudo.assign_auxilary">assign_auxilary</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.assign_domain" href="#saePisan.service.modelling.SaeEblupPseudo.assign_domain">assign_domain</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.assign_of_interest" href="#saePisan.service.modelling.SaeEblupPseudo.assign_of_interest">assign_of_interest</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.assign_vardir" href="#saePisan.service.modelling.SaeEblupPseudo.assign_vardir">assign_vardir</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.generate_r_script" href="#saePisan.service.modelling.SaeEblupPseudo.generate_r_script">generate_r_script</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.get_script" href="#saePisan.service.modelling.SaeEblupPseudo.get_script">get_script</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.get_selected_variables" href="#saePisan.service.modelling.SaeEblupPseudo.get_selected_variables">get_selected_variables</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.set_selection_method" href="#saePisan.service.modelling.SaeEblupPseudo.set_selection_method">set_selection_method</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.show_options" href="#saePisan.service.modelling.SaeEblupPseudo.show_options">show_options</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.show_r_script" href="#saePisan.service.modelling.SaeEblupPseudo.show_r_script">show_r_script</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeEblupPseudo.unassign_variable" href="#saePisan.service.modelling.SaeEblupPseudo.unassign_variable">unassign_variable</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

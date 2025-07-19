@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>saePisan.service.table.GoToColumn API documentation</title>
+<title>saePisan.service.convert_df API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>saePisan.service.table.GoToColumn</code></h1>
+<h1 class="title">Module <code>saePisan.service.convert_df</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -44,57 +44,50 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="saePisan.service.table.GoToColumn.go_to_end_column"><code class="name flex">
-<span>def <span class="ident">go_to_end_column</span></span>(<span>parent)</span>
+<dt id="saePisan.service.convert_df.convert_df"><code class="name flex">
+<span>def <span class="ident">convert_df</span></span>(<span>df, parent)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def go_to_end_column(parent):
-    &#34;&#34;&#34;Move the selection to the end column while keeping the row the same.&#34;&#34;&#34;
-    if parent.tab_widget.currentIndex() == 0:
-        selection = parent.spreadsheet.selectionModel().selectedIndexes()
-        if selection:
-            start_row = selection[0].row()
-            end_col = parent.model1.columnCount(parent.model1.index(0, 0)) - 1
-            parent.spreadsheet.setCurrentIndex(parent.model1.index(start_row, end_col))
-            parent.spreadsheet.selectionModel().select(parent.model1.index(start_row, end_col), QItemSelectionModel.SelectionFlag.ClearAndSelect)
-    elif parent.tab_widget.currentIndex() == 1:
-        selection = parent.table_view2.selectionModel().selectedIndexes()
-        if selection:
-            start_row = selection[0].row()
-            end_col = parent.model2.columnCount(parent.model2.index(0, 0)) - 1
-            parent.table_view2.setCurrentIndex(parent.model2.index(start_row, end_col))
-            parent.table_view2.selectionModel().select(parent.model2.index(start_row, end_col), QItemSelectionModel.SelectionFlag.ClearAndSelect)</code></pre>
+<pre><code class="python">def convert_df(df, parent):
+    &#34;&#34;&#34;
+    Converts a Polars DataFrame to an R DataFrame using rpy2 and handles columns with a high percentage of null values.
+    Parameters:
+    df (pl.DataFrame): The Polars DataFrame to be converted.
+    parent (object): An object that has a method `activate_R()` to activate the R environment.
+    Returns:
+    None: The function modifies the R global environment by adding the converted DataFrame as &#39;r_df&#39;.
+    Notes:
+    - Columns with null values exceeding 30% of the DataFrame length are dropped before conversion.
+    - The function uses the rpy2_arrow.polars and rpy2.robjects libraries for conversion.
+    &#34;&#34;&#34;
+    
+    import rpy2_arrow.polars as rpy2polars
+    import rpy2.robjects as ro
+    parent.activate_R()
+    
+    null_threshold = 0.3 * len(df)
+    cols_to_drop = [col for col in df.columns if df[col].null_count() &gt;= null_threshold]
+    if len(cols_to_drop)&gt;0:
+        df_pandas = df.to_pandas()
+        df = pl.from_pandas(df_pandas)
+    
+    with rpy2polars.converter.context() as cv_ctx:
+        r_df = cv_ctx.py2rpy(df)
+        ro.globalenv[&#39;r_df&#39;] = r_df</code></pre>
 </details>
-<div class="desc"><p>Move the selection to the end column while keeping the row the same.</p></div>
-</dd>
-<dt id="saePisan.service.table.GoToColumn.go_to_start_column"><code class="name flex">
-<span>def <span class="ident">go_to_start_column</span></span>(<span>parent)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def go_to_start_column(parent):
-        &#34;&#34;&#34;Move the selection to the start column while keeping the row the same.&#34;&#34;&#34;
-        if parent.tab_widget.currentIndex() == 0:
-            selection = parent.spreadsheet.selectionModel().selectedIndexes()
-            if selection:
-                start_row = selection[0].row()
-                parent.spreadsheet.setCurrentIndex(parent.model1.index(start_row, 0))
-                parent.spreadsheet.selectionModel().select(parent.model1.index(start_row, 0), QItemSelectionModel.SelectionFlag.ClearAndSelect)
-        elif parent.tab_widget.currentIndex() == 1:
-            selection = parent.table_view2.selectionModel().selectedIndexes()
-            if selection:
-                start_row = selection[0].row()
-                parent.table_view2.setCurrentIndex(parent.model2.index(start_row, 0))
-                parent.table_view2.selectionModel().select(parent.model2.index(start_row, 0), QItemSelectionModel.SelectionFlag.ClearAndSelect)</code></pre>
-</details>
-<div class="desc"><p>Move the selection to the start column while keeping the row the same.</p></div>
+<div class="desc"><p>Converts a Polars DataFrame to an R DataFrame using rpy2 and handles columns with a high percentage of null values.
+Parameters:
+df (pl.DataFrame): The Polars DataFrame to be converted.
+parent (object): An object that has a method <code>activate_R()</code> to activate the R environment.
+Returns:
+None: The function modifies the R global environment by adding the converted DataFrame as 'r_df'.
+Notes:
+- Columns with null values exceeding 30% of the DataFrame length are dropped before conversion.
+- The function uses the rpy2_arrow.polars and rpy2.robjects libraries for conversion.</p></div>
 </dd>
 </dl>
 </section>
@@ -108,13 +101,12 @@ el.replaceWith(d);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="saePisan.service.table" href="index.html">saePisan.service.table</a></code></li>
+<li><code><a title="saePisan.service" href="index.html">saePisan.service</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="saePisan.service.table.GoToColumn.go_to_end_column" href="#saePisan.service.table.GoToColumn.go_to_end_column">go_to_end_column</a></code></li>
-<li><code><a title="saePisan.service.table.GoToColumn.go_to_start_column" href="#saePisan.service.table.GoToColumn.go_to_start_column">go_to_start_column</a></code></li>
+<li><code><a title="saePisan.service.convert_df.convert_df" href="#saePisan.service.convert_df.convert_df">convert_df</a></code></li>
 </ul>
 </li>
 </ul>

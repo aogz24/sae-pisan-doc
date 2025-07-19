@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>saePisan.service.table.GoToColumn API documentation</title>
+<title>saePisan.view.components.ConsoleDialog API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>saePisan.service.table.GoToColumn</code></h1>
+<h1 class="title">Module <code>saePisan.view.components.ConsoleDialog</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -42,63 +42,107 @@ el.replaceWith(d);
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
-<dl>
-<dt id="saePisan.service.table.GoToColumn.go_to_end_column"><code class="name flex">
-<span>def <span class="ident">go_to_end_column</span></span>(<span>parent)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def go_to_end_column(parent):
-    &#34;&#34;&#34;Move the selection to the end column while keeping the row the same.&#34;&#34;&#34;
-    if parent.tab_widget.currentIndex() == 0:
-        selection = parent.spreadsheet.selectionModel().selectedIndexes()
-        if selection:
-            start_row = selection[0].row()
-            end_col = parent.model1.columnCount(parent.model1.index(0, 0)) - 1
-            parent.spreadsheet.setCurrentIndex(parent.model1.index(start_row, end_col))
-            parent.spreadsheet.selectionModel().select(parent.model1.index(start_row, end_col), QItemSelectionModel.SelectionFlag.ClearAndSelect)
-    elif parent.tab_widget.currentIndex() == 1:
-        selection = parent.table_view2.selectionModel().selectedIndexes()
-        if selection:
-            start_row = selection[0].row()
-            end_col = parent.model2.columnCount(parent.model2.index(0, 0)) - 1
-            parent.table_view2.setCurrentIndex(parent.model2.index(start_row, end_col))
-            parent.table_view2.selectionModel().select(parent.model2.index(start_row, end_col), QItemSelectionModel.SelectionFlag.ClearAndSelect)</code></pre>
-</details>
-<div class="desc"><p>Move the selection to the end column while keeping the row the same.</p></div>
-</dd>
-<dt id="saePisan.service.table.GoToColumn.go_to_start_column"><code class="name flex">
-<span>def <span class="ident">go_to_start_column</span></span>(<span>parent)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def go_to_start_column(parent):
-        &#34;&#34;&#34;Move the selection to the start column while keeping the row the same.&#34;&#34;&#34;
-        if parent.tab_widget.currentIndex() == 0:
-            selection = parent.spreadsheet.selectionModel().selectedIndexes()
-            if selection:
-                start_row = selection[0].row()
-                parent.spreadsheet.setCurrentIndex(parent.model1.index(start_row, 0))
-                parent.spreadsheet.selectionModel().select(parent.model1.index(start_row, 0), QItemSelectionModel.SelectionFlag.ClearAndSelect)
-        elif parent.tab_widget.currentIndex() == 1:
-            selection = parent.table_view2.selectionModel().selectedIndexes()
-            if selection:
-                start_row = selection[0].row()
-                parent.table_view2.setCurrentIndex(parent.model2.index(start_row, 0))
-                parent.table_view2.selectionModel().select(parent.model2.index(start_row, 0), QItemSelectionModel.SelectionFlag.ClearAndSelect)</code></pre>
-</details>
-<div class="desc"><p>Move the selection to the start column while keeping the row the same.</p></div>
-</dd>
-</dl>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="saePisan.view.components.ConsoleDialog.ConsoleDialog"><code class="flex name class">
+<span>class <span class="ident">ConsoleDialog</span></span>
+<span>(</span><span>parent=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ConsoleDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(&#34;R Console Output&#34;)
+        self.setMinimumWidth(500)
+        layout = QVBoxLayout(self)
+        self.console = QTextEdit()
+        self.console.setReadOnly(True)
+        self.loading_label = QLabel()
+        self.loading_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.loading_movie = QMovie(&#34;assets/loading.gif&#34;)
+        self.loading_movie.setScaledSize(QSize(25, 25))
+        self.loading_label.setMovie(self.loading_movie)
+        layout.addWidget(self.loading_label)
+        self.loading_movie.start()
+        layout.addWidget(self.console)
+
+    def append_text(self, text):
+        doc = self.console.document()
+        block_count = doc.blockCount()
+        if block_count &gt; 1:
+            cursor = self.console.textCursor()
+            cursor.movePosition(QTextCursor.MoveOperation.End)
+            cursor.movePosition(QTextCursor.MoveOperation.StartOfBlock, QTextCursor.MoveMode.KeepAnchor)
+            cursor.removeSelectedText()
+            cursor.deletePreviousChar()
+            cursor.insertText(text)
+        else:
+            self.console.setPlainText(text)
+        self.console.moveCursor(QTextCursor.MoveOperation.End)
+
+    def stop_loading(self):
+        self.loading_movie.stop()
+        self.loading_label.setVisible(False)</code></pre>
+</details>
+<div class="desc"><p>QDialog(parent: Optional[QWidget] = None, flags: Qt.WindowType = Qt.WindowFlags())</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PyQt6.QtWidgets.QDialog</li>
+<li>PyQt6.QtWidgets.QWidget</li>
+<li>PyQt6.QtCore.QObject</li>
+<li>PyQt6.sip.wrapper</li>
+<li>PyQt6.QtGui.QPaintDevice</li>
+<li>PyQt6.sip.simplewrapper</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="saePisan.view.components.ConsoleDialog.ConsoleDialog.append_text"><code class="name flex">
+<span>def <span class="ident">append_text</span></span>(<span>self, text)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_text(self, text):
+    doc = self.console.document()
+    block_count = doc.blockCount()
+    if block_count &gt; 1:
+        cursor = self.console.textCursor()
+        cursor.movePosition(QTextCursor.MoveOperation.End)
+        cursor.movePosition(QTextCursor.MoveOperation.StartOfBlock, QTextCursor.MoveMode.KeepAnchor)
+        cursor.removeSelectedText()
+        cursor.deletePreviousChar()
+        cursor.insertText(text)
+    else:
+        self.console.setPlainText(text)
+    self.console.moveCursor(QTextCursor.MoveOperation.End)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="saePisan.view.components.ConsoleDialog.ConsoleDialog.stop_loading"><code class="name flex">
+<span>def <span class="ident">stop_loading</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stop_loading(self):
+    self.loading_movie.stop()
+    self.loading_label.setVisible(False)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -108,13 +152,18 @@ el.replaceWith(d);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="saePisan.service.table" href="index.html">saePisan.service.table</a></code></li>
+<li><code><a title="saePisan.view.components" href="index.html">saePisan.view.components</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-functions">Functions</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="saePisan.view.components.ConsoleDialog.ConsoleDialog" href="#saePisan.view.components.ConsoleDialog.ConsoleDialog">ConsoleDialog</a></code></h4>
 <ul class="">
-<li><code><a title="saePisan.service.table.GoToColumn.go_to_end_column" href="#saePisan.service.table.GoToColumn.go_to_end_column">go_to_end_column</a></code></li>
-<li><code><a title="saePisan.service.table.GoToColumn.go_to_start_column" href="#saePisan.service.table.GoToColumn.go_to_start_column">go_to_start_column</a></code></li>
+<li><code><a title="saePisan.view.components.ConsoleDialog.ConsoleDialog.append_text" href="#saePisan.view.components.ConsoleDialog.ConsoleDialog.append_text">append_text</a></code></li>
+<li><code><a title="saePisan.view.components.ConsoleDialog.ConsoleDialog.stop_loading" href="#saePisan.view.components.ConsoleDialog.ConsoleDialog.stop_loading">stop_loading</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

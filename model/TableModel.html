@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.model.TableModel API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.model.TableModel API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.model.TableModel</code></h1>
+<h1 class="title">Module <code>saePisan.model.TableModel</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,7 +46,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sip-sae.model.TableModel.TableModel"><code class="flex name class">
+<dt id="saePisan.model.TableModel.TableModel"><code class="flex name class">
 <span>class <span class="ident">TableModel</span></span>
 <span>(</span><span>data, batch_size=100)</span>
 </code></dt>
@@ -122,7 +122,7 @@ el.replaceWith(d);
     def data(self, index, role):
         if role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:
             value = self._data[index.row(), index.column()]
-            return str(value)
+            return &#34;&#34; if value is None else str(value)
 
     def rowCount(self, _):
         return self.loaded_rows
@@ -146,6 +146,8 @@ el.replaceWith(d);
                     dtype = self._data[column_name].dtype
                     if dtype == pl.Utf8:
                         return QtGui.QIcon(&#34;assets/nominal.svg&#34;)
+                    elif dtype == pl.Null:
+                        return QtGui.QIcon(&#34;assets/null.svg&#34;)
                     else:
                         return QtGui.QIcon(&#34;assets/numeric.svg&#34;)
         return None
@@ -166,13 +168,37 @@ el.replaceWith(d);
             dtype = self._data[column_name].dtype
 
             old_value = self._data[row, column]
+            
+            if dtype == pl.Null:
+                if isinstance(value, str):
+                    val_strip = value.strip()
+                    val_dot = val_strip.replace(&#39;,&#39;, &#39;.&#39;)
+                    try:
+                        float_val = float(val_dot)
+                        if &#39;.&#39; in val_dot:
+                            new_dtype = pl.Float64
+                            value = float_val
+                        else:
+                            new_dtype = pl.Int64
+                            value = int(float_val)
+                    except ValueError:
+                        new_dtype = pl.Utf8
+                elif isinstance(value, float):
+                    new_dtype = pl.Float64
+                elif isinstance(value, int):
+                    new_dtype = pl.Int64
+                else:
+                    new_dtype = pl.Utf8
+                self._data = self._data.with_columns([pl.col(column_name).cast(new_dtype)])
+                dtype = new_dtype
 
             if dtype == pl.Float64:
                 try:
                     if isinstance(value, str):
                         if value.count(&#39;,&#39;) == 1 and value.replace(&#39;,&#39;, &#39;&#39;).isdigit():
                             value = value.replace(&#39;,&#39;, &#39;.&#39;)
-                        value = float(value)
+                        value = float(value) if value is not None else None
+                        
                 except ValueError:
                     error_dialog = QtWidgets.QMessageBox()
                     error_dialog.setIcon(QtWidgets.QMessageBox.Icon.Warning)
@@ -192,7 +218,7 @@ el.replaceWith(d);
             if dtype == pl.Int64:
                 try:
                     if isinstance(value, str):
-                        value = int(value)
+                        value = int(value) if value is not None else None
                 except ValueError:
                     error_dialog = QtWidgets.QMessageBox()
                     error_dialog.setIcon(QtWidgets.QMessageBox.Icon.Warning)
@@ -261,9 +287,8 @@ el.replaceWith(d);
     
     def addRowsBefore(self, index, count):
         if index.isValid() and count &gt; 0:
-            print(&#34;Adding rows before&#34;)
             row = index.row()
-            new_rows = [{col: None if self._data[col].dtype in [pl.Int64, pl.Float64] else &#34;&#34; for col in self._data.columns} for _ in range(count)]
+            new_rows = [{col: None if self._data[col].dtype in [pl.Int64, pl.Float64, pl.Null] else &#34;&#34; for col in self._data.columns} for _ in range(count)]
             self.beginInsertRows(QtCore.QModelIndex(), row, row + count - 1)
             self._data = pl.concat([self._data[:row], pl.DataFrame(new_rows), self._data[row:]])
             self.loaded_rows += count
@@ -274,7 +299,7 @@ el.replaceWith(d);
     def addRowsAfter(self, index, count):
         if index.isValid() and count &gt; 0:
             row = index.row() + 1
-            new_rows = [{col: None if self._data[col].dtype in [pl.Int64, pl.Float64] else &#34;&#34; for col in self._data.columns} for _ in range(count)]
+            new_rows = [{col: None if self._data[col].dtype in [pl.Int64, pl.Float64, pl.Null] else &#34;&#34; for col in self._data.columns} for _ in range(count)]
             self.beginInsertRows(QtCore.QModelIndex(), row, row + count - 1)
             self._data = pl.concat([self._data[:row], pl.DataFrame(new_rows), self._data[row:]])
             self.loaded_rows += count
@@ -285,7 +310,7 @@ el.replaceWith(d);
     def addColumnBefore(self, index, count):
         if index.isValid() and count &gt; 0:
             column = index.column()
-            new_columns = {f&#34;new_col_{i}&#34;: [&#34;&#34;] * self._data.shape[0] for i in range(count)}
+            new_columns = {f&#34;new_col_{i}&#34;: [None] * self._data.shape[0] for i in range(count)}
             self.beginResetModel()
             self._data = pl.concat([self._data[:, :column], pl.DataFrame(new_columns), self._data[:, column:]], how=&#34;horizontal&#34;)
             self.endResetModel()
@@ -297,7 +322,7 @@ el.replaceWith(d);
     def addColumnAfter(self, index, count):
         if index.isValid() and count &gt; 0:
             column = index.column() + 1
-            new_columns = {f&#34;new_col_{i}&#34;: [&#34;&#34;] * self._data.shape[0] for i in range(count)}
+            new_columns = {f&#34;new_col_{i}&#34;: [None] * self._data.shape[0] for i in range(count)}
             self.beginResetModel()
             self._data = pl.concat([self._data[:, :column], pl.DataFrame(new_columns), self._data[:, column:]], how=&#34;horizontal&#34;)
             self.endResetModel()
@@ -496,7 +521,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="sip-sae.model.TableModel.TableModel.addColumnAfter"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.addColumnAfter"><code class="name flex">
 <span>def <span class="ident">addColumnAfter</span></span>(<span>self, index, count)</span>
 </code></dt>
 <dd>
@@ -507,7 +532,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 <pre><code class="python">def addColumnAfter(self, index, count):
     if index.isValid() and count &gt; 0:
         column = index.column() + 1
-        new_columns = {f&#34;new_col_{i}&#34;: [&#34;&#34;] * self._data.shape[0] for i in range(count)}
+        new_columns = {f&#34;new_col_{i}&#34;: [None] * self._data.shape[0] for i in range(count)}
         self.beginResetModel()
         self._data = pl.concat([self._data[:, :column], pl.DataFrame(new_columns), self._data[:, column:]], how=&#34;horizontal&#34;)
         self.endResetModel()
@@ -518,7 +543,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.addColumnBefore"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.addColumnBefore"><code class="name flex">
 <span>def <span class="ident">addColumnBefore</span></span>(<span>self, index, count)</span>
 </code></dt>
 <dd>
@@ -529,7 +554,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 <pre><code class="python">def addColumnBefore(self, index, count):
     if index.isValid() and count &gt; 0:
         column = index.column()
-        new_columns = {f&#34;new_col_{i}&#34;: [&#34;&#34;] * self._data.shape[0] for i in range(count)}
+        new_columns = {f&#34;new_col_{i}&#34;: [None] * self._data.shape[0] for i in range(count)}
         self.beginResetModel()
         self._data = pl.concat([self._data[:, :column], pl.DataFrame(new_columns), self._data[:, column:]], how=&#34;horizontal&#34;)
         self.endResetModel()
@@ -540,7 +565,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.addRowsAfter"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.addRowsAfter"><code class="name flex">
 <span>def <span class="ident">addRowsAfter</span></span>(<span>self, index, count)</span>
 </code></dt>
 <dd>
@@ -551,7 +576,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 <pre><code class="python">def addRowsAfter(self, index, count):
     if index.isValid() and count &gt; 0:
         row = index.row() + 1
-        new_rows = [{col: None if self._data[col].dtype in [pl.Int64, pl.Float64] else &#34;&#34; for col in self._data.columns} for _ in range(count)]
+        new_rows = [{col: None if self._data[col].dtype in [pl.Int64, pl.Float64, pl.Null] else &#34;&#34; for col in self._data.columns} for _ in range(count)]
         self.beginInsertRows(QtCore.QModelIndex(), row, row + count - 1)
         self._data = pl.concat([self._data[:row], pl.DataFrame(new_rows), self._data[row:]])
         self.loaded_rows += count
@@ -561,7 +586,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.addRowsBefore"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.addRowsBefore"><code class="name flex">
 <span>def <span class="ident">addRowsBefore</span></span>(<span>self, index, count)</span>
 </code></dt>
 <dd>
@@ -571,9 +596,8 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </summary>
 <pre><code class="python">def addRowsBefore(self, index, count):
     if index.isValid() and count &gt; 0:
-        print(&#34;Adding rows before&#34;)
         row = index.row()
-        new_rows = [{col: None if self._data[col].dtype in [pl.Int64, pl.Float64] else &#34;&#34; for col in self._data.columns} for _ in range(count)]
+        new_rows = [{col: None if self._data[col].dtype in [pl.Int64, pl.Float64, pl.Null] else &#34;&#34; for col in self._data.columns} for _ in range(count)]
         self.beginInsertRows(QtCore.QModelIndex(), row, row + count - 1)
         self._data = pl.concat([self._data[:row], pl.DataFrame(new_rows), self._data[row:]])
         self.loaded_rows += count
@@ -583,7 +607,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.canFetchMore"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.canFetchMore"><code class="name flex">
 <span>def <span class="ident">canFetchMore</span></span>(<span>self, _)</span>
 </code></dt>
 <dd>
@@ -596,7 +620,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"><p>canFetchMore(self, parent: QModelIndex) -&gt; bool</p></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.columnCount"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.columnCount"><code class="name flex">
 <span>def <span class="ident">columnCount</span></span>(<span>self, _)</span>
 </code></dt>
 <dd>
@@ -609,7 +633,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"><p>columnCount(self, parent: QModelIndex = QModelIndex()) -&gt; int</p></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.copy"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.copy"><code class="name flex">
 <span>def <span class="ident">copy</span></span>(<span>self, index)</span>
 </code></dt>
 <dd>
@@ -625,7 +649,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.data"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.data"><code class="name flex">
 <span>def <span class="ident">data</span></span>(<span>self, index, role)</span>
 </code></dt>
 <dd>
@@ -636,11 +660,11 @@ Sets the data type of the column at the given index to the new type.</p></div>
 <pre><code class="python">def data(self, index, role):
     if role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:
         value = self._data[index.row(), index.column()]
-        return str(value)</code></pre>
+        return &#34;&#34; if value is None else str(value)</code></pre>
 </details>
 <div class="desc"><p>data(self, index: QModelIndex, role: int = Qt.DisplayRole) -&gt; Any</p></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.deleteColumns"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.deleteColumns"><code class="name flex">
 <span>def <span class="ident">deleteColumns</span></span>(<span>self, start_column, count)</span>
 </code></dt>
 <dd>
@@ -686,7 +710,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 <dd>The number of columns to delete.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.deleteRows"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.deleteRows"><code class="name flex">
 <span>def <span class="ident">deleteRows</span></span>(<span>self, start_row, count)</span>
 </code></dt>
 <dd>
@@ -706,7 +730,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.fetchMore"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.fetchMore"><code class="name flex">
 <span>def <span class="ident">fetchMore</span></span>(<span>self, _)</span>
 </code></dt>
 <dd>
@@ -725,7 +749,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"><p>fetchMore(self, parent: QModelIndex)</p></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.flags"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.flags"><code class="name flex">
 <span>def <span class="ident">flags</span></span>(<span>self, _)</span>
 </code></dt>
 <dd>
@@ -742,7 +766,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"><p>flags(self, index: QModelIndex) -&gt; Qt.ItemFlag</p></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.get_column_type"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.get_column_type"><code class="name flex">
 <span>def <span class="ident">get_column_type</span></span>(<span>self, column_index)</span>
 </code></dt>
 <dd>
@@ -758,7 +782,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.get_data"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.get_data"><code class="name flex">
 <span>def <span class="ident">get_data</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -771,7 +795,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.headerData"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.headerData"><code class="name flex">
 <span>def <span class="ident">headerData</span></span>(<span>self, section, orientation, role)</span>
 </code></dt>
 <dd>
@@ -795,13 +819,15 @@ Sets the data type of the column at the given index to the new type.</p></div>
                 dtype = self._data[column_name].dtype
                 if dtype == pl.Utf8:
                     return QtGui.QIcon(&#34;assets/nominal.svg&#34;)
+                elif dtype == pl.Null:
+                    return QtGui.QIcon(&#34;assets/null.svg&#34;)
                 else:
                     return QtGui.QIcon(&#34;assets/numeric.svg&#34;)
     return None</code></pre>
 </details>
 <div class="desc"><p>headerData(self, section: int, orientation: Qt.Orientation, role: int = Qt.DisplayRole) -&gt; Any</p></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.paste"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.paste"><code class="name flex">
 <span>def <span class="ident">paste</span></span>(<span>self, index)</span>
 </code></dt>
 <dd>
@@ -817,7 +843,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.redo"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.redo"><code class="name flex">
 <span>def <span class="ident">redo</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -830,7 +856,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.rename_column"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.rename_column"><code class="name flex">
 <span>def <span class="ident">rename_column</span></span>(<span>self, column_index, new_name)</span>
 </code></dt>
 <dd>
@@ -849,7 +875,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.rowCount"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.rowCount"><code class="name flex">
 <span>def <span class="ident">rowCount</span></span>(<span>self, _)</span>
 </code></dt>
 <dd>
@@ -862,7 +888,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"><p>rowCount(self, parent: QModelIndex = QModelIndex()) -&gt; int</p></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.setData"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.setData"><code class="name flex">
 <span>def <span class="ident">setData</span></span>(<span>self, index, value, role=2)</span>
 </code></dt>
 <dd>
@@ -879,13 +905,37 @@ Sets the data type of the column at the given index to the new type.</p></div>
         dtype = self._data[column_name].dtype
 
         old_value = self._data[row, column]
+        
+        if dtype == pl.Null:
+            if isinstance(value, str):
+                val_strip = value.strip()
+                val_dot = val_strip.replace(&#39;,&#39;, &#39;.&#39;)
+                try:
+                    float_val = float(val_dot)
+                    if &#39;.&#39; in val_dot:
+                        new_dtype = pl.Float64
+                        value = float_val
+                    else:
+                        new_dtype = pl.Int64
+                        value = int(float_val)
+                except ValueError:
+                    new_dtype = pl.Utf8
+            elif isinstance(value, float):
+                new_dtype = pl.Float64
+            elif isinstance(value, int):
+                new_dtype = pl.Int64
+            else:
+                new_dtype = pl.Utf8
+            self._data = self._data.with_columns([pl.col(column_name).cast(new_dtype)])
+            dtype = new_dtype
 
         if dtype == pl.Float64:
             try:
                 if isinstance(value, str):
                     if value.count(&#39;,&#39;) == 1 and value.replace(&#39;,&#39;, &#39;&#39;).isdigit():
                         value = value.replace(&#39;,&#39;, &#39;.&#39;)
-                    value = float(value)
+                    value = float(value) if value is not None else None
+                    
             except ValueError:
                 error_dialog = QtWidgets.QMessageBox()
                 error_dialog.setIcon(QtWidgets.QMessageBox.Icon.Warning)
@@ -905,7 +955,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
         if dtype == pl.Int64:
             try:
                 if isinstance(value, str):
-                    value = int(value)
+                    value = int(value) if value is not None else None
             except ValueError:
                 error_dialog = QtWidgets.QMessageBox()
                 error_dialog.setIcon(QtWidgets.QMessageBox.Icon.Warning)
@@ -931,7 +981,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"><p>setData(self, index: QModelIndex, value: Any, role: int = Qt.EditRole) -&gt; bool</p></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.set_column_type"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.set_column_type"><code class="name flex">
 <span>def <span class="ident">set_column_type</span></span>(<span>self, column_index, new_type)</span>
 </code></dt>
 <dd>
@@ -1005,7 +1055,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.set_data"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.set_data"><code class="name flex">
 <span>def <span class="ident">set_data</span></span>(<span>self, new_data)</span>
 </code></dt>
 <dd>
@@ -1024,7 +1074,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.model.TableModel.TableModel.undo"><code class="name flex">
+<dt id="saePisan.model.TableModel.TableModel.undo"><code class="name flex">
 <span>def <span class="ident">undo</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1049,37 +1099,37 @@ Sets the data type of the column at the given index to the new type.</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.model" href="index.html">sip-sae.model</a></code></li>
+<li><code><a title="saePisan.model" href="index.html">saePisan.model</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sip-sae.model.TableModel.TableModel" href="#sip-sae.model.TableModel.TableModel">TableModel</a></code></h4>
+<h4><code><a title="saePisan.model.TableModel.TableModel" href="#saePisan.model.TableModel.TableModel">TableModel</a></code></h4>
 <ul class="two-column">
-<li><code><a title="sip-sae.model.TableModel.TableModel.addColumnAfter" href="#sip-sae.model.TableModel.TableModel.addColumnAfter">addColumnAfter</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.addColumnBefore" href="#sip-sae.model.TableModel.TableModel.addColumnBefore">addColumnBefore</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.addRowsAfter" href="#sip-sae.model.TableModel.TableModel.addRowsAfter">addRowsAfter</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.addRowsBefore" href="#sip-sae.model.TableModel.TableModel.addRowsBefore">addRowsBefore</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.canFetchMore" href="#sip-sae.model.TableModel.TableModel.canFetchMore">canFetchMore</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.columnCount" href="#sip-sae.model.TableModel.TableModel.columnCount">columnCount</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.copy" href="#sip-sae.model.TableModel.TableModel.copy">copy</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.data" href="#sip-sae.model.TableModel.TableModel.data">data</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.deleteColumns" href="#sip-sae.model.TableModel.TableModel.deleteColumns">deleteColumns</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.deleteRows" href="#sip-sae.model.TableModel.TableModel.deleteRows">deleteRows</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.fetchMore" href="#sip-sae.model.TableModel.TableModel.fetchMore">fetchMore</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.flags" href="#sip-sae.model.TableModel.TableModel.flags">flags</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.get_column_type" href="#sip-sae.model.TableModel.TableModel.get_column_type">get_column_type</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.get_data" href="#sip-sae.model.TableModel.TableModel.get_data">get_data</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.headerData" href="#sip-sae.model.TableModel.TableModel.headerData">headerData</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.paste" href="#sip-sae.model.TableModel.TableModel.paste">paste</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.redo" href="#sip-sae.model.TableModel.TableModel.redo">redo</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.rename_column" href="#sip-sae.model.TableModel.TableModel.rename_column">rename_column</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.rowCount" href="#sip-sae.model.TableModel.TableModel.rowCount">rowCount</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.setData" href="#sip-sae.model.TableModel.TableModel.setData">setData</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.set_column_type" href="#sip-sae.model.TableModel.TableModel.set_column_type">set_column_type</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.set_data" href="#sip-sae.model.TableModel.TableModel.set_data">set_data</a></code></li>
-<li><code><a title="sip-sae.model.TableModel.TableModel.undo" href="#sip-sae.model.TableModel.TableModel.undo">undo</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.addColumnAfter" href="#saePisan.model.TableModel.TableModel.addColumnAfter">addColumnAfter</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.addColumnBefore" href="#saePisan.model.TableModel.TableModel.addColumnBefore">addColumnBefore</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.addRowsAfter" href="#saePisan.model.TableModel.TableModel.addRowsAfter">addRowsAfter</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.addRowsBefore" href="#saePisan.model.TableModel.TableModel.addRowsBefore">addRowsBefore</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.canFetchMore" href="#saePisan.model.TableModel.TableModel.canFetchMore">canFetchMore</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.columnCount" href="#saePisan.model.TableModel.TableModel.columnCount">columnCount</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.copy" href="#saePisan.model.TableModel.TableModel.copy">copy</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.data" href="#saePisan.model.TableModel.TableModel.data">data</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.deleteColumns" href="#saePisan.model.TableModel.TableModel.deleteColumns">deleteColumns</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.deleteRows" href="#saePisan.model.TableModel.TableModel.deleteRows">deleteRows</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.fetchMore" href="#saePisan.model.TableModel.TableModel.fetchMore">fetchMore</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.flags" href="#saePisan.model.TableModel.TableModel.flags">flags</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.get_column_type" href="#saePisan.model.TableModel.TableModel.get_column_type">get_column_type</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.get_data" href="#saePisan.model.TableModel.TableModel.get_data">get_data</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.headerData" href="#saePisan.model.TableModel.TableModel.headerData">headerData</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.paste" href="#saePisan.model.TableModel.TableModel.paste">paste</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.redo" href="#saePisan.model.TableModel.TableModel.redo">redo</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.rename_column" href="#saePisan.model.TableModel.TableModel.rename_column">rename_column</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.rowCount" href="#saePisan.model.TableModel.TableModel.rowCount">rowCount</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.setData" href="#saePisan.model.TableModel.TableModel.setData">setData</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.set_column_type" href="#saePisan.model.TableModel.TableModel.set_column_type">set_column_type</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.set_data" href="#saePisan.model.TableModel.TableModel.set_data">set_data</a></code></li>
+<li><code><a title="saePisan.model.TableModel.TableModel.undo" href="#saePisan.model.TableModel.TableModel.undo">undo</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1088,7 +1138,7 @@ Sets the data type of the column at the given index to the new type.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

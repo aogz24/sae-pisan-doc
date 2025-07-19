@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.service.modelling.running_model.SaeEblupUnit API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.service.modelling.running_model.SaeEblupUnit API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.service.modelling.running_model.SaeEblupUnit</code></h1>
+<h1 class="title">Module <code>saePisan.service.modelling.running_model.SaeEblupUnit</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -44,7 +44,127 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sip-sae.service.modelling.running_model.SaeEblupUnit.run_model_eblup_unit"><code class="name flex">
+<dt id="saePisan.service.modelling.running_model.SaeEblupUnit.extract_formatted"><code class="name flex">
+<span>def <span class="ident">extract_formatted</span></span>(<span>output)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_formatted(output):
+    import re
+    # Fungsi untuk mengekstrak metode
+    def extract_method(output):
+        match = re.search(r&#39;Linear mixed model fit by (.*?)\s+(\[.*?\])&#39;, output)
+        return f&#34;Linear mixed model fit by {match.group(1).strip()} {match.group(2).strip()}&#34; if match else None
+
+    # Fungsi untuk mengekstrak formula
+    def extract_formula(output):
+        match = re.search(r&#39;Formula:\s+(.*?)\s+REML criterion&#39;, output)
+        return match.group(1).strip() if match else None
+
+    # Fungsi untuk mengekstrak metode dan kriterianya
+    def extract_criterion(output):
+        match = re.search(r&#39;criterion at convergence:\s+([\d.-]+)&#39;, output)
+        return float(match.group(1)) if match else None
+
+    # Fungsi untuk mengekstrak jumlah observasi
+    def number_of_obs(output):
+        match = re.search(r&#39;Number of obs:\s+(\d+)&#39;, output)
+        return int(match.group(1)) if match else None
+
+    # Fungsi untuk mengekstrak kelompok
+    def extract_groups(output):
+        match = re.search(r&#39;Number of obs:\s+(\d+),\s+groups:\s+(.*?),\s+(\d+)&#39;, output)
+        return f&#34;Number of obs: {match.group(1)}, groups: {match.group(2)}, {match.group(3)}&#34; if match else None
+
+    # Fungsi untuk mengekstrak dataframe antara Scaled residuals dan Random effects
+    def extract_summary(output):
+        match = re.search(r&#39;Scaled residuals:\s+(.*?)\s+Random effects:&#39;, output, re.S)
+        if match:
+            dataframe = match.group(1).strip()
+            rows = dataframe.split(&#39;\n&#39;)
+            data = [row.split(maxsplit=5) for row in rows if row.strip()]
+            max_columns = 4
+            data = [row + [None] * (max_columns - len(row)) for row in data]
+            df = pl.DataFrame(data, schema=[&#34;Statistic&#34;, &#34;Value&#34;])
+            df = df.with_columns([
+                    pl.col(&#34;Statistic&#34;).replace(
+                        [&#34;Min&#34;, &#34;1Q&#34;, &#34;Median&#34;, &#34;3Q&#34;, &#34;Max&#34;],
+                        [&#34;Minimum&#34;, &#34;Quartil 1&#34;, &#34;Median&#34;, &#34;Quartil 3&#34;, &#34;Maximum&#34;]
+                    ).alias(&#34;Statistic&#34;),
+                    pl.col(&#34;Value&#34;).cast(pl.Float64).alias(&#34;Value&#34;)
+                ])
+            return df
+        return None
+
+    # Fungsi untuk mengekstrak bagian Fixed effects
+    def extract_fixed_effects(output):
+        match = re.search(r&#39;Fixed effects:\s+(.*?)\s+Correlation of Fixed Effects:&#39;, output, re.S)
+        if match:
+            dataframe = match.group(1).strip()
+            rows = dataframe.split(&#39;\n&#39;)
+            data = [row.split(maxsplit=4) for row in rows[1:] if row.strip()]
+            df = pl.DataFrame(data, schema=[&#34;Effect&#34;, &#34;Estimate&#34;, &#34;Standard Error&#34;, &#34;t-value&#34;], orient=&#34;row&#34;)
+            return df.with_columns([
+                pl.col(&#34;Estimate&#34;).cast(pl.Float64).alias(&#34;Estimate&#34;),
+                pl.col(&#34;Standard Error&#34;).cast(pl.Float64).alias(&#34;Standard Error&#34;),
+                pl.col(&#34;t-value&#34;).cast(pl.Float64).alias(&#34;t-value&#34;)
+            ])
+        return None
+
+    # Fungsi untuk mengekstrak bagian Random effects
+    def extract_random_effects(output):
+        match = re.search(r&#39;Random effects:\s+(.*?)\s+Number of obs:&#39;, output, re.S)
+        if match:
+            dataframe = match.group(1).strip()
+            rows = dataframe.split(&#39;\n&#39;)
+            data = []
+            for row in rows[1:]:
+                if row.strip():
+                    parts = row.split()
+                    if len(parts) &gt;= 4:
+                        group, name, variance, std_dev = parts[0], parts[1], parts[-2], parts[-1]
+                    else:
+                        group, name, variance, std_dev = parts[0], None, parts[-2], parts[-1]
+                    data.append([group, name, float(variance), float(std_dev)])
+            return pl.DataFrame(data, schema=[&#34;Group&#34;, &#34;Name&#34;, &#34;Variance&#34;, &#34;Standard Deviation&#34;], orient=&#34;row&#34;)
+        return None
+
+    # Fungsi untuk mengekstrak bagian Correlation of Fixed Effects
+    def correlation_fixed_effects(output):
+        match = re.search(r&#39;Correlation of Fixed Effects:\s+(.*?)\s+boundary&#39;, output, re.S)
+        if match:
+            dataframe = match.group(1).strip()
+            rows = dataframe.split(&#39;\n&#39;)
+            data = [row.split() for row in rows if row.strip()]
+            data[0].insert(0, &#39;&#39;)
+            header = data[0]
+            data = data[1:]
+            max_columns = len(header)
+            data = [row + [None] * (max_columns - len(row)) for row in data]
+            return pl.DataFrame(data, schema=header, orient=&#34;row&#34;)
+        return None
+
+    # Menggabungkan hasil ekstraksi menjadi string yang user-friendly
+    results = {
+        &#34;Model&#34;: &#34;EBLUP Unit Level&#34;,
+        &#34;Method&#34;: extract_method(output),
+        &#34;Formula&#34;: extract_formula(output),
+        &#34;Criterion of Convergence&#34;: extract_criterion(output),
+        &#34;Number of Observation&#34;: number_of_obs(output),
+        &#34;Groups&#34;: extract_groups(output),
+        &#34;Summary of Modelling&#34;: extract_summary(output),
+        &#34;Fixed Effects&#34;: extract_fixed_effects(output),
+        &#34;Random Effects&#34;: extract_random_effects(output),
+        &#34;Correlation of Fixed Effect&#34;: correlation_fixed_effects(output)
+    }
+    return results</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="saePisan.service.modelling.running_model.SaeEblupUnit.run_model_eblup_unit"><code class="name flex">
 <span>def <span class="ident">run_model_eblup_unit</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -72,33 +192,33 @@ el.replaceWith(d);
     import rpy2.robjects as ro
     parent.activate_R()
     df = parent.model1.get_data()
-    df = df.drop_nulls()
+    df = df.filter(~pl.all_horizontal(pl.all().is_null()))
     convert_df(df, parent)
     result = &#34;&#34;
     error = False
     try:
-        ro.r(&#39;suppressMessages(library(sae))&#39;)
-        ro.r(&#39;data &lt;- as.data.frame(r_df)&#39;)
+        ro.r(&#39;data_unit &lt;- as.data.frame(r_df)&#39;)
         try:
             ro.r(parent.r_script)  # Menjalankan skrip R
         except RRuntimeError as e:
             result = str(e)
             error = True
             return result, error, None
-        ro.r(&#39;domain &lt;- model$est$eblup$domain\n estimated_value &lt;- model$est$eblup$eblup\n n_size &lt;- model$est$eblup$sampsize \n mse &lt;- model$mse$mse&#39;)
-        result_str = ro.r(&#39;capture.output(print(model))&#39;)
-        result = &#34;\n&#34;.join(result_str)
-        domain = ro.r(&#39;domain&#39;)
-        estimated_value = ro.r(&#39;estimated_value&#39;)
-        n_size = ro.r(&#39;n_size&#39;)
-        mse = ro.r(&#39;mse&#39;)
+        ro.r(&#39;domain_unit &lt;- model_unit$est$eblup$domain\n estimated_value_unit &lt;- model_unit$est$eblup$eblup\n n_size_unit &lt;- model_unit$est$eblup$sampsize \n mse_unit &lt;- model_unit$mse$mse&#39;)
+        result_str = ro.r(&#39;model_unit$est$fit$summary&#39;)
+        result = str(result_str)
+        results = extract_formatted(result)
+        domain = ro.r(&#39;domain_unit&#39;)
+        estimated_value = ro.r(&#39;estimated_value_unit&#39;)
+        n_size = ro.r(&#39;n_size_unit&#39;)
+        mse = ro.r(&#39;mse_unit&#39;)
         df = pl.DataFrame({
             &#39;Domain&#39;: domain,
             &#39;Eblup&#39;: estimated_value,
             &#39;Sample size&#39;: n_size,
             &#39;MSE&#39;: mse})
         error = False
-        return result, error, df
+        return results, error, df
         
     except Exception as e:
         error = True
@@ -130,19 +250,20 @@ None if an error occurred.</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.service.modelling.running_model" href="index.html">sip-sae.service.modelling.running_model</a></code></li>
+<li><code><a title="saePisan.service.modelling.running_model" href="index.html">saePisan.service.modelling.running_model</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sip-sae.service.modelling.running_model.SaeEblupUnit.run_model_eblup_unit" href="#sip-sae.service.modelling.running_model.SaeEblupUnit.run_model_eblup_unit">run_model_eblup_unit</a></code></li>
+<li><code><a title="saePisan.service.modelling.running_model.SaeEblupUnit.extract_formatted" href="#saePisan.service.modelling.running_model.SaeEblupUnit.extract_formatted">extract_formatted</a></code></li>
+<li><code><a title="saePisan.service.modelling.running_model.SaeEblupUnit.run_model_eblup_unit" href="#saePisan.service.modelling.running_model.SaeEblupUnit.run_model_eblup_unit">run_model_eblup_unit</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

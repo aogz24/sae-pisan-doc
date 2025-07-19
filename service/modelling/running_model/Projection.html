@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.service.modelling.running_model.Projection API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.service.modelling.running_model.Projection API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.service.modelling.running_model.Projection</code></h1>
+<h1 class="title">Module <code>saePisan.service.modelling.running_model.Projection</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -44,7 +44,51 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sip-sae.service.modelling.running_model.Projection.run_model_projection"><code class="name flex">
+<dt id="saePisan.service.modelling.running_model.Projection.extract_output2_results"><code class="name flex">
+<span>def <span class="ident">extract_output2_results</span></span>(<span>output)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_output2_results(output):
+    &#34;&#34;&#34;
+    Extracts results from the given output2 string and returns it as a dictionary.
+    &#34;&#34;&#34;
+    import re
+
+    # Extract formula
+    formula_match = re.search(r&#34;formula\s*=\s*(.+)&#34;, output)
+    if formula_match:
+        formula = formula_match.group(1).strip()
+    else:
+        formula = &#34;No formula found&#34;
+
+    # Extract coefficients
+    coefficients_match = re.search(r&#39;Coefficients:\s+((?:.+\n)+)&#39;, output, re.S)
+    if coefficients_match:
+        coefficients = coefficients_match.group(1).strip()
+        rows = coefficients.split(&#39;\n&#39;)
+        
+        # Process header and data rows
+        header = rows[0].split()
+        data = [row.split() for row in rows[1:] if row.strip()]
+        
+        # Ensure all rows have the same number of columns as the header
+        max_columns = len(header)
+        data = [row + [None] * (max_columns - len(row)) for row in data]
+        
+        # Convert to Polars DataFrame
+        coeff = pl.DataFrame(data, schema=header, orient=&#34;row&#34;)
+    else:
+        coeff = pl.DataFrame()
+
+    return formula, coeff</code></pre>
+</details>
+<div class="desc"><p>Extracts results from the given output2 string and returns it as a dictionary.</p></div>
+</dd>
+<dt id="saePisan.service.modelling.running_model.Projection.run_model_projection"><code class="name flex">
 <span>def <span class="ident">run_model_projection</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -72,21 +116,33 @@ el.replaceWith(d);
     result = &#34;&#34;
     error = False
     try:
-        ro.r(&#39;suppressMessages(library(sae.projection))&#39;)
-        ro.r(&#39;data &lt;- as.data.frame(r_df)&#39;)
+        ro.r(&#39;data_pe &lt;- as.data.frame(r_df)&#39;)
         try:
             ro.r(parent.r_script)  # Menjalankan skrip R
         except RRuntimeError as e:
             result = str(e)
             error = True
             return result, error, None
-        result_str = ro.r(&#39;capture.output(print(model))&#39;)
-        result = &#34;\n&#34;.join(result_str)
-        ro.r(&#39;projection &lt;- model$projection&#39;)
-        proj = ro.conversion.rpy2py(ro.globalenv[&#39;projection&#39;])
+        ro.r(&#39;summary_pe &lt;- model_pe$model \n pred_pe &lt;-model_pe$prediction&#39;)
+        summary = ro.globalenv[&#39;summary_pe&#39;]
+        formula, coeff = extract_output2_results(str(summary))
+        pred = ro.conversion.rpy2py(ro.globalenv[&#39;pred_pe&#39;])
+        pred = [float(value) for value in pred]
+        pred_df = pl.DataFrame({
+            &#34;Index&#34;: range(1, len(pred) + 1),
+            &#34;Value&#34;: pred
+        })
+        results = {
+            &#39;Model&#39;: &#34;Projection Estimation&#34;,
+            &#39;Formula of Modelling&#39;: formula,
+            &#39;Coefficients of Modelling&#39;: coeff,
+            &#39;Prediction&#39;: pred_df
+        }
+        ro.r(&#39;projection_pe &lt;- model_pe$projection&#39;)
+        proj = ro.conversion.rpy2py(ro.globalenv[&#39;projection_pe&#39;])
         df = pl.from_pandas(proj)
         error = False
-        return result, error, df
+        return results, error, df
         
     except Exception as e:
         error = True
@@ -113,19 +169,20 @@ tuple: A tuple containing:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.service.modelling.running_model" href="index.html">sip-sae.service.modelling.running_model</a></code></li>
+<li><code><a title="saePisan.service.modelling.running_model" href="index.html">saePisan.service.modelling.running_model</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sip-sae.service.modelling.running_model.Projection.run_model_projection" href="#sip-sae.service.modelling.running_model.Projection.run_model_projection">run_model_projection</a></code></li>
+<li><code><a title="saePisan.service.modelling.running_model.Projection.extract_output2_results" href="#saePisan.service.modelling.running_model.Projection.extract_output2_results">extract_output2_results</a></code></li>
+<li><code><a title="saePisan.service.modelling.running_model.Projection.run_model_projection" href="#saePisan.service.modelling.running_model.Projection.run_model_projection">run_model_projection</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

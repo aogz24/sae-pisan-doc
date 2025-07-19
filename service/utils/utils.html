@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.service.utils.utils API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.service.utils.utils API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.service.utils.utils</code></h1>
+<h1 class="title">Module <code>saePisan.service.utils.utils</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -44,7 +44,57 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sip-sae.service.utils.utils.check_script"><code class="name flex">
+<dt id="saePisan.service.utils.utils.add_copy_context_menu_to_table"><code class="name flex">
+<span>def <span class="ident">add_copy_context_menu_to_table</span></span>(<span>table_view)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_copy_context_menu_to_table(table_view):
+    &#34;&#34;&#34;
+    Adds a context menu to the QTableView for copying data (including headers and content).
+    Args:
+        table_view (QTableView): The table view to which the context menu will be added.
+    &#34;&#34;&#34;
+    def copy_table_data():
+        &#34;&#34;&#34;
+        Copies the table data (headers and content) to the clipboard.
+        &#34;&#34;&#34;
+        model = table_view.model()
+        if model is None:
+            return
+
+        # Get headers
+        headers = [model.headerData(i, Qt.Orientation.Horizontal) for i in range(model.columnCount())]
+        data = &#39;\t&#39;.join(headers) + &#39;\n&#39;
+
+        # Get table content
+        for row in range(model.rowCount()):
+            row_data = [model.index(row, col).data() for col in range(model.columnCount())]
+            data += &#39;\t&#39;.join(map(str, row_data)) + &#39;\n&#39;
+
+        # Copy to clipboard
+        clipboard = QApplication.clipboard()
+        clipboard.setText(data)
+
+    # Add context menu
+    table_view.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+    table_view.customContextMenuRequested.connect(lambda pos: show_table_context_menu(pos, table_view, copy_table_data))
+    
+    header = table_view.horizontalHeader()
+    header.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+    header.customContextMenuRequested.connect(lambda pos: show_table_context_menu(pos, table_view, copy_table_data))</code></pre>
+</details>
+<div class="desc"><p>Adds a context menu to the QTableView for copying data (including headers and content).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>table_view</code></strong> :&ensp;<code>QTableView</code></dt>
+<dd>The table view to which the context menu will be added.</dd>
+</dl></div>
+</dd>
+<dt id="saePisan.service.utils.utils.check_script"><code class="name flex">
 <span>def <span class="ident">check_script</span></span>(<span>r_script)</span>
 </code></dt>
 <dd>
@@ -72,28 +122,102 @@ r_script (str): The R script string to check.
 Returns:
 bool: True if the R script string is not empty, False otherwise.</p></div>
 </dd>
-<dt id="sip-sae.service.utils.utils.display_script_and_output"><code class="name flex">
-<span>def <span class="ident">display_script_and_output</span></span>(<span>parent, r_script, result)</span>
+<dt id="saePisan.service.utils.utils.copy_output_image"><code class="name flex">
+<span>def <span class="ident">copy_output_image</span></span>(<span>parent, image_label)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def display_script_and_output(parent, r_script, result):
+<pre><code class="python">def copy_output_image(parent, image_label):
+    &#34;&#34;&#34;Menyalin gambar dari QLabel ke clipboard dengan simpan file sementara (tanpa loop).&#34;&#34;&#34;
+    pixmap = image_label.pixmap()
+    
+    if pixmap and not pixmap.isNull():
+        temp_folder = os.path.join(parent.path, &#39;temp&#39;)
+        temp_path = os.path.join(temp_folder, &#39;temp_image.png&#39;)
+
+        os.makedirs(temp_folder, exist_ok=True)
+
+        if pixmap.save(temp_path):
+            print(f&#34;Gambar disimpan di: {temp_path}&#34;)
+            
+            clipboard = QApplication.clipboard()
+            clipboard.setPixmap(QPixmap(temp_path))
+
+            if os.path.exists(temp_path):  
+                os.remove(temp_path)
+        else:
+            print(&#34;Gagal menyimpan gambar sementara.&#34;)
+    else:
+        print(&#34;Tidak ada gambar untuk disalin.&#34;)</code></pre>
+</details>
+<div class="desc"><p>Menyalin gambar dari QLabel ke clipboard dengan simpan file sementara (tanpa loop).</p></div>
+</dd>
+<dt id="saePisan.service.utils.utils.delete_all_outputs"><code class="name flex">
+<span>def <span class="ident">delete_all_outputs</span></span>(<span>parent)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_all_outputs(parent):
+    &#34;&#34;&#34;Removes all output cards from the output layout&#34;&#34;&#34;
+    while parent.output_layout.count() &gt; 0:
+        item = parent.output_layout.takeAt(0)
+        widget = item.widget()
+        if widget is not None:
+            widget.deleteLater()
+    parent.data = []  # Clear stored data</code></pre>
+</details>
+<div class="desc"><p>Removes all output cards from the output layout</p></div>
+</dd>
+<dt id="saePisan.service.utils.utils.delete_output_card"><code class="name flex">
+<span>def <span class="ident">delete_output_card</span></span>(<span>parent, card_frame)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_output_card(parent, card_frame):
+    &#34;&#34;&#34;Delete the selected output card&#34;&#34;&#34;
+    parent.output_layout.removeWidget(card_frame)
+    card_frame.deleteLater()
+
+    # Optional: remove from parent.data list
+    if hasattr(parent, &#34;data&#34;) and isinstance(parent.data, list):
+        index = parent.output_layout.indexOf(card_frame)
+        if 0 &lt;= index &lt; len(parent.data):
+            del parent.data[index]</code></pre>
+</details>
+<div class="desc"><p>Delete the selected output card</p></div>
+</dd>
+<dt id="saePisan.service.utils.utils.display_script_and_output"><code class="name flex">
+<span>def <span class="ident">display_script_and_output</span></span>(<span>parent, r_script, results, plot_paths=None, timestamps=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def display_script_and_output(parent, r_script, results, plot_paths=None, timestamps=None):
     &#34;&#34;&#34;
     Adds a new output card to the layout displaying the provided R script and its result.
     Parameters:
     parent (object): The parent widget containing the layout to which the card will be added.
     r_script (str): The R script to be displayed in the card.
-    result (str): The output result of the R script to be displayed in the card. If empty or None, only the script will be displayed.
+    results (dict or str): The output result of the R script to be displayed in the card. If empty or None, only the script will be displayed.
+    plot_paths (list): List of paths to plot images to be displayed.
     Returns:
     None
     &#34;&#34;&#34;
-    
-    &#34;&#34;&#34;Fungsi untuk menambahkan output baru ke layout dalam bentuk card&#34;&#34;&#34;
     # Membuat frame sebagai card
     card_frame = QFrame()
+    card_frame.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+    card_frame.customContextMenuRequested.connect(lambda pos: show_context_menu(parent, pos, card_frame))
     card_frame.setStyleSheet(&#34;&#34;&#34;
         QFrame {
             background-color: #f9f9f9;
@@ -101,7 +225,13 @@ bool: True if the R script string is not empty, False otherwise.</p></div>
             border-radius: 8px;
             padding: 10px;
         }
+        QFrame:hover {
+            background-color: #f0f0f0;
+            border: 1px solid #c35112;
+        }
     &#34;&#34;&#34;)
+
+    card_frame.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
 
     # Layout vertikal untuk card
     card_layout = QVBoxLayout(card_frame)
@@ -110,8 +240,17 @@ bool: True if the R script string is not empty, False otherwise.</p></div>
     # Bagian Script
     label_script = QLabel(&#34;&lt;b&gt;R Script:&lt;/b&gt;&#34;)
     label_script.setStyleSheet(&#34;color: #333; margin-bottom: 5px;&#34;)
+    out = {}
+    out[&#34;r_script&#34;] = r_script  # Simpan r_script ke dalam data parent untuk referensi
+    result = {}
+    # Bersihkan baris kosong di akhir script
+    lines = r_script.splitlines()
+    while lines and lines[-1].strip() == &#34;&#34;:
+        lines.pop()
+    cleaned_script = &#34;\n&#34;.join(lines)
+
     script_box = QTextEdit()
-    script_box.setPlainText(r_script)
+    script_box.setPlainText(cleaned_script)
     script_box.setReadOnly(True)
     script_box.setStyleSheet(&#34;&#34;&#34;
         QTextEdit {
@@ -119,21 +258,102 @@ bool: True if the R script string is not empty, False otherwise.</p></div>
             border: 1px solid #ccc;
             border-radius: 4px;
             padding: 5px;
-            font-family: Consolas, Courier New, monospace;
+            font-family: &#34;Courier New&#34;, Courier, monospace;
+            font-size: 9pt;
         }
     &#34;&#34;&#34;)
-    script_box.setFixedHeight(script_box.fontMetrics().lineSpacing() * (r_script.count(&#39;\n&#39;) + 3))
+    max_height = 400
+    calculated_height = script_box.fontMetrics().lineSpacing() * (cleaned_script.count(&#39;\n&#39;) + 2)
+    script_box.setFixedHeight(min(calculated_height, max_height))
+    script_box.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn if calculated_height &gt; max_height else Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
-    # Tambahkan elemen teks ke layout card
     card_layout.addWidget(label_script)
     card_layout.addWidget(script_box)
-
     # Bagian Output (jika ada)
-    if result:
+    if isinstance(results, dict):
+        label_output = QLabel(&#34;&lt;b&gt;Output:&lt;/b&gt;&#34;)
+        label_output.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        label_output.setStyleSheet(&#34;color: #333; margin-top: 10px; margin-bottom: 5px;&#34;)
+        card_layout.addWidget(label_output)
+        
+        if &#34;Model&#34; in results:
+            model_value = results[&#34;Model&#34;]
+            model_label = QLabel(f&#34;&lt;b&gt;Summary of {model_value}&lt;/b&gt;&#34;)
+            model_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            model_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            model_label.setStyleSheet(&#34;font-size: 20px; color: #333; margin-top: 5px;&#34;)
+            card_layout.addWidget(model_label)
+            result[&#34;Model&#34;] = results[&#34;Model&#34;]
+
+        # Add timestamp for generation
+        timestamp = datetime.now().strftime(&#34;%H:%M:%S %d-%m-%Y&#34;) if timestamps is None else timestamps
+        out[&#34;timestamp&#34;] = timestamp
+        timestamp_label = QLabel(f&#34;&lt;i&gt;Generated at: {timestamp}&lt;/i&gt;&#34;)
+        timestamp_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        timestamp_label.setStyleSheet(&#34;font-size: 12px; color: #666; margin-top: 10px;&#34;)
+        card_layout.addWidget(timestamp_label)
+
+        for key, value in results.items():
+            # Skip displaying if the key is &#34;Model&#34;
+            if key == &#34;Model&#34;:
+                continue
+            elif key==&#34;Plot&#34;:
+                continue
+
+            # Tambahkan header untuk setiap key
+            key_label = QLabel(f&#34;&lt;b&gt;{key}:&lt;/b&gt;&#34;)
+            key_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            key_label.setStyleSheet(&#34;color: #333; margin-top: 5px;&#34;)
+            card_layout.addWidget(key_label)
+
+            if isinstance(value, pl.DataFrame):
+                table_view = QTableView()
+                model = QStandardItemModel()
+                model.setHorizontalHeaderLabels(value.columns)
+
+                for row in value.iter_rows(named=True):
+                    items = [QStandardItem(str(row[col])) for col in value.columns]
+                    model.appendRow(items)
+                
+                result[key] = value.to_dict(as_series=False)
+                
+                table_view.setModel(model)
+                table_view.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+                table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+                table_view.horizontalHeader().setFixedHeight(50)
+
+                # Hitung tinggi tabel berdasarkan jumlah baris
+                row_height = table_view.verticalHeader().defaultSectionSize()
+                header_height = table_view.horizontalHeader().height()
+                total_height = row_height * model.rowCount() + header_height + 20  # Tambahkan margin
+                table_view.setFixedHeight(total_height)
+
+                table_view.setStyleSheet(&#34;&#34;&#34;
+                    QTableView {
+                        background-color: #fff;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        padding: 5px;
+                        font-family: Consolas, Courier New, monospace;
+                    }
+                &#34;&#34;&#34;)
+                add_copy_context_menu_to_table(table_view)
+                card_layout.addWidget(table_view)
+                
+            else:
+                # Tampilkan nilai biasa sebagai teks
+                value_label = QLabel(str(value))
+                value_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+                value_label.setStyleSheet(&#34;color: #333; margin-left: 10px;&#34;)
+                card_layout.addWidget(value_label)
+                result[key] = value
+        out[&#34;result&#34;] = result  # Simpan hasil ke dalam data parent untuk referensi
+
+    elif results:
         label_output = QLabel(&#34;&lt;b&gt;Output:&lt;/b&gt;&#34;)
         label_output.setStyleSheet(&#34;color: #333; margin-top: 10px; margin-bottom: 5px;&#34;)
         result_box = QTextEdit()
-        result_box.setPlainText(result)
+        result_box.setPlainText(results)
         result_box.setReadOnly(True)
         result_box.setStyleSheet(&#34;&#34;&#34;
             QTextEdit {
@@ -144,29 +364,148 @@ bool: True if the R script string is not empty, False otherwise.</p></div>
                 font-family: Consolas, Courier New, monospace;
             }
         &#34;&#34;&#34;)
-        max_height = 400
-        calculated_height = result_box.fontMetrics().lineSpacing() * (result.count(&#39;\n&#39;) + 3)
-        result_box.setFixedHeight(min(calculated_height, max_height))
-        if calculated_height &gt; max_height:
-            result_box.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-        else:
-            result_box.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-
+        
         card_layout.addWidget(label_output)
         card_layout.addWidget(result_box)
 
+    if plot_paths is not None:
+        label_plot = QLabel(&#34;&lt;b&gt;Plot:&lt;/b&gt;&#34;)
+        label_plot.setStyleSheet(&#34;color: #333; margin-top: 10px; margin-bottom: 5px;&#34;)
+        card_layout.addWidget(label_plot)
+
+        for plot_path in plot_paths:
+            if os.path.exists(plot_path):
+                pixmap = QPixmap(plot_path)
+                label = QLabel()
+                label.setPixmap(pixmap)
+                label.setFixedSize(800, 600)
+                label.setScaledContents(True)
+                label.setStyleSheet(&#34;border: 1px solid #ccc; border-radius: 4px;&#34;)
+
+                # Enable right-click menu on image
+                label.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+                label.customContextMenuRequested.connect(
+                    lambda pos, l=label, p=plot_path: show_image_context_menu(parent, pos, l, p)
+                )
+
+                card_layout.addWidget(label)
+
+                # Simpan image ke path baru
+                dest_folder = os.path.join(parent.path, &#39;file-data&#39;, &#39;temp&#39;)
+                os.makedirs(dest_folder, exist_ok=True)
+                unique_id = uuid.uuid4().hex
+                filename, ext = os.path.splitext(os.path.basename(plot_path))
+                dest_path = os.path.join(dest_folder, f&#34;{filename}_{unique_id}{ext}&#34;)
+                pixmap.save(dest_path)
+                if &#34;Plot&#34; not in result:
+                    result[&#34;Plot&#34;] = []
+                result[&#34;Plot&#34;].append(dest_path)
+                os.remove(plot_path)
+                
     # Tambahkan card ke layout utama
     parent.output_layout.addWidget(card_frame)
-    parent.output_layout.addStretch()
-    parent.tab_widget.setCurrentWidget(parent.tab3)</code></pre>
+    # parent.output_layout.addStretch()
+    parent.tab_widget.setCurrentWidget(parent.tab3)
+    if not hasattr(parent, &#34;data&#34;) or not isinstance(parent.data, list):
+        parent.data = []
+    parent.data.append(out)
+    parent.autosave_data()</code></pre>
 </details>
 <div class="desc"><p>Adds a new output card to the layout displaying the provided R script and its result.
 Parameters:
 parent (object): The parent widget containing the layout to which the card will be added.
 r_script (str): The R script to be displayed in the card.
-result (str): The output result of the R script to be displayed in the card. If empty or None, only the script will be displayed.
+results (dict or str): The output result of the R script to be displayed in the card. If empty or None, only the script will be displayed.
+plot_paths (list): List of paths to plot images to be displayed.
 Returns:
 None</p></div>
+</dd>
+<dt id="saePisan.service.utils.utils.show_context_menu"><code class="name flex">
+<span>def <span class="ident">show_context_menu</span></span>(<span>parent, pos, card_frame)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_context_menu(parent, pos, card_frame):
+    &#34;&#34;&#34;Display right-click menu on each output card&#34;&#34;&#34;
+    menu = QMenu(parent)
+
+    copy_image_action = menu.addAction(&#34;Copy Output Image&#34;)
+    delete_action = menu.addAction(&#34;Delete Output&#34;)
+    delete_all_action = menu.addAction(&#34;Delete All Outputs&#34;)
+
+    action = menu.exec(card_frame.mapToGlobal(pos))
+
+    if action == copy_image_action:
+        parent.copy_output_image(card_frame)
+    elif action == delete_action:
+        delete_output_card(parent, card_frame)
+    elif action == delete_all_action:
+        delete_all_outputs(parent)</code></pre>
+</details>
+<div class="desc"><p>Display right-click menu on each output card</p></div>
+</dd>
+<dt id="saePisan.service.utils.utils.show_image_context_menu"><code class="name flex">
+<span>def <span class="ident">show_image_context_menu</span></span>(<span>parent, pos, image_label, image_path)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_image_context_menu(parent, pos, image_label, image_path):
+    &#34;&#34;&#34;Display right-click menu on image labels.&#34;&#34;&#34;
+    menu = QMenu(parent)
+
+    copy_image_action = menu.addAction(&#34;Copy Image&#34;)
+    save_as_action = menu.addAction(&#34;Save Image As...&#34;)
+
+    action = menu.exec(image_label.mapToGlobal(pos))
+
+    if action == copy_image_action:
+        copy_output_image(parent, image_label)
+    elif action == save_as_action:
+        file_dialog = QFileDialog()
+        save_path, _ = file_dialog.getSaveFileName(parent, &#34;Save Image&#34;, os.path.basename(image_path), &#34;Images (*.png *.jpg *.bmp)&#34;)
+        if save_path:
+            image_label.pixmap().save(save_path)</code></pre>
+</details>
+<div class="desc"><p>Display right-click menu on image labels.</p></div>
+</dd>
+<dt id="saePisan.service.utils.utils.show_table_context_menu"><code class="name flex">
+<span>def <span class="ident">show_table_context_menu</span></span>(<span>pos, table_view, copy_action)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_table_context_menu(pos, table_view, copy_action):
+    &#34;&#34;&#34;
+    Displays the context menu for the QTableView.
+    Args:
+        pos (QPoint): The position where the context menu is requested.
+        table_view (QTableView): The table view for which the context menu is displayed.
+        copy_action (function): The function to execute when &#34;Copy&#34; is selected.
+    &#34;&#34;&#34;
+    menu = QMenu(table_view)
+    copy_action_item = QAction(&#34;Copy&#34;, table_view)
+    copy_action_item.triggered.connect(copy_action)
+    menu.addAction(copy_action_item)
+    menu.exec(table_view.mapToGlobal(pos))</code></pre>
+</details>
+<div class="desc"><p>Displays the context menu for the QTableView.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pos</code></strong> :&ensp;<code>QPoint</code></dt>
+<dd>The position where the context menu is requested.</dd>
+<dt><strong><code>table_view</code></strong> :&ensp;<code>QTableView</code></dt>
+<dd>The table view for which the context menu is displayed.</dd>
+<dt><strong><code>copy_action</code></strong> :&ensp;<code>function</code></dt>
+<dd>The function to execute when "Copy" is selected.</dd>
+</dl></div>
 </dd>
 </dl>
 </section>
@@ -180,20 +519,27 @@ None</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.service.utils" href="index.html">sip-sae.service.utils</a></code></li>
+<li><code><a title="saePisan.service.utils" href="index.html">saePisan.service.utils</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sip-sae.service.utils.utils.check_script" href="#sip-sae.service.utils.utils.check_script">check_script</a></code></li>
-<li><code><a title="sip-sae.service.utils.utils.display_script_and_output" href="#sip-sae.service.utils.utils.display_script_and_output">display_script_and_output</a></code></li>
+<li><code><a title="saePisan.service.utils.utils.add_copy_context_menu_to_table" href="#saePisan.service.utils.utils.add_copy_context_menu_to_table">add_copy_context_menu_to_table</a></code></li>
+<li><code><a title="saePisan.service.utils.utils.check_script" href="#saePisan.service.utils.utils.check_script">check_script</a></code></li>
+<li><code><a title="saePisan.service.utils.utils.copy_output_image" href="#saePisan.service.utils.utils.copy_output_image">copy_output_image</a></code></li>
+<li><code><a title="saePisan.service.utils.utils.delete_all_outputs" href="#saePisan.service.utils.utils.delete_all_outputs">delete_all_outputs</a></code></li>
+<li><code><a title="saePisan.service.utils.utils.delete_output_card" href="#saePisan.service.utils.utils.delete_output_card">delete_output_card</a></code></li>
+<li><code><a title="saePisan.service.utils.utils.display_script_and_output" href="#saePisan.service.utils.utils.display_script_and_output">display_script_and_output</a></code></li>
+<li><code><a title="saePisan.service.utils.utils.show_context_menu" href="#saePisan.service.utils.utils.show_context_menu">show_context_menu</a></code></li>
+<li><code><a title="saePisan.service.utils.utils.show_image_context_menu" href="#saePisan.service.utils.utils.show_image_context_menu">show_image_context_menu</a></code></li>
+<li><code><a title="saePisan.service.utils.utils.show_table_context_menu" href="#saePisan.service.utils.utils.show_table_context_menu">show_table_context_menu</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

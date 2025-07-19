@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.view.components.SplashScreen API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.view.components.SplashScreen API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.view.components.SplashScreen</code></h1>
+<h1 class="title">Module <code>saePisan.view.components.SplashScreen</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,7 +46,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sip-sae.view.components.SplashScreen.SplashScreen"><code class="flex name class">
+<dt id="saePisan.view.components.SplashScreen.SplashScreen"><code class="flex name class">
 <span>class <span class="ident">SplashScreen</span></span>
 <span>(</span><span>pixmap)</span>
 </code></dt>
@@ -60,12 +60,13 @@ el.replaceWith(d);
     A custom splash screen class that displays a series of messages during application startup.
     Attributes:
         label (QLabel): A label to display the current message.
+        progress_bar (QProgressBar): Progress bar to show progress.
         layout (QVBoxLayout): A vertical box layout to manage the label&#39;s position.
         messages (list): A list of messages to be displayed sequentially.
         current_message_index (int): The index of the current message being displayed.
     Methods:
         update_message():
-            Updates the label to display the next message in the sequence.
+            Updates the label and progress bar to display the next message in the sequence.
     &#34;&#34;&#34;
     
     def __init__(self, pixmap):
@@ -76,17 +77,55 @@ el.replaceWith(d);
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet(&#34;color: black; font-size: 14px;&#34;)
 
-        
+        self.progress_bar = QProgressBar(self)
+        self.progress_bar.setRange(0, 100)
+        self.progress_bar.setValue(0)
+        self.progress_bar.setTextVisible(True)
+        self.progress_bar.setFormat(&#34;%p%&#34;)
+        self.progress_bar.setFixedHeight(10)
+        self.progress_anim = QPropertyAnimation(self.progress_bar, b&#34;value&#34;)
+        self.progress_anim.setDuration(400)
+        self.progress_bar.setStyleSheet(&#34;&#34;&#34;
+            QProgressBar {
+                border: 1px solid #bbb;
+                border-radius: 5px;
+                background: #eee;
+                text-align: center;
+                color: black;
+                font-size: 8px;
+            }
+            QProgressBar::chunk {
+                background-color: #4caf50;
+                border-radius: 5px;
+            }
+        &#34;&#34;&#34;)
+
         self.layout = QVBoxLayout(self)
         self.layout.addWidget(self.label)
+        self.layout.addWidget(self.progress_bar)
         self.layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
 
-        self.messages = [&#34;Checking environment...&#34;, &#34;Loading R an R Package...&#34;, &#34;Setup Environment...&#34;, &#34;Loading Completed!&#34;]
+        self.messages = [
+            &#34;Checking environment...&#34;,
+            &#34;Checking and Loading R...&#34;,
+            &#34;Loading R Packages...&#34;,
+            &#34;Setup Environment...&#34;,
+            &#34;Loading Completed!&#34;
+        ]
         self.current_message_index = 0
 
     def update_message(self):
         self.current_message_index = (self.current_message_index + 1) % len(self.messages)
         self.label.setText(self.messages[self.current_message_index])
+        last_idx = len(self.messages) - 1
+        if self.current_message_index &lt; last_idx:
+            progress = int((self.current_message_index / (last_idx - 1)) * 99) if last_idx &gt; 1 else 99
+        else:
+            progress = 100
+        self.progress_anim.stop()
+        self.progress_anim.setStartValue(self.progress_bar.value())
+        self.progress_anim.setEndValue(progress)
+        self.progress_anim.start()
         QApplication.processEvents()</code></pre>
 </details>
 <div class="desc"><p>A custom splash screen class that displays a series of messages during application startup.</p>
@@ -94,6 +133,8 @@ el.replaceWith(d);
 <dl>
 <dt><strong><code>label</code></strong> :&ensp;<code>QLabel</code></dt>
 <dd>A label to display the current message.</dd>
+<dt><strong><code>progress_bar</code></strong> :&ensp;<code>QProgressBar</code></dt>
+<dd>Progress bar to show progress.</dd>
 <dt><strong><code>layout</code></strong> :&ensp;<code>QVBoxLayout</code></dt>
 <dd>A vertical box layout to manage the label's position.</dd>
 <dt><strong><code>messages</code></strong> :&ensp;<code>list</code></dt>
@@ -103,7 +144,7 @@ el.replaceWith(d);
 </dl>
 <h2 id="methods">Methods</h2>
 <p>update_message():
-Updates the label to display the next message in the sequence.</p></div>
+Updates the label and progress bar to display the next message in the sequence.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>PyQt6.QtWidgets.QSplashScreen</li>
@@ -115,7 +156,7 @@ Updates the label to display the next message in the sequence.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="sip-sae.view.components.SplashScreen.SplashScreen.update_message"><code class="name flex">
+<dt id="saePisan.view.components.SplashScreen.SplashScreen.update_message"><code class="name flex">
 <span>def <span class="ident">update_message</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -126,6 +167,15 @@ Updates the label to display the next message in the sequence.</p></div>
 <pre><code class="python">def update_message(self):
     self.current_message_index = (self.current_message_index + 1) % len(self.messages)
     self.label.setText(self.messages[self.current_message_index])
+    last_idx = len(self.messages) - 1
+    if self.current_message_index &lt; last_idx:
+        progress = int((self.current_message_index / (last_idx - 1)) * 99) if last_idx &gt; 1 else 99
+    else:
+        progress = 100
+    self.progress_anim.stop()
+    self.progress_anim.setStartValue(self.progress_bar.value())
+    self.progress_anim.setEndValue(progress)
+    self.progress_anim.start()
     QApplication.processEvents()</code></pre>
 </details>
 <div class="desc"></div>
@@ -142,15 +192,15 @@ Updates the label to display the next message in the sequence.</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.view.components" href="index.html">sip-sae.view.components</a></code></li>
+<li><code><a title="saePisan.view.components" href="index.html">saePisan.view.components</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sip-sae.view.components.SplashScreen.SplashScreen" href="#sip-sae.view.components.SplashScreen.SplashScreen">SplashScreen</a></code></h4>
+<h4><code><a title="saePisan.view.components.SplashScreen.SplashScreen" href="#saePisan.view.components.SplashScreen.SplashScreen">SplashScreen</a></code></h4>
 <ul class="">
-<li><code><a title="sip-sae.view.components.SplashScreen.SplashScreen.update_message" href="#sip-sae.view.components.SplashScreen.SplashScreen.update_message">update_message</a></code></li>
+<li><code><a title="saePisan.view.components.SplashScreen.SplashScreen.update_message" href="#saePisan.view.components.SplashScreen.SplashScreen.update_message">update_message</a></code></li>
 </ul>
 </li>
 </ul>
@@ -159,7 +209,7 @@ Updates the label to display the next message in the sequence.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

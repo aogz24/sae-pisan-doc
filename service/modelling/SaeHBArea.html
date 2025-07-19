@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.service.modelling.SaeHBArea API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.service.modelling.SaeHBArea API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.service.modelling.SaeHBArea</code></h1>
+<h1 class="title">Module <code>saePisan.service.modelling.SaeHBArea</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -44,7 +44,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sip-sae.service.modelling.SaeHBArea.assign_as_factor"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.assign_as_factor"><code class="name flex">
 <span>def <span class="ident">assign_as_factor</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -54,7 +54,7 @@ el.replaceWith(d);
 </summary>
 <pre><code class="python">def assign_as_factor(parent):
     &#34;&#34;&#34;
-    Assigns selected variables as factors and updates the parent object&#39;s factor variable list and model.
+    Assigns selected variables as factors (only variables of type String) and updates the parent object&#39;s factor variable list and model.
     Args:
         parent: An object that contains the following attributes:
             - variables_list: A QListView or similar widget that holds the list of variables.
@@ -62,24 +62,36 @@ el.replaceWith(d);
             - as_factor_model: A QStringListModel or similar model that represents the factor variables.
     The function performs the following steps:
         1. Retrieves the selected indexes from the variables_list.
-        2. Extracts the data from the selected indexes and adds them to the as_factor_var list, ensuring no duplicates.
-        3. Updates the as_factor_model with the new list of factor variables.
-        4. Removes the selected variables from the variables_list.
-        5. Calls the show_r_script function to update the R script display.
+        2. Filters only variables of type &#34;String&#34;.
+        3. Adds them to the as_factor_var list, ensuring no duplicates.
+        4. Updates the as_factor_model with the new list of factor variables.
+        5. Removes the selected variables from the variables_list.
+        6. Calls the show_r_script function to update the R script display.
     &#34;&#34;&#34;
-    
+
     selected_indexes = parent.variables_list.selectedIndexes()
     if selected_indexes:
         new_vars = []
+        rows_to_remove = []
         for index in selected_indexes:
-            new_vars.append(index.data())
-        parent.as_factor_var = list(set(parent.as_factor_var + new_vars))  # Add new variables if they are different
+            type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
+            if type_of_var == &#34;String&#34;:
+                new_vars.append(index.data())
+                rows_to_remove.append(index.row())
+        if not new_vars:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setText(&#34;No valid string variables selected. Please select at least one variable of type String.&#34;)
+            msg.setWindowTitle(&#34;Warning&#34;)
+            msg.exec()
+            return
+        parent.as_factor_var = list(set(parent.as_factor_var + new_vars))
         parent.as_factor_model.setStringList(parent.as_factor_var)
-        for index in sorted(selected_indexes, reverse=True):
-            parent.variables_list.model().removeRow(index.row())  # Remove from variables list
+        for row in sorted(rows_to_remove, reverse=True):
+            parent.variables_list.model().removeRow(row)
         show_r_script(parent)</code></pre>
 </details>
-<div class="desc"><p>Assigns selected variables as factors and updates the parent object's factor variable list and model.</p>
+<div class="desc"><p>Assigns selected variables as factors (only variables of type String) and updates the parent object's factor variable list and model.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>parent</code></strong></dt>
@@ -90,12 +102,13 @@ el.replaceWith(d);
 </dl>
 <p>The function performs the following steps:
 1. Retrieves the selected indexes from the variables_list.
-2. Extracts the data from the selected indexes and adds them to the as_factor_var list, ensuring no duplicates.
-3. Updates the as_factor_model with the new list of factor variables.
-4. Removes the selected variables from the variables_list.
-5. Calls the show_r_script function to update the R script display.</p></div>
+2. Filters only variables of type "String".
+3. Adds them to the as_factor_var list, ensuring no duplicates.
+4. Updates the as_factor_model with the new list of factor variables.
+5. Removes the selected variables from the variables_list.
+6. Calls the show_r_script function to update the R script display.</p></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeHBArea.assign_auxilary"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.assign_auxilary"><code class="name flex">
 <span>def <span class="ident">assign_auxilary</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -153,7 +166,7 @@ This function performs the following steps:
 <dd>The parent object containing the variables list, auxiliary variables list, and auxiliary model.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeHBArea.assign_of_interest"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.assign_of_interest"><code class="name flex">
 <span>def <span class="ident">assign_of_interest</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -185,9 +198,13 @@ This function performs the following steps:
             type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
             if type_of_var != &#34;String&#34;:
                 all_string = False
+                old_var = parent.of_interest_var[0] if parent.of_interest_var else None
                 parent.of_interest_var = [index.data()]
                 parent.of_interest_model.setStringList(parent.of_interest_var)
                 parent.variables_list.model().removeRow(selected_indexes[-1].row())  # Remove from variables list
+                if old_var:
+                    parent.variables_list.model().insertRow(0)
+                    parent.variables_list.model().setData(parent.variables_list.model().index(0), old_var)
                 show_r_script(parent)
                 break
         if all_string:
@@ -217,7 +234,7 @@ parent.of_interest_model: The model to be updated with the variable of interest.
 <dd>Displays a warning message if all selected variables are of type "String".</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeHBArea.assign_vardir"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.assign_vardir"><code class="name flex">
 <span>def <span class="ident">assign_vardir</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -248,9 +265,13 @@ parent.of_interest_model: The model to be updated with the variable of interest.
             type_of_var = index.data().split(&#34; [&#34;)[1].replace(&#34;]&#34;, &#34;&#34;)
             if type_of_var != &#34;String&#34;:
                 all_string = False
+                old_var = parent.vardir_var[0] if parent.vardir_var else None
                 parent.vardir_var = [index.data()]
                 parent.vardir_model.setStringList(parent.vardir_var)
                 parent.variables_list.model().removeRow(selected_indexes[-1].row())  # Remove from variables list
+                if old_var:
+                    parent.variables_list.model().insertRow(0)
+                    parent.variables_list.model().setData(parent.variables_list.model().index(0), old_var)
                 show_r_script(parent)
                 break
         if all_string:
@@ -276,7 +297,7 @@ warning message indicating that the vardir variable must be of type Numeric.</p>
 <h2 id="displays">Displays</h2>
 <p>QMessageBox: A warning message if all selected variables are of type "String".</p></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeHBArea.generate_r_script"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.generate_r_script"><code class="name flex">
 <span>def <span class="ident">generate_r_script</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -305,27 +326,61 @@ warning message indicating that the vardir variable must be of type Numeric.</p>
     of_interest_var = f&#39;{parent.of_interest_var[0].split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)}&#39; if parent.of_interest_var else &#39;&#34;&#34;&#39;
     auxilary_vars = &#34; + &#34;.join([var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;) for var in parent.auxilary_vars]) if parent.auxilary_vars else &#39;&#34;&#34;&#39;
     vardir_var = f&#39;{parent.vardir_var[0].split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)}&#39; if parent.vardir_var else &#39;&#34;&#34;&#39;
-    as_factor_var = &#34; + &#34;.join([f&#39;as.factor({var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)})&#39; for var in parent.as_factor_var]) if parent.as_factor_var else &#39;&#34;&#34;&#39;
     
-    if (auxilary_vars==&#39;&#34;&#34;&#39; or auxilary_vars is None) and as_factor_var==&#39;&#34;&#34;&#39;:
-        formula = f&#39;{of_interest_var} ~ 1&#39;
-    elif as_factor_var==&#39;&#34;&#34;&#39;:
-        formula = f&#39;{of_interest_var} ~ {auxilary_vars}&#39;
-    elif auxilary_vars==&#39;&#34;&#34;&#39;:
-        formula = f&#39;{of_interest_var} ~ {as_factor_var}&#39;
-    else:
-        formula = f&#39;{of_interest_var} ~ {auxilary_vars} + {as_factor_var}&#39;
+    dummy_vars = []
+    dummy_creation_script = &#34;&#34;
+    if parent.as_factor_var:
+        for var in parent.as_factor_var:
+            var_name = var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)
+            dummy_creation_script += f&#39;dummies_{var_name} &lt;- model.matrix(~{var_name} - 1, datahb)\n&#39;
+            dummy_creation_script += f&#39;datahb &lt;- cbind(datahb, dummies_{var_name})\n&#39;
+            dummy_vars.append(f&#39;colnames(dummies_{var_name})&#39;)
 
-    r_script = f&#39;names(data) &lt;- gsub(&#34; &#34;, &#34;_&#34;, names(data)); #Replace space with underscore\n&#39;
-    r_script += f&#39;formula &lt;- {formula}\n&#39;
+    # Gabungkan semua dummy variable ke formula
+    dummy_vars_str = &#34;&#34;
+    if dummy_vars:
+        dummy_names = []
+        for var in parent.as_factor_var:
+            var_name = var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)
+            # You don&#39;t know the levels in Python, so use a placeholder for R to expand
+            dummy_names.append(f&#39;colnames(dummies_{var_name})&#39;)
+        # Instead of using paste() in formula, expand in R before formula creation
+        dummy_vars_str = &#34; + &#34;.join([f&#39;`{name}`&#39; for name in dummy_names])
+    
+    
+    r_script = f&#39;names(datahb) &lt;- gsub(&#34; &#34;, &#34;_&#34;, names(datahb)); #Replace space with underscore\n&#39;
+    r_script += dummy_creation_script
+
+    # Build the formula in R after dummies are created
+    r_script += &#34;all_vars &lt;- names(datahb)\n&#34;
+    if parent.as_factor_var:
+        for var in parent.as_factor_var:
+            var_name = var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)
+            r_script += f&#39;all_vars &lt;- c(all_vars, colnames(dummies_{var_name}))\n&#39;
+
+    # Build the formula string in R
+    r_script += &#34;rhs_vars &lt;- c()&#34;
+    if auxilary_vars != &#39;&#34;&#34;&#39;:
+        r_script += f&#39;\nrhs_vars &lt;- c(rhs_vars, &#34;{auxilary_vars}&#34;)&#39;
+    if parent.as_factor_var:
+        for var in parent.as_factor_var:
+            var_name = var.split(&#34; [&#34;)[0].replace(&#34; &#34;, &#34;_&#34;)
+            r_script += f&#39;\nrhs_vars &lt;- c(rhs_vars, colnames(dummies_{var_name}))&#39;
+    r_script += &#39;\nformula_str &lt;- paste(&#39;
+    if of_interest_var != &#39;&#34;&#34;&#39;:
+        r_script += f&#39;&#34;{of_interest_var}&#34;, &#34;~&#34;, paste(rhs_vars, collapse = &#34; + &#34;))\n&#39;
+    else:
+        r_script += &#39;&#34;&#34;, &#34;~&#34;, paste(rhs_vars, collapse = &#34; + &#34;))\n&#39;
+    r_script += &#34;formula &lt;- as.formula(formula_str)\n&#34;
+    
     if parent.selection_method==&#34;Stepwise&#34;:
         parent.selection_method = &#34;both&#34;
     if parent.selection_method and parent.selection_method != &#34;None&#34; and auxilary_vars:
         r_script += f&#39;stepwise_model &lt;- step(formula, direction=&#34;{parent.selection_method.lower()}&#34;)\n&#39;
         r_script += f&#39;final_formula &lt;- formula(stepwise_model)\n&#39;
-        r_script += f&#39;model&lt;-{parent.model_method} (final_formula, iter.update={parent.iter_update}, iter.mcmc = {parent.iter_mcmc}, burn.in ={parent.burn_in} , data=data)&#39;
+        r_script += f&#39;modelhb&lt;-{parent.model_method} (final_formula, iter.update={parent.iter_update}, iter.mcmc = {parent.iter_mcmc}, burn.in ={parent.burn_in} , data=datahb)&#39;
     else:
-        r_script += f&#39;model&lt;-{parent.model_method} (formula, iter.update={parent.iter_update}, iter.mcmc = {parent.iter_mcmc}, burn.in ={parent.burn_in}, data=data)&#39;
+        r_script += f&#39;modelhb&lt;-{parent.model_method} (formula, iter.update={parent.iter_update}, iter.mcmc = {parent.iter_mcmc}, burn.in ={parent.burn_in}, data=datahb)&#39;
     return r_script</code></pre>
 </details>
 <div class="desc"><p>Generates an R script based on the provided parent object's attributes.</p>
@@ -349,7 +404,7 @@ warning message indicating that the vardir variable must be of type Numeric.</p>
 <dd>The generated R script as a string.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeHBArea.get_script"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.get_script"><code class="name flex">
 <span>def <span class="ident">get_script</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -380,7 +435,7 @@ warning message indicating that the vardir variable must be of type Numeric.</p>
 <dd>The text content of the 'r_script_edit' widget as a plain string.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeHBArea.get_selected_variables"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.get_selected_variables"><code class="name flex">
 <span>def <span class="ident">get_selected_variables</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -419,7 +474,7 @@ warning message indicating that the vardir variable must be of type Numeric.</p>
 - as_factor_var: The factor variable.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeHBArea.set_selection_method"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.set_selection_method"><code class="name flex">
 <span>def <span class="ident">set_selection_method</span></span>(<span>parent, dialog)</span>
 </code></dt>
 <dd>
@@ -465,7 +520,7 @@ Updates the following attributes of the parent object:
 - burn_in: The updated burn-in value.
 Accepts the dialog and calls the show_r_script function with the parent object.</p></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeHBArea.show_options"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.show_options"><code class="name flex">
 <span>def <span class="ident">show_options</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -546,7 +601,7 @@ The dialog includes the following options:
 - Number of iterations to discard at the beginning: A QLineEdit for specifying the number of iterations to discard at the beginning, with a default value of 1000.
 The dialog also includes "OK" and "Cancel" buttons. Clicking "OK" will apply the settings and close the dialog, while clicking "Cancel" will close the dialog without applying any changes.</p></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeHBArea.show_r_script"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.show_r_script"><code class="name flex">
 <span>def <span class="ident">show_r_script</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -570,12 +625,12 @@ The dialog also includes "OK" and "Cancel" buttons. Clicking "OK" will apply the
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>parent</code></strong></dt>
-<dd>An object that contains the method <code><a title="sip-sae.service.modelling.SaeHBArea.generate_r_script" href="#sip-sae.service.modelling.SaeHBArea.generate_r_script">generate_r_script()</a></code> and the attribute <code>r_script_edit</code>.
-The <code><a title="sip-sae.service.modelling.SaeHBArea.generate_r_script" href="#sip-sae.service.modelling.SaeHBArea.generate_r_script">generate_r_script()</a></code> method is used to generate the R script, and <code>r_script_edit</code> is
+<dd>An object that contains the method <code><a title="saePisan.service.modelling.SaeHBArea.generate_r_script" href="#saePisan.service.modelling.SaeHBArea.generate_r_script">generate_r_script()</a></code> and the attribute <code>r_script_edit</code>.
+The <code><a title="saePisan.service.modelling.SaeHBArea.generate_r_script" href="#saePisan.service.modelling.SaeHBArea.generate_r_script">generate_r_script()</a></code> method is used to generate the R script, and <code>r_script_edit</code> is
 an editor widget where the generated R script will be displayed.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.service.modelling.SaeHBArea.unassign_variable"><code class="name flex">
+<dt id="saePisan.service.modelling.SaeHBArea.unassign_variable"><code class="name flex">
 <span>def <span class="ident">unassign_variable</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -665,29 +720,29 @@ updates the model for that list, and adds the items back to the variables list. 
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.service.modelling" href="index.html">sip-sae.service.modelling</a></code></li>
+<li><code><a title="saePisan.service.modelling" href="index.html">saePisan.service.modelling</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.assign_as_factor" href="#sip-sae.service.modelling.SaeHBArea.assign_as_factor">assign_as_factor</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.assign_auxilary" href="#sip-sae.service.modelling.SaeHBArea.assign_auxilary">assign_auxilary</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.assign_of_interest" href="#sip-sae.service.modelling.SaeHBArea.assign_of_interest">assign_of_interest</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.assign_vardir" href="#sip-sae.service.modelling.SaeHBArea.assign_vardir">assign_vardir</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.generate_r_script" href="#sip-sae.service.modelling.SaeHBArea.generate_r_script">generate_r_script</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.get_script" href="#sip-sae.service.modelling.SaeHBArea.get_script">get_script</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.get_selected_variables" href="#sip-sae.service.modelling.SaeHBArea.get_selected_variables">get_selected_variables</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.set_selection_method" href="#sip-sae.service.modelling.SaeHBArea.set_selection_method">set_selection_method</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.show_options" href="#sip-sae.service.modelling.SaeHBArea.show_options">show_options</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.show_r_script" href="#sip-sae.service.modelling.SaeHBArea.show_r_script">show_r_script</a></code></li>
-<li><code><a title="sip-sae.service.modelling.SaeHBArea.unassign_variable" href="#sip-sae.service.modelling.SaeHBArea.unassign_variable">unassign_variable</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.assign_as_factor" href="#saePisan.service.modelling.SaeHBArea.assign_as_factor">assign_as_factor</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.assign_auxilary" href="#saePisan.service.modelling.SaeHBArea.assign_auxilary">assign_auxilary</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.assign_of_interest" href="#saePisan.service.modelling.SaeHBArea.assign_of_interest">assign_of_interest</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.assign_vardir" href="#saePisan.service.modelling.SaeHBArea.assign_vardir">assign_vardir</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.generate_r_script" href="#saePisan.service.modelling.SaeHBArea.generate_r_script">generate_r_script</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.get_script" href="#saePisan.service.modelling.SaeHBArea.get_script">get_script</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.get_selected_variables" href="#saePisan.service.modelling.SaeHBArea.get_selected_variables">get_selected_variables</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.set_selection_method" href="#saePisan.service.modelling.SaeHBArea.set_selection_method">set_selection_method</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.show_options" href="#saePisan.service.modelling.SaeHBArea.show_options">show_options</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.show_r_script" href="#saePisan.service.modelling.SaeHBArea.show_r_script">show_r_script</a></code></li>
+<li><code><a title="saePisan.service.modelling.SaeHBArea.unassign_variable" href="#saePisan.service.modelling.SaeHBArea.unassign_variable">unassign_variable</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

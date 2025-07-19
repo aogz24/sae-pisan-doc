@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>saePisan.controller.modelling.SaeEblupUnitController API documentation</title>
+<title>saePisan.view.components.DragDropListView API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>saePisan.controller.modelling.SaeEblupUnitController</code></h1>
+<h1 class="title">Module <code>saePisan.view.components.DragDropListView</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,68 +46,168 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="saePisan.controller.modelling.SaeEblupUnitController.SaeEblupUnitController"><code class="flex name class">
-<span>class <span class="ident">SaeEblupUnitController</span></span>
-<span>(</span><span>SAEmodel)</span>
+<dt id="saePisan.view.components.DragDropListView.DragDropListView"><code class="flex name class">
+<span>class <span class="ident">DragDropListView</span></span>
+<span>(</span><span>parent=None)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class SaeEblupUnitController:
-    &#34;&#34;&#34;
-    Controller class for running Small Area Estimation (SAE) models using EBLUP (Empirical Best Linear Unbiased Prediction).
-    Attributes:
-        SAEmodel: An instance of a class that provides the `run_model` method to execute the SAE model.
-    Methods:
-        __init__(SAEmodel):
-            Initializes the SaeEblupUnitController with the given SAE model instance.
-        run_model(r_script):
-            Executes the SAE model using the provided R script.
-            Args:
-                r_script (str): The R script to be executed by the SAE model.
-            Returns:
-                tuple: A tuple containing the result, error, and dataframe (df) from the model execution.
-    &#34;&#34;&#34;
+<pre><code class="python">class DragDropListView(QListView):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.parent = parent
+        self.setDragEnabled(True)
+        self.setAcceptDrops(True)
+        self.setDropIndicatorShown(True)
+        self.setDefaultDropAction(Qt.DropAction.MoveAction)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasText():
+            event.acceptProposedAction()
+        else:
+            super().dragEnterEvent(event)
     
-    def __init__(self, SAEmodel):
-        self.SAEmodel = SAEmodel
-    
-    def run_model(self, r_script):
-        results, error, df = self.SAEmodel.run_model(r_script)
-        return results, error, df</code></pre>
+    def edit(self, index, trigger, event):
+        return False
+
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasText():
+            event.acceptProposedAction()
+        else:
+            super().dragMoveEvent(event)
+
+    def dropEvent(self, event):
+        if self.parent and hasattr(self.parent, &#34;handle_drop&#34;):
+            items = []
+            if event.mimeData().hasUrls():
+                for url in event.mimeData().urls():
+                    items.append(url.toLocalFile())
+            if event.mimeData().hasText():
+                items = event.mimeData().text().split(&#39;\n&#39;)
+            self.parent.handle_drop(self, [i for i in items if i])
+            event.accept()
+        else:
+            super().dropEvent(event)
+
+    def startDrag(self, supportedActions):
+        selected = self.selectedIndexes()
+        if not selected:
+            return
+        data = &#39;\n&#39;.join([self.model().data(i) for i in selected])
+        mime = QMimeData()
+        mime.setText(data)
+        drag = QDrag(self)
+        drag.setMimeData(mime)
+        drag.exec(Qt.DropAction.MoveAction)</code></pre>
 </details>
-<div class="desc"><p>Controller class for running Small Area Estimation (SAE) models using EBLUP (Empirical Best Linear Unbiased Prediction).</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>SAEmodel</code></strong></dt>
-<dd>An instance of a class that provides the <code>run_model</code> method to execute the SAE model.</dd>
-</dl>
-<h2 id="methods">Methods</h2>
-<p><strong>init</strong>(SAEmodel):
-Initializes the SaeEblupUnitController with the given SAE model instance.
-run_model(r_script):
-Executes the SAE model using the provided R script.
-Args:
-r_script (str): The R script to be executed by the SAE model.
-Returns:
-tuple: A tuple containing the result, error, and dataframe (df) from the model execution.</p></div>
+<div class="desc"><p>QListView(parent: Optional[QWidget] = None)</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PyQt6.QtWidgets.QListView</li>
+<li>PyQt6.QtWidgets.QAbstractItemView</li>
+<li>PyQt6.QtWidgets.QAbstractScrollArea</li>
+<li>PyQt6.QtWidgets.QFrame</li>
+<li>PyQt6.QtWidgets.QWidget</li>
+<li>PyQt6.QtCore.QObject</li>
+<li>PyQt6.sip.wrapper</li>
+<li>PyQt6.QtGui.QPaintDevice</li>
+<li>PyQt6.sip.simplewrapper</li>
+</ul>
 <h3>Methods</h3>
 <dl>
-<dt id="saePisan.controller.modelling.SaeEblupUnitController.SaeEblupUnitController.run_model"><code class="name flex">
-<span>def <span class="ident">run_model</span></span>(<span>self, r_script)</span>
+<dt id="saePisan.view.components.DragDropListView.DragDropListView.dragEnterEvent"><code class="name flex">
+<span>def <span class="ident">dragEnterEvent</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run_model(self, r_script):
-    results, error, df = self.SAEmodel.run_model(r_script)
-    return results, error, df</code></pre>
+<pre><code class="python">def dragEnterEvent(self, event):
+    if event.mimeData().hasText():
+        event.acceptProposedAction()
+    else:
+        super().dragEnterEvent(event)</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>dragEnterEvent(self, e: Optional[QDragEnterEvent])</p></div>
+</dd>
+<dt id="saePisan.view.components.DragDropListView.DragDropListView.dragMoveEvent"><code class="name flex">
+<span>def <span class="ident">dragMoveEvent</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dragMoveEvent(self, event):
+    if event.mimeData().hasText():
+        event.acceptProposedAction()
+    else:
+        super().dragMoveEvent(event)</code></pre>
+</details>
+<div class="desc"><p>dragMoveEvent(self, e: Optional[QDragMoveEvent])</p></div>
+</dd>
+<dt id="saePisan.view.components.DragDropListView.DragDropListView.dropEvent"><code class="name flex">
+<span>def <span class="ident">dropEvent</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dropEvent(self, event):
+    if self.parent and hasattr(self.parent, &#34;handle_drop&#34;):
+        items = []
+        if event.mimeData().hasUrls():
+            for url in event.mimeData().urls():
+                items.append(url.toLocalFile())
+        if event.mimeData().hasText():
+            items = event.mimeData().text().split(&#39;\n&#39;)
+        self.parent.handle_drop(self, [i for i in items if i])
+        event.accept()
+    else:
+        super().dropEvent(event)</code></pre>
+</details>
+<div class="desc"><p>dropEvent(self, e: Optional[QDropEvent])</p></div>
+</dd>
+<dt id="saePisan.view.components.DragDropListView.DragDropListView.edit"><code class="name flex">
+<span>def <span class="ident">edit</span></span>(<span>self, index, trigger, event)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def edit(self, index, trigger, event):
+    return False</code></pre>
+</details>
+<div class="desc"><p>edit(self, index: QModelIndex)
+edit(self, index: QModelIndex, trigger: QAbstractItemView.EditTrigger, event: Optional[QEvent]) -&gt; bool</p></div>
+</dd>
+<dt id="saePisan.view.components.DragDropListView.DragDropListView.startDrag"><code class="name flex">
+<span>def <span class="ident">startDrag</span></span>(<span>self, supportedActions)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def startDrag(self, supportedActions):
+    selected = self.selectedIndexes()
+    if not selected:
+        return
+    data = &#39;\n&#39;.join([self.model().data(i) for i in selected])
+    mime = QMimeData()
+    mime.setText(data)
+    drag = QDrag(self)
+    drag.setMimeData(mime)
+    drag.exec(Qt.DropAction.MoveAction)</code></pre>
+</details>
+<div class="desc"><p>startDrag(self, supportedActions: Qt.DropAction)</p></div>
 </dd>
 </dl>
 </dd>
@@ -121,15 +221,19 @@ tuple: A tuple containing the result, error, and dataframe (df) from the model e
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="saePisan.controller.modelling" href="index.html">saePisan.controller.modelling</a></code></li>
+<li><code><a title="saePisan.view.components" href="index.html">saePisan.view.components</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="saePisan.controller.modelling.SaeEblupUnitController.SaeEblupUnitController" href="#saePisan.controller.modelling.SaeEblupUnitController.SaeEblupUnitController">SaeEblupUnitController</a></code></h4>
+<h4><code><a title="saePisan.view.components.DragDropListView.DragDropListView" href="#saePisan.view.components.DragDropListView.DragDropListView">DragDropListView</a></code></h4>
 <ul class="">
-<li><code><a title="saePisan.controller.modelling.SaeEblupUnitController.SaeEblupUnitController.run_model" href="#saePisan.controller.modelling.SaeEblupUnitController.SaeEblupUnitController.run_model">run_model</a></code></li>
+<li><code><a title="saePisan.view.components.DragDropListView.DragDropListView.dragEnterEvent" href="#saePisan.view.components.DragDropListView.DragDropListView.dragEnterEvent">dragEnterEvent</a></code></li>
+<li><code><a title="saePisan.view.components.DragDropListView.DragDropListView.dragMoveEvent" href="#saePisan.view.components.DragDropListView.DragDropListView.dragMoveEvent">dragMoveEvent</a></code></li>
+<li><code><a title="saePisan.view.components.DragDropListView.DragDropListView.dropEvent" href="#saePisan.view.components.DragDropListView.DragDropListView.dropEvent">dropEvent</a></code></li>
+<li><code><a title="saePisan.view.components.DragDropListView.DragDropListView.edit" href="#saePisan.view.components.DragDropListView.DragDropListView.edit">edit</a></code></li>
+<li><code><a title="saePisan.view.components.DragDropListView.DragDropListView.startDrag" href="#saePisan.view.components.DragDropListView.DragDropListView.startDrag">startDrag</a></code></li>
 </ul>
 </li>
 </ul>

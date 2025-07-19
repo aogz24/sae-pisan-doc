@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.service.exploration.Multicollinearity API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.service.exploration.Multicollinearity API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.service.exploration.Multicollinearity</code></h1>
+<h1 class="title">Module <code>saePisan.service.exploration.Multicollinearity</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -44,7 +44,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sip-sae.service.exploration.Multicollinearity.run_multicollinearity"><code class="name flex">
+<dt id="saePisan.service.exploration.Multicollinearity.run_multicollinearity"><code class="name flex">
 <span>def <span class="ident">run_multicollinearity</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -70,51 +70,59 @@ el.replaceWith(d);
     ValueError: If no R script has been generated in the parent object.
     Exception: If any other error occurs during the execution, it is caught and stored in the parent object.
     &#34;&#34;&#34;
-    
+    pandas2ri.activate()
     parent.activate_R()  # Pastikan R aktif
-
     # Ambil data dari model
     df1 = parent.model1.get_data()
     df2 = parent.model2.get_data()
 
     # Gabungkan data menggunakan Polars
     df = pl.concat([df1, df2], how=&#34;horizontal&#34;)
-    df = df.drop_nulls()  # Hapus data kosong
-
-    # Konversi Polars DataFrame ke R DataFrame
-    with rpy2polars.converter.context() as cv_ctx:
-        r_df = rpy2polars.converter.py2rpy(df)
-        ro.globalenv[&#39;r_df&#39;] = r_df  # Simpan ke lingkungan global R
+    df = df.filter(~pl.all_horizontal(pl.all().is_null()))
+    df = df.filter(~pl.all_horizontal(pl.all().is_null()))
+    get_data(parent,df)
 
     try:
         ro.r(&#39;suppressMessages(library(car))&#39;)
-        # Bersihkan variabel di R, tetapi simpan `r_df`
+        ro.r(&#39;suppressMessages(library(tibble))&#39;)  # untuk rownames_to_column
+
+        # Bersihkan environment di R kecuali r_df
         ro.r(&#39;rm(list=ls()[ls() != &#34;r_df&#34;])&#39;)
         ro.r(&#39;data &lt;- as.data.frame(r_df)&#39;)
 
-        # Pastikan script R telah dihasilkan
-        if not hasattr(parent, &#39;r_script&#39;):
-            raise ValueError(&#34;No R script has been generated.&#34;)
-
-        # Jalankan script R
+        # Jalankan script R dari parent
         ro.r(parent.r_script)
 
-        # Simpan hasil model regresi (lm) jika ada
+        result = {}
+
         if parent.reg_model:
-            regression_model_output = ro.r(&#39;capture.output(print(regression_model))&#39;)
-            regression_result = &#34;\n&#34;.join(regression_model_output)
-        else:
-            regression_result = &#34;&#34;
+            # Ambil formula regresi sebagai teks string
+            regression_formula_r = ro.r(&#39;deparse(regression_model$call)&#39;)
+            regression_formula = &#34; &#34;.join(regression_formula_r)
+            result[&#34;Regression Formula&#34;] = regression_formula
 
-        # Ambil output hasil perhitungan VIF
-        vif_output = ro.r(&#39;capture.output(print(vif_values))&#39;)
-        vif_result = &#34;\n&#34;.join(vif_output)  
+            # Ambil intercept (koefisien), ubah rownames jadi kolom
+            ro.r(&#39;intercept_df &lt;- tibble::rownames_to_column(as.data.frame(regression_model$coefficients), var = &#34;Variable&#34;)&#39;)
+            intercept_df = ro.r(&#39;intercept_df&#39;)
+            intercept_polars = pl.from_pandas(pandas2ri.rpy2py(intercept_df))
+            intercept_polars = intercept_polars.with_columns(
+                pl.col(&#34;Variable&#34;).str.replace_all(&#34;`&#34;, &#34;&#34;)
+            )
+            intercept_polars = intercept_polars.rename({&#34;regression_model$coefficients&#34;: &#34;Coefficient&#34;})
+            result[&#34;Intercept&#34;] = intercept_polars
 
-        # Gabungkan hasil dalam satu variabel tanpa menghapus hasil lm sebelumnya
-        final_result = f&#34;{regression_result}\nVIF Value:\n{vif_result}&#34;
+        # Ambil VIF dan ubah rownames jadi kolom
+        ro.r(&#39;vif_df &lt;- tibble::rownames_to_column(as.data.frame(vif_values), var = &#34;Variable&#34;)&#39;)
+        vif_df = ro.r(&#39;vif_df&#39;)
+        vif_polars_df = pl.from_pandas(pandas2ri.rpy2py(vif_df))
+        vif_polars_df = vif_polars_df.with_columns(
+            pl.col(&#34;Variable&#34;).str.replace_all(&#34;`&#34;, &#34;&#34;)
+        )
+        vif_polars_df = vif_polars_df.rename({&#34;vif_values&#34;: &#34;VIF&#34;})
+        result[&#34;VIF Table&#34;] = vif_polars_df
 
-        # Simpan hasil ke dalam parent.result
-        parent.result = final_result
+        # Simpan hasil ke parent
+        parent.result = result
 
     except Exception as e:
         parent.error = True
@@ -149,19 +157,19 @@ Exception: If any other error occurs during the execution, it is caught and stor
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.service.exploration" href="index.html">sip-sae.service.exploration</a></code></li>
+<li><code><a title="saePisan.service.exploration" href="index.html">saePisan.service.exploration</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sip-sae.service.exploration.Multicollinearity.run_multicollinearity" href="#sip-sae.service.exploration.Multicollinearity.run_multicollinearity">run_multicollinearity</a></code></li>
+<li><code><a title="saePisan.service.exploration.Multicollinearity.run_multicollinearity" href="#saePisan.service.exploration.Multicollinearity.run_multicollinearity">run_multicollinearity</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

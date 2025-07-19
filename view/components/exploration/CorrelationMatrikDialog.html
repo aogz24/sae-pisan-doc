@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.view.components.exploration.CorrelationMatrikDialog API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.view.components.exploration.CorrelationMatrikDialog API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.view.components.exploration.CorrelationMatrikDialog</code></h1>
+<h1 class="title">Module <code>saePisan.view.components.exploration.CorrelationMatrikDialog</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,7 +46,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog"><code class="flex name class">
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog"><code class="flex name class">
 <span>class <span class="ident">CorrelationMatrixDialog</span></span>
 <span>(</span><span>parent)</span>
 </code></dt>
@@ -57,6 +57,7 @@ el.replaceWith(d);
 </summary>
 <pre><code class="python">class CorrelationMatrixDialog(QDialog):
     &#34;&#34;&#34;A dialog for selecting variables and generating a correlation matrix using R script.
+    
     Attributes:
         parent (QWidget): The parent widget.
         model1 (Any): The first data model.
@@ -81,6 +82,7 @@ el.replaceWith(d);
         icon_label (QLabel): Label to show running icon.
         script_box (QTextEdit): Text box to display the generated R script.
         run_button (QPushButton): Button to run the generated R script.
+    
     Methods:
         __init__(self, parent): Initializes the dialog with the given parent.
         set_model(self, model1, model2): Sets the data models for the dialog.
@@ -90,7 +92,8 @@ el.replaceWith(d);
         get_selected_columns(self): Returns the selected columns without data types.
         generate_r_script(self): Generates the R script for the correlation matrix.
         accept(self): Runs the generated R script and handles the result.
-        closeEvent(self, event): Handles the close event of the dialog.&#34;&#34;&#34;
+        closeEvent(self, event): Handles the close event of the dialog.
+    &#34;&#34;&#34;
     
     def __init__(self, parent):
         super().__init__(parent)
@@ -107,7 +110,7 @@ el.replaceWith(d);
         self.selected_status = {}
 
         # Main layout
-        main_layout = QVBoxLayout(self)
+        self.main_layout = QVBoxLayout(self)
         content_layout = QHBoxLayout()
 
         # Left layout for Data Editor and Data Output
@@ -115,7 +118,7 @@ el.replaceWith(d);
 
         self.data_editor_label = QLabel(&#34;Data Editor&#34;, self)
         self.data_editor_model = QStringListModel()
-        self.data_editor_list = QListView(self)
+        self.data_editor_list = DragDropListView(parent=self)
         self.data_editor_list.setModel(self.data_editor_model)
         self.data_editor_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
         self.data_editor_list.setEditTriggers(QListView.EditTrigger.NoEditTriggers)
@@ -124,7 +127,7 @@ el.replaceWith(d);
 
         self.data_output_label = QLabel(&#34;Data Output&#34;, self)
         self.data_output_model = QStringListModel()
-        self.data_output_list = QListView(self)
+        self.data_output_list = DragDropListView(parent=self)
         self.data_output_list.setModel(self.data_output_model)
         self.data_output_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
         self.data_output_list.setEditTriggers(QListView.EditTrigger.NoEditTriggers)
@@ -153,12 +156,27 @@ el.replaceWith(d);
         right_layout = QVBoxLayout()
         self.selected_label = QLabel(&#34;Variables&#34;, self)
         self.selected_model = QStringListModel()
-        self.selected_list = QListView(self)
+        self.selected_list = DragDropListView(parent=self)
         self.selected_list.setModel(self.selected_model)
         self.selected_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
         right_layout.addWidget(self.selected_label)
         right_layout.addWidget(self.selected_list)
 
+        # Method group with checkboxes
+        method_group = QGroupBox(&#34;Methods&#34;)
+        method_layout = QVBoxLayout()
+        self.pearson_checkbox = QCheckBox(&#34;Pearson&#34;)
+        self.spearman_checkbox = QCheckBox(&#34;Spearman&#34;)
+        self.kendall_checkbox = QCheckBox(&#34;Kendall&#34;)
+        self.pearson_checkbox.stateChanged.connect(self.generate_r_script)
+        self.spearman_checkbox.stateChanged.connect(self.generate_r_script)
+        self.kendall_checkbox.stateChanged.connect(self.generate_r_script)
+        method_layout.addWidget(self.pearson_checkbox)
+        method_layout.addWidget(self.spearman_checkbox)
+        method_layout.addWidget(self.kendall_checkbox)
+        method_group.setLayout(method_layout)
+        right_layout.addWidget(method_group)
+        
         # Graph group
         graph_group = QGroupBox(&#34;Visualization&#34;)
         graph_layout = QVBoxLayout()
@@ -169,7 +187,7 @@ el.replaceWith(d);
         right_layout.addWidget(graph_group)
 
         content_layout.addLayout(right_layout)
-        main_layout.addLayout(content_layout)
+        self.main_layout.addLayout(content_layout)
 
         self.script_layout = QHBoxLayout()  
         self.script_label = QLabel(&#34;R Script:&#34;, self)
@@ -180,27 +198,98 @@ el.replaceWith(d);
 
         spacer = QSpacerItem(40, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.script_layout.addWidget(self.script_label)
-        self.script_layout.addItem(spacer)  
+        self.toggle_script_button = QToolButton()
+        self.toggle_script_button.setIcon(QIcon(&#34;assets/more.svg&#34;))
+        self.toggle_script_button.setIconSize(QSize(16, 16))
+        self.toggle_script_button.setCheckable(True)
+        self.toggle_script_button.setChecked(False)
+        self.toggle_script_button.clicked.connect(self.toggle_r_script_visibility)
+
+        self.button_layout = QHBoxLayout()
+        self.button_layout.addWidget(self.script_label)
+        self.button_layout.addWidget(self.toggle_script_button)
+        self.button_layout.setAlignment(self.script_label, Qt.AlignmentFlag.AlignLeft)
+        self.button_layout.setAlignment(self.toggle_script_button, Qt.AlignmentFlag.AlignLeft)
+
+        self.script_layout = QHBoxLayout()
+        self.script_layout.addLayout(self.button_layout)
+        self.script_layout.addStretch()
         self.script_layout.addWidget(self.icon_label)
         self.icon_label.setVisible(False)
+        self.script_layout.setAlignment(self.script_label, Qt.AlignmentFlag.AlignLeft)
 
-        self.script_box = QTextEdit(self)
+        self.main_layout.addLayout(self.script_layout)
 
-        main_layout.addLayout(self.script_layout)  
-        main_layout.addWidget(self.script_box)  
+        self.script_box = QTextEdit()
+        self.script_box.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+        self.script_box.setReadOnly(False)
+        self.script_box.setVisible(False)
+        self.main_layout.addWidget(self.script_box)
 
         # Run button
         button_row_layout = QHBoxLayout()
         self.run_button = QPushButton(&#34;Run&#34;, self)
         self.run_button.clicked.connect(self.accept)
         button_row_layout.addWidget(self.run_button, alignment=Qt.AlignmentFlag.AlignRight)
-        main_layout.addLayout(button_row_layout)
+        self.main_layout.addLayout(button_row_layout)
 
         self.data_editor_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
         self.data_output_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
         self.selected_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
 
+    def handle_drop(self, target_widget, items):
+        # Mapping widget to model
+        widget_model_map = {
+            self.data_editor_list: (self.data_editor_model, self.all_columns_model1),
+            self.data_output_list: (self.data_output_model, self.all_columns_model2),
+            self.selected_list: (self.selected_model, None),
+        }
+
+        if target_widget not in widget_model_map:
+            return
+
+        target_model, allowed_columns = widget_model_map[target_widget]
+        current_items = target_model.stringList()
+
+        filtered_items = []
+        contains_string = any(&#34;[String]&#34; in item or &#34;[None]&#34; in item for item in items)
+
+        for item in items:
+            if &#34;[String]&#34; in item or &#34;[None]&#34; in item:
+                continue
+
+            if target_widget == self.selected_list:
+                filtered_items.append(item)
+            else:
+                column_name = item.split(&#34; &#34;)[0]
+                if allowed_columns and column_name in [col.split(&#34; &#34;)[0] for col in allowed_columns]:
+                    filtered_items.append(item)
+
+        if contains_string:
+            QMessageBox.warning(self, &#34;Warning&#34;, &#34;Selected variables must be of type Numeric.&#34;)
+
+        for item in filtered_items:
+            if item not in current_items:
+                current_items.append(item)
+
+        for other_widget, (model, _) in widget_model_map.items():
+            if model == target_model:
+                continue
+            other_items = model.stringList()
+            for item in filtered_items:
+                if item in other_items:
+                    other_items.remove(item)
+            model.setStringList(other_items)
+
+        if target_widget == self.data_editor_list:
+            ordered = [col for col in self.all_columns_model1 if col in current_items]
+            target_model.setStringList(ordered)
+        elif target_widget == self.data_output_list:
+            ordered = [col for col in self.all_columns_model2 if col in current_items]
+            target_model.setStringList(ordered)
+        else:
+            target_model.setStringList(current_items)
+        self.generate_r_script()
 
     def set_model(self, model1, model2):
         self.model1 = model1
@@ -210,22 +299,43 @@ el.replaceWith(d);
         self.all_columns_model1 = self.get_column_with_dtype(model1)
         self.all_columns_model2 = self.get_column_with_dtype(model2)
 
+    def toggle_r_script_visibility(self):
+        &#34;&#34;&#34;
+        Toggles the visibility of the R script text edit area and updates the toggle button text.
+        &#34;&#34;&#34;
+        is_visible = self.script_box.isVisible()
+        self.script_box.setVisible(not is_visible)
+        if not is_visible:
+            self.toggle_script_button.setIcon(QIcon(&#34;assets/less.svg&#34;))
+        else:
+            self.toggle_script_button.setIcon(QIcon(&#34;assets/more.svg&#34;))
+
     def get_column_with_dtype(self, model):
-        self.columns = [
-            f&#34;{col} [{dtype}]&#34; if dtype == pl.Utf8 else f&#34;{col} [Numeric]&#34;
-            for col, dtype in zip(model.get_data().columns, model.get_data().dtypes)
-        ]
-        return self.columns 
+        &#34;&#34;&#34;
+        Returns a list of columns with simplified data types:
+        String, Numeric, or None.
+        &#34;&#34;&#34;
+        self.columns = []
+        for col, dtype in zip(model.get_data().columns, model.get_data().dtypes):
+            if dtype == pl.Utf8:
+                tipe = &#34;String&#34;
+            elif dtype == pl.Null:
+                tipe = &#34;None&#34;
+            else:
+                tipe = &#34;Numeric&#34;
+            self.columns.append(f&#34;{col} [{tipe}]&#34;)
+        return self.columns
+
 
     def add_variable(self):
         selected_indexes = self.data_editor_list.selectedIndexes() + self.data_output_list.selectedIndexes()
         selected_items = [index.data() for index in selected_indexes]
         selected_list = self.selected_model.stringList()
         
-        contains_string = any(&#34;[String]&#34; in item for item in selected_items)   
-        selected_items = [item for item in selected_items if &#34;[String]&#34; not in item] 
+        contains_invalid = any(&#34;[String]&#34; in item or &#34;[None]&#34; in item for item in selected_items)
+        selected_items = [item for item in selected_items if &#34;[Numeric]&#34; in item]
 
-        if contains_string:
+        if contains_invalid:
             QMessageBox.warning(self, &#34;Warning&#34;, &#34;Selected variables must be of type Numeric.&#34;)
 
         for item in selected_items:
@@ -245,30 +355,43 @@ el.replaceWith(d);
         self.generate_r_script()
 
     def remove_variable(self):
+        &#34;&#34;&#34;
+        Removes selected variables from the selected list and generates the R script.
+        &#34;&#34;&#34;
         selected_indexes = self.selected_list.selectedIndexes()
         selected_items = [index.data() for index in selected_indexes]
+
         selected_list = self.selected_model.stringList()
+        editor_list = self.data_editor_model.stringList()
+        output_list = self.data_output_model.stringList()
 
         for item in selected_items:
-            column_name = item.split(&#39; &#39;)[0]
-            if column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model1]:
-                editor_list = self.data_editor_model.stringList()
-                editor_list.append(item)
-                self.data_editor_model.setStringList(editor_list)
-            elif column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model2]:
-                output_list = self.data_output_model.stringList()
-                output_list.append(item)
-                self.data_output_model.setStringList(output_list)
+            column_name = item.split(&#34; &#34;)[0]
 
+            # Check if the item belongs to model1 (editor) or model2 (output)
+            if column_name in [col.split(&#34; &#34;)[0] for col in self.all_columns_model1]:
+                if item not in editor_list:
+                    editor_list.append(item)
+                    # Re-sort according to all_columns_model1
+                    editor_list = [col for col in self.all_columns_model1 if col in editor_list]
+
+            elif column_name in [col.split(&#34; &#34;)[0] for col in self.all_columns_model2]:
+                if item not in output_list:
+                    output_list.append(item)
+                    # Re-sort according to all_columns_model2
+                    output_list = [col for col in self.all_columns_model2 if col in output_list]
+
+            # Remove from selected
             if item in selected_list:
                 selected_list.remove(item)
 
         self.selected_model.setStringList(selected_list)
+        self.data_editor_model.setStringList(editor_list)
+        self.data_output_model.setStringList(output_list)
         self.generate_r_script()
 
     def get_selected_columns(self):
         return [item.rsplit(&#34; [String]&#34;, 1)[0].rsplit(&#34; [Numeric]&#34;, 1)[0] for item in self.selected_model.stringList()]
-
 
     def generate_r_script(self):
         &#34;&#34;&#34;Function to generate R script for Correlation Matrix using ggcorrplot&#34;&#34;&#34;
@@ -280,12 +403,25 @@ el.replaceWith(d);
         formatted_columns = &#39;, &#39;.join(f&#39;&#34;{col}&#34;&#39; for col in selected_columns)
         r_script = &#34;&#34;
 
-        # Step 1: Generate the correlation matrix
-        r_script += f&#34;&#34;&#34;correlation_matrix &lt;- cor(data[, c({formatted_columns})], use=&#34;complete.obs&#34;, method=&#34;pearson&#34;)&#34;&#34;&#34;
-        if self.correlation_plot_checkbox.isChecked():
-            r_script += &#34;&#34;&#34;
-correlation_plot &lt;- ggcorrplot(correlation_matrix, method = &#34;square&#34;, type = &#34;upper&#34;, lab = TRUE)
-            &#34;&#34;&#34;
+        # Step 1: Generate the correlation matrix and plots based on selected methods
+        for method, checkbox in [(&#34;pearson&#34;, self.pearson_checkbox),
+                                (&#34;spearman&#34;, self.spearman_checkbox),
+                                (&#34;kendall&#34;, self.kendall_checkbox)]:
+            if checkbox.isChecked():
+                correlation_matrix_method = f&#34;correlation_matrix_{method}&#34;
+                r_script += (
+                    f&#34;{correlation_matrix_method} &lt;- cor(data[, c({formatted_columns})], &#34;
+                    f&#34;use=&#39;complete.obs&#39;, method=&#39;{method}&#39;)\n&#34;
+                )
+
+                # Only generate the plot if the plot checkbox is checked
+                if self.correlation_plot_checkbox.isChecked():
+                    r_script += (
+                        f&#34;correlation_plot_{method} &lt;- ggcorrplot({correlation_matrix_method}, &#34;
+                        f&#34;method = &#39;square&#39;, type = &#39;upper&#39;, lab = TRUE) + &#34;
+                        f&#34;ggtitle(&#39;{method.title()} Correlation Matrix&#39;)\n\n&#34;
+                    )
+
         self.script_box.setPlainText(r_script)
 
 
@@ -297,7 +433,7 @@ correlation_plot &lt;- ggcorrplot(correlation_matrix, method = &#34;square&#34;,
         self.run_button.setEnabled(False)
         self.run_button.setText(&#34;Running...&#34;)
         self.icon_label.setVisible(True)
-        correlation_matrix = CorrelationMatrix(self.model1, self.model2, self.parent)
+        correlation_matrix = CorrelationMatrix(self.model1, self.model2)
         controller = CorrelationMatrixController(correlation_matrix)
         controller.run_model(r_script)
 
@@ -306,7 +442,8 @@ correlation_plot &lt;- ggcorrplot(correlation_matrix, method = &#34;square&#34;,
         else:
             QMessageBox.warning(self, &#34;Correlation Matrix&#34;, correlation_matrix.result)
 
-        self.parent.add_output(script_text = r_script, result_text =  correlation_matrix.result ,plot_paths = correlation_matrix.plot)
+        # self.parent.add_output(script_text = r_script, result_text =  correlation_matrix.result ,plot_paths = correlation_matrix.plot)
+        display_script_and_output(self.parent, r_script, correlation_matrix.result, correlation_matrix.plot)
         self.parent.tab_widget.setCurrentWidget(self.parent.output_tab)
 
         self.icon_label.setVisible(False)
@@ -390,7 +527,7 @@ closeEvent(self, event): Handles the close event of the dialog.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.accept"><code class="name flex">
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.accept"><code class="name flex">
 <span>def <span class="ident">accept</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -406,7 +543,7 @@ closeEvent(self, event): Handles the close event of the dialog.</p></div>
     self.run_button.setEnabled(False)
     self.run_button.setText(&#34;Running...&#34;)
     self.icon_label.setVisible(True)
-    correlation_matrix = CorrelationMatrix(self.model1, self.model2, self.parent)
+    correlation_matrix = CorrelationMatrix(self.model1, self.model2)
     controller = CorrelationMatrixController(correlation_matrix)
     controller.run_model(r_script)
 
@@ -415,7 +552,8 @@ closeEvent(self, event): Handles the close event of the dialog.</p></div>
     else:
         QMessageBox.warning(self, &#34;Correlation Matrix&#34;, correlation_matrix.result)
 
-    self.parent.add_output(script_text = r_script, result_text =  correlation_matrix.result ,plot_paths = correlation_matrix.plot)
+    # self.parent.add_output(script_text = r_script, result_text =  correlation_matrix.result ,plot_paths = correlation_matrix.plot)
+    display_script_and_output(self.parent, r_script, correlation_matrix.result, correlation_matrix.plot)
     self.parent.tab_widget.setCurrentWidget(self.parent.output_tab)
 
     self.icon_label.setVisible(False)
@@ -425,7 +563,7 @@ closeEvent(self, event): Handles the close event of the dialog.</p></div>
 </details>
 <div class="desc"><p>accept(self)</p></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.add_variable"><code class="name flex">
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.add_variable"><code class="name flex">
 <span>def <span class="ident">add_variable</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -438,10 +576,10 @@ closeEvent(self, event): Handles the close event of the dialog.</p></div>
     selected_items = [index.data() for index in selected_indexes]
     selected_list = self.selected_model.stringList()
     
-    contains_string = any(&#34;[String]&#34; in item for item in selected_items)   
-    selected_items = [item for item in selected_items if &#34;[String]&#34; not in item] 
+    contains_invalid = any(&#34;[String]&#34; in item or &#34;[None]&#34; in item for item in selected_items)
+    selected_items = [item for item in selected_items if &#34;[Numeric]&#34; in item]
 
-    if contains_string:
+    if contains_invalid:
         QMessageBox.warning(self, &#34;Warning&#34;, &#34;Selected variables must be of type Numeric.&#34;)
 
     for item in selected_items:
@@ -462,7 +600,7 @@ closeEvent(self, event): Handles the close event of the dialog.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.closeEvent"><code class="name flex">
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.closeEvent"><code class="name flex">
 <span>def <span class="ident">closeEvent</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
@@ -477,7 +615,7 @@ closeEvent(self, event): Handles the close event of the dialog.</p></div>
 </details>
 <div class="desc"><p>closeEvent(self, a0: Optional[QCloseEvent])</p></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.generate_r_script"><code class="name flex">
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.generate_r_script"><code class="name flex">
 <span>def <span class="ident">generate_r_script</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -485,27 +623,40 @@ closeEvent(self, event): Handles the close event of the dialog.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">    def generate_r_script(self):
-        &#34;&#34;&#34;Function to generate R script for Correlation Matrix using ggcorrplot&#34;&#34;&#34;
-        selected_columns = self.get_selected_columns()
-        if not selected_columns:
-            self.script_box.setPlainText(&#34;&#34;)
-            return
+<pre><code class="python">def generate_r_script(self):
+    &#34;&#34;&#34;Function to generate R script for Correlation Matrix using ggcorrplot&#34;&#34;&#34;
+    selected_columns = self.get_selected_columns()
+    if not selected_columns:
+        self.script_box.setPlainText(&#34;&#34;)
+        return
 
-        formatted_columns = &#39;, &#39;.join(f&#39;&#34;{col}&#34;&#39; for col in selected_columns)
-        r_script = &#34;&#34;
+    formatted_columns = &#39;, &#39;.join(f&#39;&#34;{col}&#34;&#39; for col in selected_columns)
+    r_script = &#34;&#34;
 
-        # Step 1: Generate the correlation matrix
-        r_script += f&#34;&#34;&#34;correlation_matrix &lt;- cor(data[, c({formatted_columns})], use=&#34;complete.obs&#34;, method=&#34;pearson&#34;)&#34;&#34;&#34;
-        if self.correlation_plot_checkbox.isChecked():
-            r_script += &#34;&#34;&#34;
-correlation_plot &lt;- ggcorrplot(correlation_matrix, method = &#34;square&#34;, type = &#34;upper&#34;, lab = TRUE)
-            &#34;&#34;&#34;
-        self.script_box.setPlainText(r_script)</code></pre>
+    # Step 1: Generate the correlation matrix and plots based on selected methods
+    for method, checkbox in [(&#34;pearson&#34;, self.pearson_checkbox),
+                            (&#34;spearman&#34;, self.spearman_checkbox),
+                            (&#34;kendall&#34;, self.kendall_checkbox)]:
+        if checkbox.isChecked():
+            correlation_matrix_method = f&#34;correlation_matrix_{method}&#34;
+            r_script += (
+                f&#34;{correlation_matrix_method} &lt;- cor(data[, c({formatted_columns})], &#34;
+                f&#34;use=&#39;complete.obs&#39;, method=&#39;{method}&#39;)\n&#34;
+            )
+
+            # Only generate the plot if the plot checkbox is checked
+            if self.correlation_plot_checkbox.isChecked():
+                r_script += (
+                    f&#34;correlation_plot_{method} &lt;- ggcorrplot({correlation_matrix_method}, &#34;
+                    f&#34;method = &#39;square&#39;, type = &#39;upper&#39;, lab = TRUE) + &#34;
+                    f&#34;ggtitle(&#39;{method.title()} Correlation Matrix&#39;)\n\n&#34;
+                )
+
+    self.script_box.setPlainText(r_script)</code></pre>
 </details>
 <div class="desc"><p>Function to generate R script for Correlation Matrix using ggcorrplot</p></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_column_with_dtype"><code class="name flex">
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_column_with_dtype"><code class="name flex">
 <span>def <span class="ident">get_column_with_dtype</span></span>(<span>self, model)</span>
 </code></dt>
 <dd>
@@ -514,15 +665,25 @@ correlation_plot &lt;- ggcorrplot(correlation_matrix, method = &#34;square&#34;,
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_column_with_dtype(self, model):
-    self.columns = [
-        f&#34;{col} [{dtype}]&#34; if dtype == pl.Utf8 else f&#34;{col} [Numeric]&#34;
-        for col, dtype in zip(model.get_data().columns, model.get_data().dtypes)
-    ]
-    return self.columns </code></pre>
+    &#34;&#34;&#34;
+    Returns a list of columns with simplified data types:
+    String, Numeric, or None.
+    &#34;&#34;&#34;
+    self.columns = []
+    for col, dtype in zip(model.get_data().columns, model.get_data().dtypes):
+        if dtype == pl.Utf8:
+            tipe = &#34;String&#34;
+        elif dtype == pl.Null:
+            tipe = &#34;None&#34;
+        else:
+            tipe = &#34;Numeric&#34;
+        self.columns.append(f&#34;{col} [{tipe}]&#34;)
+    return self.columns</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>Returns a list of columns with simplified data types:
+String, Numeric, or None.</p></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_selected_columns"><code class="name flex">
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_selected_columns"><code class="name flex">
 <span>def <span class="ident">get_selected_columns</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -535,7 +696,71 @@ correlation_plot &lt;- ggcorrplot(correlation_matrix, method = &#34;square&#34;,
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.remove_variable"><code class="name flex">
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.handle_drop"><code class="name flex">
+<span>def <span class="ident">handle_drop</span></span>(<span>self, target_widget, items)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_drop(self, target_widget, items):
+    # Mapping widget to model
+    widget_model_map = {
+        self.data_editor_list: (self.data_editor_model, self.all_columns_model1),
+        self.data_output_list: (self.data_output_model, self.all_columns_model2),
+        self.selected_list: (self.selected_model, None),
+    }
+
+    if target_widget not in widget_model_map:
+        return
+
+    target_model, allowed_columns = widget_model_map[target_widget]
+    current_items = target_model.stringList()
+
+    filtered_items = []
+    contains_string = any(&#34;[String]&#34; in item or &#34;[None]&#34; in item for item in items)
+
+    for item in items:
+        if &#34;[String]&#34; in item or &#34;[None]&#34; in item:
+            continue
+
+        if target_widget == self.selected_list:
+            filtered_items.append(item)
+        else:
+            column_name = item.split(&#34; &#34;)[0]
+            if allowed_columns and column_name in [col.split(&#34; &#34;)[0] for col in allowed_columns]:
+                filtered_items.append(item)
+
+    if contains_string:
+        QMessageBox.warning(self, &#34;Warning&#34;, &#34;Selected variables must be of type Numeric.&#34;)
+
+    for item in filtered_items:
+        if item not in current_items:
+            current_items.append(item)
+
+    for other_widget, (model, _) in widget_model_map.items():
+        if model == target_model:
+            continue
+        other_items = model.stringList()
+        for item in filtered_items:
+            if item in other_items:
+                other_items.remove(item)
+        model.setStringList(other_items)
+
+    if target_widget == self.data_editor_list:
+        ordered = [col for col in self.all_columns_model1 if col in current_items]
+        target_model.setStringList(ordered)
+    elif target_widget == self.data_output_list:
+        ordered = [col for col in self.all_columns_model2 if col in current_items]
+        target_model.setStringList(ordered)
+    else:
+        target_model.setStringList(current_items)
+    self.generate_r_script()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.remove_variable"><code class="name flex">
 <span>def <span class="ident">remove_variable</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -544,30 +769,44 @@ correlation_plot &lt;- ggcorrplot(correlation_matrix, method = &#34;square&#34;,
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def remove_variable(self):
+    &#34;&#34;&#34;
+    Removes selected variables from the selected list and generates the R script.
+    &#34;&#34;&#34;
     selected_indexes = self.selected_list.selectedIndexes()
     selected_items = [index.data() for index in selected_indexes]
+
     selected_list = self.selected_model.stringList()
+    editor_list = self.data_editor_model.stringList()
+    output_list = self.data_output_model.stringList()
 
     for item in selected_items:
-        column_name = item.split(&#39; &#39;)[0]
-        if column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model1]:
-            editor_list = self.data_editor_model.stringList()
-            editor_list.append(item)
-            self.data_editor_model.setStringList(editor_list)
-        elif column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model2]:
-            output_list = self.data_output_model.stringList()
-            output_list.append(item)
-            self.data_output_model.setStringList(output_list)
+        column_name = item.split(&#34; &#34;)[0]
 
+        # Check if the item belongs to model1 (editor) or model2 (output)
+        if column_name in [col.split(&#34; &#34;)[0] for col in self.all_columns_model1]:
+            if item not in editor_list:
+                editor_list.append(item)
+                # Re-sort according to all_columns_model1
+                editor_list = [col for col in self.all_columns_model1 if col in editor_list]
+
+        elif column_name in [col.split(&#34; &#34;)[0] for col in self.all_columns_model2]:
+            if item not in output_list:
+                output_list.append(item)
+                # Re-sort according to all_columns_model2
+                output_list = [col for col in self.all_columns_model2 if col in output_list]
+
+        # Remove from selected
         if item in selected_list:
             selected_list.remove(item)
 
     self.selected_model.setStringList(selected_list)
+    self.data_editor_model.setStringList(editor_list)
+    self.data_output_model.setStringList(output_list)
     self.generate_r_script()</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>Removes selected variables from the selected list and generates the R script.</p></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.set_model"><code class="name flex">
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.set_model"><code class="name flex">
 <span>def <span class="ident">set_model</span></span>(<span>self, model1, model2)</span>
 </code></dt>
 <dd>
@@ -585,6 +824,27 @@ correlation_plot &lt;- ggcorrplot(correlation_matrix, method = &#34;square&#34;,
 </details>
 <div class="desc"></div>
 </dd>
+<dt id="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.toggle_r_script_visibility"><code class="name flex">
+<span>def <span class="ident">toggle_r_script_visibility</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def toggle_r_script_visibility(self):
+    &#34;&#34;&#34;
+    Toggles the visibility of the R script text edit area and updates the toggle button text.
+    &#34;&#34;&#34;
+    is_visible = self.script_box.isVisible()
+    self.script_box.setVisible(not is_visible)
+    if not is_visible:
+        self.toggle_script_button.setIcon(QIcon(&#34;assets/less.svg&#34;))
+    else:
+        self.toggle_script_button.setIcon(QIcon(&#34;assets/more.svg&#34;))</code></pre>
+</details>
+<div class="desc"><p>Toggles the visibility of the R script text edit area and updates the toggle button text.</p></div>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -597,22 +857,24 @@ correlation_plot &lt;- ggcorrplot(correlation_matrix, method = &#34;square&#34;,
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.view.components.exploration" href="index.html">sip-sae.view.components.exploration</a></code></li>
+<li><code><a title="saePisan.view.components.exploration" href="index.html">saePisan.view.components.exploration</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog" href="#sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog">CorrelationMatrixDialog</a></code></h4>
+<h4><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog">CorrelationMatrixDialog</a></code></h4>
 <ul class="">
-<li><code><a title="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.accept" href="#sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.accept">accept</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.add_variable" href="#sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.add_variable">add_variable</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.closeEvent" href="#sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.closeEvent">closeEvent</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.generate_r_script" href="#sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.generate_r_script">generate_r_script</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_column_with_dtype" href="#sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_column_with_dtype">get_column_with_dtype</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_selected_columns" href="#sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_selected_columns">get_selected_columns</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.remove_variable" href="#sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.remove_variable">remove_variable</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.set_model" href="#sip-sae.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.set_model">set_model</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.accept" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.accept">accept</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.add_variable" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.add_variable">add_variable</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.closeEvent" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.closeEvent">closeEvent</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.generate_r_script" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.generate_r_script">generate_r_script</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_column_with_dtype" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_column_with_dtype">get_column_with_dtype</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_selected_columns" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.get_selected_columns">get_selected_columns</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.handle_drop" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.handle_drop">handle_drop</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.remove_variable" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.remove_variable">remove_variable</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.set_model" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.set_model">set_model</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.toggle_r_script_visibility" href="#saePisan.view.components.exploration.CorrelationMatrikDialog.CorrelationMatrixDialog.toggle_r_script_visibility">toggle_r_script_visibility</a></code></li>
 </ul>
 </li>
 </ul>
@@ -621,7 +883,7 @@ correlation_plot &lt;- ggcorrplot(correlation_matrix, method = &#34;square&#34;,
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

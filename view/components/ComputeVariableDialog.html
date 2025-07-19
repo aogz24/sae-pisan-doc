@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.view.components.ComputeVariableDialog API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.view.components.ComputeVariableDialog API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.view.components.ComputeVariableDialog</code></h1>
+<h1 class="title">Module <code>saePisan.view.components.ComputeVariableDialog</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,7 +46,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog"><code class="flex name class">
+<dt id="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog"><code class="flex name class">
 <span>class <span class="ident">ComputeVariableDialog</span></span>
 <span>(</span><span>parent=None)</span>
 </code></dt>
@@ -93,8 +93,17 @@ el.replaceWith(d);
         self.init_ui()
 
     def load_templates(self):
+        app_data_dir = os.path.join(os.getenv(&#34;APPDATA&#34;), &#34;saePisan&#34;)
+        os.makedirs(app_data_dir, exist_ok=True)
         templates = {}
         template_file = os.path.join(self.parent.path, &#39;file-data&#39;, &#39;template.dat&#39;)
+        appdata_template_file = os.path.join(app_data_dir, &#39;template.dat&#39;)
+        
+        if not os.path.exists(appdata_template_file):
+            # Copy template.dat to appdata_template_file if it doesn&#39;t exist
+            shutil.copyfile(template_file, appdata_template_file)
+            template_file = appdata_template_file
+            
         with open(template_file, &#39;r&#39;) as file:
             lines = file.readlines()
             for line in lines:
@@ -109,7 +118,7 @@ el.replaceWith(d);
         if ok and template_name:
             script = self.get_script()
             self.templates[template_name] = script
-            template_file = os.path.join(self.parent.path, &#39;file-data&#39;, &#39;template.dat&#39;)
+            template_file = os.path.join(os.getenv(&#34;APPDATA&#34;), &#34;saePisan&#34;, &#39;template.dat&#39;)
             with open(template_file, &#39;a&#39;) as file:
                 file.write(f&#34;{template_name}={script}\n&#34;)
             self.template_selection.addItem(template_name)
@@ -270,7 +279,7 @@ Validates the input, computes the new variable, and updates the model.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.accept"><code class="name flex">
+<dt id="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.accept"><code class="name flex">
 <span>def <span class="ident">accept</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -296,7 +305,7 @@ Validates the input, computes the new variable, and updates the model.</p></div>
 </details>
 <div class="desc"><p>accept(self)</p></div>
 </dd>
-<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.get_script"><code class="name flex">
+<dt id="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.get_script"><code class="name flex">
 <span>def <span class="ident">get_script</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -309,7 +318,7 @@ Validates the input, computes the new variable, and updates the model.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.init_ui"><code class="name flex">
+<dt id="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.init_ui"><code class="name flex">
 <span>def <span class="ident">init_ui</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -389,7 +398,7 @@ Validates the input, computes the new variable, and updates the model.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.load_templates"><code class="name flex">
+<dt id="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.load_templates"><code class="name flex">
 <span>def <span class="ident">load_templates</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -398,8 +407,17 @@ Validates the input, computes the new variable, and updates the model.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_templates(self):
+    app_data_dir = os.path.join(os.getenv(&#34;APPDATA&#34;), &#34;saePisan&#34;)
+    os.makedirs(app_data_dir, exist_ok=True)
     templates = {}
     template_file = os.path.join(self.parent.path, &#39;file-data&#39;, &#39;template.dat&#39;)
+    appdata_template_file = os.path.join(app_data_dir, &#39;template.dat&#39;)
+    
+    if not os.path.exists(appdata_template_file):
+        # Copy template.dat to appdata_template_file if it doesn&#39;t exist
+        shutil.copyfile(template_file, appdata_template_file)
+        template_file = appdata_template_file
+        
     with open(template_file, &#39;r&#39;) as file:
         lines = file.readlines()
         for line in lines:
@@ -409,7 +427,7 @@ Validates the input, computes the new variable, and updates the model.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.save_template"><code class="name flex">
+<dt id="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.save_template"><code class="name flex">
 <span>def <span class="ident">save_template</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -424,7 +442,7 @@ Validates the input, computes the new variable, and updates the model.</p></div>
     if ok and template_name:
         script = self.get_script()
         self.templates[template_name] = script
-        template_file = os.path.join(self.parent.path, &#39;file-data&#39;, &#39;template.dat&#39;)
+        template_file = os.path.join(os.getenv(&#34;APPDATA&#34;), &#34;saePisan&#34;, &#39;template.dat&#39;)
         with open(template_file, &#39;a&#39;) as file:
             file.write(f&#34;{template_name}={script}\n&#34;)
         self.template_selection.addItem(template_name)
@@ -432,7 +450,7 @@ Validates the input, computes the new variable, and updates the model.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.set_model"><code class="name flex">
+<dt id="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.set_model"><code class="name flex">
 <span>def <span class="ident">set_model</span></span>(<span>self, model)</span>
 </code></dt>
 <dd>
@@ -450,7 +468,7 @@ Validates the input, computes the new variable, and updates the model.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.update_script_input"><code class="name flex">
+<dt id="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.update_script_input"><code class="name flex">
 <span>def <span class="ident">update_script_input</span></span>(<span>self, index)</span>
 </code></dt>
 <dd>
@@ -490,21 +508,21 @@ Validates the input, computes the new variable, and updates the model.</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.view.components" href="index.html">sip-sae.view.components</a></code></li>
+<li><code><a title="saePisan.view.components" href="index.html">saePisan.view.components</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog">ComputeVariableDialog</a></code></h4>
+<h4><code><a title="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog" href="#saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog">ComputeVariableDialog</a></code></h4>
 <ul class="two-column">
-<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.accept" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.accept">accept</a></code></li>
-<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.get_script" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.get_script">get_script</a></code></li>
-<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.init_ui" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.init_ui">init_ui</a></code></li>
-<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.load_templates" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.load_templates">load_templates</a></code></li>
-<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.save_template" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.save_template">save_template</a></code></li>
-<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.set_model" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.set_model">set_model</a></code></li>
-<li><code><a title="sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.update_script_input" href="#sip-sae.view.components.ComputeVariableDialog.ComputeVariableDialog.update_script_input">update_script_input</a></code></li>
+<li><code><a title="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.accept" href="#saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.accept">accept</a></code></li>
+<li><code><a title="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.get_script" href="#saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.get_script">get_script</a></code></li>
+<li><code><a title="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.init_ui" href="#saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.init_ui">init_ui</a></code></li>
+<li><code><a title="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.load_templates" href="#saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.load_templates">load_templates</a></code></li>
+<li><code><a title="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.save_template" href="#saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.save_template">save_template</a></code></li>
+<li><code><a title="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.set_model" href="#saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.set_model">set_model</a></code></li>
+<li><code><a title="saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.update_script_input" href="#saePisan.view.components.ComputeVariableDialog.ComputeVariableDialog.update_script_input">update_script_input</a></code></li>
 </ul>
 </li>
 </ul>
@@ -513,7 +531,7 @@ Validates the input, computes the new variable, and updates the model.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.view.components.CustomToast API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>saePisan.view.components.CustomToast</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="saePisan.view.components.CustomToast.CustomToast"><code class="flex name class">
+<span>class <span class="ident">CustomToast</span></span>
+<span>(</span><span>parent=None, title='', text='', duration=3000, position='top-right', icon_path=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CustomToast(QWidget):
+    &#34;&#34;&#34;
+    Custom Toast Notification Widget
+    This widget displays a toast notification with a title, text, icon, and a progress bar.
+    It can be customized with different positions, colors, and icons.
+    The toast will automatically close after a specified duration, but can be paused by hovering over it.
+    It supports various customization options such as border radius, icon size, background color, title color,
+    close button icon color, duration bar color, and text color.
+    Parameters:
+        parent (QWidget): The parent widget for the toast.
+        title (str): The title of the toast notification.
+        text (str): The text content of the toast notification.
+        duration (int): Duration in milliseconds before the toast automatically closes. Default is 3000 ms.
+        position (str): Position of the toast on the screen. Options are &#34;top-right&#34;, &#34;top-left&#34;, &#34;bottom-right&#34;, &#34;bottom-left&#34;. Default is &#34;top-right&#34;.
+        icon_path (str): Path to the icon image to be displayed on the left side of the toast. Default is None, which uses a default icon.
+    &#34;&#34;&#34;
+    def __init__(self, parent=None, title=&#34;&#34;, text=&#34;&#34;, duration=3000, position=&#34;top-right&#34;, icon_path=None):
+        &#34;&#34;&#34;Initialize the CustomToast widget.&#34;&#34;&#34;
+        super().__init__(parent)
+        self.setWindowFlags(
+            Qt.WindowType.FramelessWindowHint |
+            Qt.WindowType.Tool |
+            Qt.WindowType.WindowStaysOnTopHint
+        )
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
+        self.is_paused = False
+
+        # Main layout
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
+
+        # Card container for solid background
+        card = QWidget(self)
+        card.setObjectName(&#34;toastCard&#34;)
+        # Bawah 0 agar progressbar nempel ke bawah card
+        card_layout = QVBoxLayout(card)
+        card_layout.setContentsMargins(18, 14, 18, 0)
+        card_layout.setSpacing(0)
+
+        # Top area: icon kiri, garis, title &amp; text kanan (pakai grid)
+        top_grid = QGridLayout()
+        top_grid.setHorizontalSpacing(12)
+        top_grid.setVerticalSpacing(2)
+        top_grid.setContentsMargins(0, 0, 0, 0)
+
+        # Icon kiri
+        icon_label = QLabel()
+        if icon_path:
+            pixmap = QPixmap(icon_path)
+            icon_label.setPixmap(pixmap.scaled(36, 36, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+        else:
+            pixmap = QPixmap(&#34;assets/information.svg&#34;)
+            icon_label.setPixmap(pixmap.scaled(36, 36, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+        icon_label.setFixedSize(40, 40)
+        icon_label.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
+        icon_label.setStyleSheet(&#34;background: transparent;&#34;)
+        top_grid.addWidget(icon_label, 0, 0, 2, 1, Qt.AlignmentFlag.AlignTop)
+
+        # Garis vertikal pembatas
+        line = QWidget()
+        line.setFixedWidth(1)
+        line.setStyleSheet(&#34;background: #b0bec5; margin-top: 2px; margin-bottom: 2px;&#34;)
+        top_grid.addWidget(line, 0, 1, 2, 1)
+
+        # Title kanan atas
+        self.title_label = QLabel(title)
+        self.title_label.setFont(QFont(&#34;Arial&#34;, 10, QFont.Weight.Bold))
+        self.title_label.setStyleSheet(&#34;color: #222; background: transparent;&#34;)
+        self.title_label.setWordWrap(True)
+        top_grid.addWidget(self.title_label, 0, 2, 1, 2, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+
+        # Close button kanan atas
+        close_btn = QPushButton(&#34;✕&#34;)
+        close_btn.setFixedSize(24, 24)
+        close_btn.setStyleSheet(&#34;&#34;&#34;
+            QPushButton {
+                border: none;
+                background: transparent;
+                font-size: 16px;
+                color: #444;
+            }
+            QPushButton:hover {
+                color: #d00;
+                background: #e3f1fa;
+            }
+        &#34;&#34;&#34;)
+        close_btn.clicked.connect(self.close)
+        top_grid.addWidget(close_btn, 0, 4, Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop)
+
+        # Text kanan bawah
+        self.text_label = QLabel(text)
+        self.text_label.setFont(QFont(&#34;Arial&#34;, 8))
+        self.text_label.setStyleSheet(&#34;color: #333; background: transparent;&#34;)
+        self.text_label.setWordWrap(True)
+        self.text_label.setMinimumWidth(250)
+        self.text_label.setMaximumWidth(400)
+        top_grid.addWidget(self.text_label, 1, 2, 1, 3, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+
+        card_layout.addLayout(top_grid)
+        card_layout.addSpacing(8)
+
+        # Duration bar di paling bawah, tanpa space kosong
+        self.progress = QProgressBar()
+        self.progress.setMaximum(duration)
+        self.progress.setValue(duration)
+        self.progress.setTextVisible(False)
+        self.progress.setFixedHeight(9)
+        self.progress.setStyleSheet(&#34;&#34;&#34;
+            QProgressBar {
+                border: none;
+                background: #e0e0e0;
+                border-radius: 3px;
+                margin-bottom: 5px;
+            }
+            QProgressBar::chunk {
+                background: #2196f3;
+                border-radius: 3px;
+            }
+        &#34;&#34;&#34;)
+        card_layout.addWidget(self.progress)
+
+        # Set card background and border
+        card.setStyleSheet(&#34;&#34;&#34;
+            QWidget#toastCard {
+                background: #eaf6fd;
+                border: 1.5px solid #90caf9;
+                border-radius: 0px;
+            }
+        &#34;&#34;&#34;)
+
+        main_layout.addWidget(card)
+
+        self.adjustSize()
+        self.duration = duration
+        self.position = position
+
+        # Timer for auto-close and progress bar
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_progress)
+        self.timer.start(15)
+        self.elapsed = 0
+
+    def showEvent(self, event):
+        &#34;&#34;&#34;Handle the show event to adjust size and position.&#34;&#34;&#34;
+        super().showEvent(event)
+        self.adjustSize()
+        self.move_to_position()
+
+    def move_to_position(self):
+        &#34;&#34;&#34;_summary_
+        Move the toast to the specified position relative to its parent widget.
+        If the parent widget is not set, it will center the toast on the screen.
+        If the parent widget is set, it will position the toast at the specified corner with a margin.
+        Supported positions are &#34;top-right&#34;, &#34;top-left&#34;, &#34;bottom-right&#34;, &#34;bottom-left&#34;, and &#34;center&#34;.
+        If the position is not recognized, it defaults to centering the toast on the parent widget.
+        &#34;&#34;&#34;
+        parent = self.parentWidget()
+        if parent:
+            parent_rect = parent.geometry()
+            margin = 32
+            if self.position == &#34;top-right&#34;:
+                x = parent_rect.x() + parent_rect.width() - self.width() - margin
+                y = parent_rect.y() + margin
+            elif self.position == &#34;top-left&#34;:
+                x = parent_rect.x() + margin
+                y = parent_rect.y() + margin
+            elif self.position == &#34;bottom-right&#34;:
+                x = parent_rect.x() + parent_rect.width() - self.width() - margin
+                y = parent_rect.y() + parent_rect.height() - self.height() - margin
+            elif self.position == &#34;bottom-left&#34;:
+                x = parent_rect.x() + margin
+                y = parent_rect.y() + parent_rect.height() - self.height() - margin
+            else:
+                x = parent_rect.x() + (parent_rect.width() - self.width()) // 2
+                y = parent_rect.y() + (parent_rect.height() - self.height()) // 2
+            self.move(x, y)
+
+    def enterEvent(self, event):
+        &#34;&#34;&#34;Pause the toast when the mouse enters.&#34;&#34;&#34;
+        self.is_paused = True
+        self.timer.stop()
+        super().enterEvent(event)
+
+    def leaveEvent(self, event):
+        &#34;&#34;&#34;Resume the toast when the mouse leaves.&#34;&#34;&#34;
+        self.is_paused = False
+        self.timer.start(15)
+        super().leaveEvent(event)
+
+    def update_progress(self):
+        &#34;&#34;&#34;Update the progress bar and check if the toast should close.&#34;&#34;&#34;
+        if self.is_paused:
+            return
+        self.elapsed += 15
+        remaining = max(0, self.duration - self.elapsed)
+        self.progress.setValue(remaining)
+        if self.elapsed &gt;= self.duration:
+            self.timer.stop()
+            self.close()
+    
+    def set_border_radius(self, radius: int):
+        &#34;&#34;&#34;
+        Set the border radius of the toast card.
+
+        Args:
+            radius (int): The desired border radius in pixels to be applied to the toast card.
+
+        This method updates the stylesheet of the widget named &#34;toastCard&#34; to reflect the specified border radius.
+        &#34;&#34;&#34;
+        style = f&#34;&#34;&#34;
+            QWidget#toastCard {{
+                background: #eaf6fd;
+                border: 1.5px solid #90caf9;
+                border-radius: {radius}px;
+            }}
+        &#34;&#34;&#34;
+        self.findChild(QWidget, &#34;toastCard&#34;).setStyleSheet(style)
+        
+    def set_icon_size(self, width: int, height: int):
+        &#34;&#34;&#34;Atur ukuran icon pada toast.&#34;&#34;&#34;
+        icon_label = self.findChild(QLabel)
+        if icon_label:
+            pixmap = icon_label.pixmap()
+            if pixmap:
+                icon_label.setPixmap(pixmap.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+            icon_label.setFixedSize(width, height)
+
+    def set_background_color(self, color: str):
+        &#34;&#34;&#34;Atur warna background card toast.&#34;&#34;&#34;
+        card = self.findChild(QWidget, &#34;toastCard&#34;)
+        style = f&#34;&#34;&#34;
+            QWidget#toastCard {{
+                background: {color};
+                border: 1.5px solid #90caf9;
+                border-radius: 0px;
+            }}
+        &#34;&#34;&#34;
+        card.setStyleSheet(style)
+
+    def set_title_color(self, color: str):
+        &#34;&#34;&#34;Atur warna teks title.&#34;&#34;&#34;
+        self.title_label.setStyleSheet(f&#34;color: {color}; background: transparent;&#34;)
+
+    def set_close_button_icon_color(self, color: str):
+        &#34;&#34;&#34;Atur warna icon tombol close.&#34;&#34;&#34;
+        close_btn = self.findChildren(QPushButton)[0]
+        close_btn.setStyleSheet(f&#34;&#34;&#34;
+            QPushButton {{
+                border: none;
+                background: transparent;
+                font-size: 16px;
+                color: {color};
+            }}
+            QPushButton:hover {{
+                color: #d00;
+                background: #e3f1fa;
+            }}
+        &#34;&#34;&#34;)
+
+    def set_duration_bar_color(self, color: str):
+        &#34;&#34;&#34;Atur warna progress bar durasi.&#34;&#34;&#34;
+        self.progress.setStyleSheet(f&#34;&#34;&#34;
+            QProgressBar {{
+                border: none;
+                background: #e0e0e0;
+                border-radius: 3px;
+                margin-bottom: 5px;
+            }}
+            QProgressBar::chunk {{
+                background: {color};
+                border-radius: 3px;
+            }}
+        &#34;&#34;&#34;)
+
+    def set_text_color(self, color: str):
+        &#34;&#34;&#34;Atur warna teks isi toast.&#34;&#34;&#34;
+        self.text_label.setStyleSheet(f&#34;color: {color}; background: transparent;&#34;)</code></pre>
+</details>
+<div class="desc"><p>Custom Toast Notification Widget
+This widget displays a toast notification with a title, text, icon, and a progress bar.
+It can be customized with different positions, colors, and icons.
+The toast will automatically close after a specified duration, but can be paused by hovering over it.
+It supports various customization options such as border radius, icon size, background color, title color,
+close button icon color, duration bar color, and text color.</p>
+<h2 id="parameters">Parameters</h2>
+<p>parent (QWidget): The parent widget for the toast.
+title (str): The title of the toast notification.
+text (str): The text content of the toast notification.
+duration (int): Duration in milliseconds before the toast automatically closes. Default is 3000 ms.
+position (str): Position of the toast on the screen. Options are "top-right", "top-left", "bottom-right", "bottom-left". Default is "top-right".
+icon_path (str): Path to the icon image to be displayed on the left side of the toast. Default is None, which uses a default icon.</p>
+<p>Initialize the CustomToast widget.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PyQt6.QtWidgets.QWidget</li>
+<li>PyQt6.QtCore.QObject</li>
+<li>PyQt6.sip.wrapper</li>
+<li>PyQt6.QtGui.QPaintDevice</li>
+<li>PyQt6.sip.simplewrapper</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="saePisan.view.components.CustomToast.CustomToast.enterEvent"><code class="name flex">
+<span>def <span class="ident">enterEvent</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def enterEvent(self, event):
+    &#34;&#34;&#34;Pause the toast when the mouse enters.&#34;&#34;&#34;
+    self.is_paused = True
+    self.timer.stop()
+    super().enterEvent(event)</code></pre>
+</details>
+<div class="desc"><p>Pause the toast when the mouse enters.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.leaveEvent"><code class="name flex">
+<span>def <span class="ident">leaveEvent</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def leaveEvent(self, event):
+    &#34;&#34;&#34;Resume the toast when the mouse leaves.&#34;&#34;&#34;
+    self.is_paused = False
+    self.timer.start(15)
+    super().leaveEvent(event)</code></pre>
+</details>
+<div class="desc"><p>Resume the toast when the mouse leaves.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.move_to_position"><code class="name flex">
+<span>def <span class="ident">move_to_position</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def move_to_position(self):
+    &#34;&#34;&#34;_summary_
+    Move the toast to the specified position relative to its parent widget.
+    If the parent widget is not set, it will center the toast on the screen.
+    If the parent widget is set, it will position the toast at the specified corner with a margin.
+    Supported positions are &#34;top-right&#34;, &#34;top-left&#34;, &#34;bottom-right&#34;, &#34;bottom-left&#34;, and &#34;center&#34;.
+    If the position is not recognized, it defaults to centering the toast on the parent widget.
+    &#34;&#34;&#34;
+    parent = self.parentWidget()
+    if parent:
+        parent_rect = parent.geometry()
+        margin = 32
+        if self.position == &#34;top-right&#34;:
+            x = parent_rect.x() + parent_rect.width() - self.width() - margin
+            y = parent_rect.y() + margin
+        elif self.position == &#34;top-left&#34;:
+            x = parent_rect.x() + margin
+            y = parent_rect.y() + margin
+        elif self.position == &#34;bottom-right&#34;:
+            x = parent_rect.x() + parent_rect.width() - self.width() - margin
+            y = parent_rect.y() + parent_rect.height() - self.height() - margin
+        elif self.position == &#34;bottom-left&#34;:
+            x = parent_rect.x() + margin
+            y = parent_rect.y() + parent_rect.height() - self.height() - margin
+        else:
+            x = parent_rect.x() + (parent_rect.width() - self.width()) // 2
+            y = parent_rect.y() + (parent_rect.height() - self.height()) // 2
+        self.move(x, y)</code></pre>
+</details>
+<div class="desc"><p><em>summary</em>
+Move the toast to the specified position relative to its parent widget.
+If the parent widget is not set, it will center the toast on the screen.
+If the parent widget is set, it will position the toast at the specified corner with a margin.
+Supported positions are "top-right", "top-left", "bottom-right", "bottom-left", and "center".
+If the position is not recognized, it defaults to centering the toast on the parent widget.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.set_background_color"><code class="name flex">
+<span>def <span class="ident">set_background_color</span></span>(<span>self, color: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_background_color(self, color: str):
+    &#34;&#34;&#34;Atur warna background card toast.&#34;&#34;&#34;
+    card = self.findChild(QWidget, &#34;toastCard&#34;)
+    style = f&#34;&#34;&#34;
+        QWidget#toastCard {{
+            background: {color};
+            border: 1.5px solid #90caf9;
+            border-radius: 0px;
+        }}
+    &#34;&#34;&#34;
+    card.setStyleSheet(style)</code></pre>
+</details>
+<div class="desc"><p>Atur warna background card toast.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.set_border_radius"><code class="name flex">
+<span>def <span class="ident">set_border_radius</span></span>(<span>self, radius: int)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_border_radius(self, radius: int):
+    &#34;&#34;&#34;
+    Set the border radius of the toast card.
+
+    Args:
+        radius (int): The desired border radius in pixels to be applied to the toast card.
+
+    This method updates the stylesheet of the widget named &#34;toastCard&#34; to reflect the specified border radius.
+    &#34;&#34;&#34;
+    style = f&#34;&#34;&#34;
+        QWidget#toastCard {{
+            background: #eaf6fd;
+            border: 1.5px solid #90caf9;
+            border-radius: {radius}px;
+        }}
+    &#34;&#34;&#34;
+    self.findChild(QWidget, &#34;toastCard&#34;).setStyleSheet(style)</code></pre>
+</details>
+<div class="desc"><p>Set the border radius of the toast card.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>radius</code></strong> :&ensp;<code>int</code></dt>
+<dd>The desired border radius in pixels to be applied to the toast card.</dd>
+</dl>
+<p>This method updates the stylesheet of the widget named "toastCard" to reflect the specified border radius.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.set_close_button_icon_color"><code class="name flex">
+<span>def <span class="ident">set_close_button_icon_color</span></span>(<span>self, color: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_close_button_icon_color(self, color: str):
+    &#34;&#34;&#34;Atur warna icon tombol close.&#34;&#34;&#34;
+    close_btn = self.findChildren(QPushButton)[0]
+    close_btn.setStyleSheet(f&#34;&#34;&#34;
+        QPushButton {{
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            color: {color};
+        }}
+        QPushButton:hover {{
+            color: #d00;
+            background: #e3f1fa;
+        }}
+    &#34;&#34;&#34;)</code></pre>
+</details>
+<div class="desc"><p>Atur warna icon tombol close.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.set_duration_bar_color"><code class="name flex">
+<span>def <span class="ident">set_duration_bar_color</span></span>(<span>self, color: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_duration_bar_color(self, color: str):
+    &#34;&#34;&#34;Atur warna progress bar durasi.&#34;&#34;&#34;
+    self.progress.setStyleSheet(f&#34;&#34;&#34;
+        QProgressBar {{
+            border: none;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 5px;
+        }}
+        QProgressBar::chunk {{
+            background: {color};
+            border-radius: 3px;
+        }}
+    &#34;&#34;&#34;)</code></pre>
+</details>
+<div class="desc"><p>Atur warna progress bar durasi.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.set_icon_size"><code class="name flex">
+<span>def <span class="ident">set_icon_size</span></span>(<span>self, width: int, height: int)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_icon_size(self, width: int, height: int):
+    &#34;&#34;&#34;Atur ukuran icon pada toast.&#34;&#34;&#34;
+    icon_label = self.findChild(QLabel)
+    if icon_label:
+        pixmap = icon_label.pixmap()
+        if pixmap:
+            icon_label.setPixmap(pixmap.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+        icon_label.setFixedSize(width, height)</code></pre>
+</details>
+<div class="desc"><p>Atur ukuran icon pada toast.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.set_text_color"><code class="name flex">
+<span>def <span class="ident">set_text_color</span></span>(<span>self, color: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_text_color(self, color: str):
+    &#34;&#34;&#34;Atur warna teks isi toast.&#34;&#34;&#34;
+    self.text_label.setStyleSheet(f&#34;color: {color}; background: transparent;&#34;)</code></pre>
+</details>
+<div class="desc"><p>Atur warna teks isi toast.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.set_title_color"><code class="name flex">
+<span>def <span class="ident">set_title_color</span></span>(<span>self, color: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_title_color(self, color: str):
+    &#34;&#34;&#34;Atur warna teks title.&#34;&#34;&#34;
+    self.title_label.setStyleSheet(f&#34;color: {color}; background: transparent;&#34;)</code></pre>
+</details>
+<div class="desc"><p>Atur warna teks title.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.showEvent"><code class="name flex">
+<span>def <span class="ident">showEvent</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def showEvent(self, event):
+    &#34;&#34;&#34;Handle the show event to adjust size and position.&#34;&#34;&#34;
+    super().showEvent(event)
+    self.adjustSize()
+    self.move_to_position()</code></pre>
+</details>
+<div class="desc"><p>Handle the show event to adjust size and position.</p></div>
+</dd>
+<dt id="saePisan.view.components.CustomToast.CustomToast.update_progress"><code class="name flex">
+<span>def <span class="ident">update_progress</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_progress(self):
+    &#34;&#34;&#34;Update the progress bar and check if the toast should close.&#34;&#34;&#34;
+    if self.is_paused:
+        return
+    self.elapsed += 15
+    remaining = max(0, self.duration - self.elapsed)
+    self.progress.setValue(remaining)
+    if self.elapsed &gt;= self.duration:
+        self.timer.stop()
+        self.close()</code></pre>
+</details>
+<div class="desc"><p>Update the progress bar and check if the toast should close.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="saePisan.view.components" href="index.html">saePisan.view.components</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="saePisan.view.components.CustomToast.CustomToast" href="#saePisan.view.components.CustomToast.CustomToast">CustomToast</a></code></h4>
+<ul class="">
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.enterEvent" href="#saePisan.view.components.CustomToast.CustomToast.enterEvent">enterEvent</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.leaveEvent" href="#saePisan.view.components.CustomToast.CustomToast.leaveEvent">leaveEvent</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.move_to_position" href="#saePisan.view.components.CustomToast.CustomToast.move_to_position">move_to_position</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.set_background_color" href="#saePisan.view.components.CustomToast.CustomToast.set_background_color">set_background_color</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.set_border_radius" href="#saePisan.view.components.CustomToast.CustomToast.set_border_radius">set_border_radius</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.set_close_button_icon_color" href="#saePisan.view.components.CustomToast.CustomToast.set_close_button_icon_color">set_close_button_icon_color</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.set_duration_bar_color" href="#saePisan.view.components.CustomToast.CustomToast.set_duration_bar_color">set_duration_bar_color</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.set_icon_size" href="#saePisan.view.components.CustomToast.CustomToast.set_icon_size">set_icon_size</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.set_text_color" href="#saePisan.view.components.CustomToast.CustomToast.set_text_color">set_text_color</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.set_title_color" href="#saePisan.view.components.CustomToast.CustomToast.set_title_color">set_title_color</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.showEvent" href="#saePisan.view.components.CustomToast.CustomToast.showEvent">showEvent</a></code></li>
+<li><code><a title="saePisan.view.components.CustomToast.CustomToast.update_progress" href="#saePisan.view.components.CustomToast.CustomToast.update_progress">update_progress</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

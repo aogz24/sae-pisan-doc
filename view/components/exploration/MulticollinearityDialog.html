@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.view.components.exploration.MulticollinearityDialog API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.view.components.exploration.MulticollinearityDialog API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.view.components.exploration.MulticollinearityDialog</code></h1>
+<h1 class="title">Module <code>saePisan.view.components.exploration.MulticollinearityDialog</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,7 +46,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog"><code class="flex name class">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog"><code class="flex name class">
 <span>class <span class="ident">MulticollinearityDialog</span></span>
 <span>(</span><span>parent)</span>
 </code></dt>
@@ -58,6 +58,7 @@ el.replaceWith(d);
 <pre><code class="python">class MulticollinearityDialog(QDialog):
     &#34;&#34;&#34;
     A dialog for handling multicollinearity analysis in a dataset.
+    
     Attributes:
         parent (QWidget): The parent widget.
         model1 (Any): The first data model.
@@ -85,6 +86,7 @@ el.replaceWith(d);
         icon_label (QLabel): Label to show running icon.
         script_box (QTextEdit): Text edit box to display the generated R script.
         run_button (QPushButton): Button to run the analysis.
+    
     Methods:
         __init__(self, parent): Initializes the dialog with the given parent.
         set_model(self, model1, model2): Sets the data models for the dialog.
@@ -109,22 +111,22 @@ el.replaceWith(d);
 
         self.setWindowTitle(&#34;Multicollinearity&#34;)
 
-        # Menyimpan status variabel yang dipilih
+        # Store the status of selected variables
         self.selected_status = {}
 
-        # Layout utama
-        main_layout = QVBoxLayout(self)
+        # Main layout
+        self.main_layout = QVBoxLayout(self)
 
-        # Layout konten utama
+        # Main content layout
         content_layout = QHBoxLayout()
 
-        # Layout kiri: Data Editor dan Data Output
+        # Left layout: Data Editor and Data Output
         left_layout = QVBoxLayout()
 
         # Data Editor
         self.data_editor_label = QLabel(&#34;Data Editor&#34;, self)
         self.data_editor_model = QStringListModel()
-        self.data_editor_list = QListView(self)
+        self.data_editor_list = DragDropListView(parent=self)
         self.data_editor_list.setModel(self.data_editor_model)
         self.data_editor_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
         self.data_editor_list.setEditTriggers(QListView.EditTrigger.NoEditTriggers)
@@ -134,7 +136,7 @@ el.replaceWith(d);
         # Data Output
         self.data_output_label = QLabel(&#34;Data Output&#34;, self)
         self.data_output_model = QStringListModel()
-        self.data_output_list = QListView(self)
+        self.data_output_list = DragDropListView(parent=self)
         self.data_output_list.setModel(self.data_output_model)
         self.data_output_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
         self.data_output_list.setEditTriggers(QListView.EditTrigger.NoEditTriggers)
@@ -159,36 +161,33 @@ el.replaceWith(d);
         self.add_dependent_variable_button.setStyleSheet(&#34;font-size: 24px;&#34;)
         self.add_dependent_variable_button.setFixedSize(50,35)
 
-
         self.add_independent_variable_button = QPushButton(&#34;🡆&#34;, self)  
         self.add_independent_variable_button.clicked.connect(self.add_independent_variables)
         self.add_independent_variable_button.setStyleSheet(&#34;font-size: 24px;&#34;)
         self.add_independent_variable_button.setFixedSize(50,35)
 
-
-        button_layout2.addStretch(2)
+        button_layout2.addStretch(1)
         button_layout2.addWidget(self.add_dependent_variable_button)
         button_layout2.addStretch(5)
         button_layout2.addWidget(self.add_independent_variable_button)
-        button_layout2.addStretch(5)
+        button_layout2.addStretch(6)
 
-
-        # Menambahkan kedua layout tombol ke content_layout
+        # Add both button layouts to content_layout
         content_layout.addLayout(button_layout1)
         content_layout.addLayout(button_layout2)
 
-        # Layout kanan: Variabel yang dipilih, metode, dan grafik
+        # Right layout: Selected variables, methods, and graphs
         right_layout = QVBoxLayout()
 
-        # dependent_variable Axis
+        # Dependent variable Axis
         dependent_variable_layout = QVBoxLayout()
         self.dependent_variable_label = QLabel(&#34;Dependent Variable&#34;, self)
         self.dependent_variable_model = QStringListModel()
-        self.dependent_variable_list = QListView(self)
+        self.dependent_variable_list = DragDropListView(parent=self)
         self.dependent_variable_list.setModel(self.dependent_variable_model)
         self.dependent_variable_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
 
-        # Batasi tinggi 
+        # Limit height 
         item_height = 30  
         self.dependent_variable_list.setFixedHeight(item_height + 4)  
 
@@ -196,20 +195,18 @@ el.replaceWith(d);
         dependent_variable_layout.addWidget(self.dependent_variable_list)
         right_layout.addLayout(dependent_variable_layout)
 
-
-        # independent_variable Axis
+        # Independent variable Axis
         independent_variable_layout = QVBoxLayout()
         self.independent_variable_label = QLabel(&#34;Independent Variable&#34;, self)
         self.independent_variable_model = QStringListModel()
-        self.independent_variable_list = QListView(self)
+        self.independent_variable_list = DragDropListView(parent=self)
         self.independent_variable_list.setModel(self.independent_variable_model)
         self.independent_variable_list.setSelectionMode(QListView.SelectionMode.MultiSelection)
         independent_variable_layout.addWidget(self.independent_variable_label)
         independent_variable_layout.addWidget(self.independent_variable_list)
-        right_layout.addLayout(independent_variable_layout)
+        right_layout.addLayout(independent_variable_layout, 1)  # Set stretch factor to 1 to fill remaining space
 
-
-        # Grup grafik
+        # Model options group
         model_options_group = QGroupBox(&#34;Model Options&#34;)  # Change the name of the model options group
         model_options_layout = QVBoxLayout()
         self.regression_line_checkbox = QCheckBox(&#34;Show Regression Model&#34;, self)  # New checkbox for regression line
@@ -219,7 +216,7 @@ el.replaceWith(d);
         right_layout.addWidget(model_options_group)
 
         content_layout.addLayout(right_layout)
-        main_layout.addLayout(content_layout)
+        self.main_layout.addLayout(content_layout)
 
         # Script box
         self.script_layout = QHBoxLayout() 
@@ -232,27 +229,115 @@ el.replaceWith(d);
 
         spacer = QSpacerItem(40, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.script_layout.addWidget(self.script_label)
-        self.script_layout.addItem(spacer)  
+        self.toggle_script_button = QToolButton()
+        self.toggle_script_button.setIcon(QIcon(&#34;assets/more.svg&#34;))
+        self.toggle_script_button.setIconSize(QSize(16, 16))
+        self.toggle_script_button.setCheckable(True)
+        self.toggle_script_button.setChecked(False)
+        self.toggle_script_button.clicked.connect(self.toggle_r_script_visibility)
+
+        self.button_layout = QHBoxLayout()
+        self.button_layout.addWidget(self.script_label)
+        self.button_layout.addWidget(self.toggle_script_button)
+        self.button_layout.setAlignment(self.script_label, Qt.AlignmentFlag.AlignLeft)
+        self.button_layout.setAlignment(self.toggle_script_button, Qt.AlignmentFlag.AlignLeft)
+
+        self.script_layout = QHBoxLayout()
+        self.script_layout.addLayout(self.button_layout)
+        self.script_layout.addStretch()
         self.script_layout.addWidget(self.icon_label)
         self.icon_label.setVisible(False)
-        self.script_box = QTextEdit(self)
+        self.script_layout.setAlignment(self.script_label, Qt.AlignmentFlag.AlignLeft)
 
-        main_layout.addLayout(self.script_layout)  
-        main_layout.addWidget(self.script_box)
+        self.main_layout.addLayout(self.script_layout)
 
-        # Tombol Run
+        self.script_box = QTextEdit()
+        self.script_box.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+        self.script_box.setReadOnly(False)
+        self.script_box.setVisible(False)
+        self.main_layout.addWidget(self.script_box)
+
+        # Run button
         button_row_layout = QHBoxLayout()
         self.run_button = QPushButton(&#34;Run&#34;, self)
         self.run_button.clicked.connect(self.accept)
         button_row_layout.addWidget(self.run_button, alignment=Qt.AlignmentFlag.AlignRight)
-        main_layout.addLayout(button_row_layout)
+        self.main_layout.addLayout(button_row_layout)
         
         self.data_editor_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
         self.data_output_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
         self.independent_variable_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
         self.dependent_variable_list.setSelectionMode(QListView.SelectionMode.ExtendedSelection)
 
+    def handle_drop(self, target_widget, items):
+        # Peta widget ke model dan daftar kolom asal
+        widget_model_map = {
+            self.data_editor_list: (self.data_editor_model, self.all_columns_model1),
+            self.data_output_list: (self.data_output_model, self.all_columns_model2),
+            self.dependent_variable_list: (self.dependent_variable_model, None),
+            self.independent_variable_list: (self.independent_variable_model, None),
+        }
+
+        if target_widget not in widget_model_map:
+            return
+
+        target_model, allowed_columns = widget_model_map[target_widget]
+        current_items = target_model.stringList()
+
+        # Validasi: hanya 1 variabel untuk dependent
+        if target_widget == self.dependent_variable_list:
+            if len(items) &gt; 1 or len(current_items) &gt;= 1:
+                QMessageBox.warning(self, &#34;Warning&#34;, &#34;You can only add one variable to the dependent_variable Axis!&#34;)
+                return
+
+        filtered_items = []
+        contains_invalid = False
+
+        for item in items:
+            if target_widget in [self.dependent_variable_list, self.independent_variable_list]:
+                # Tolak jika [String] atau [None]
+                if &#34;[String]&#34; in item or &#34;[None]&#34; in item:
+                    contains_invalid = True
+                    continue
+                filtered_items.append(item)
+            else:
+                # Editor/output hanya cocokkan dengan kolom aslinya
+                column_name = item.split(&#34; &#34;)[0]
+                if allowed_columns and any(column_name == col.split(&#34; &#34;)[0] for col in allowed_columns):
+                    filtered_items.append(item)
+
+        # Tampilkan warning kalau ada item tidak valid, tapi tetap proses yang valid
+        if contains_invalid:
+            QMessageBox.warning(self, &#34;Warning&#34;, &#34;Selected variables must be of type Numeric.&#34;)
+
+        # Hapus dari semua model lain
+        for _, (model, _) in widget_model_map.items():
+            if model == target_model:
+                continue
+            other_items = model.stringList()
+            for item in filtered_items:
+                if item in other_items:
+                    other_items.remove(item)
+            model.setStringList(other_items)
+
+        # Tambahkan ke target jika belum ada
+        for item in filtered_items:
+            if item not in current_items:
+                current_items.append(item)
+
+        # Urutkan kembali jika editor atau output
+        if target_widget in [self.data_editor_list, self.data_output_list]:
+            if target_widget == self.data_editor_list:
+                original_order = self.all_columns_model1
+            else:
+                original_order = self.all_columns_model2
+
+            reference_map = {col: i for i, col in enumerate(original_order)}
+            current_items = sorted(current_items, key=lambda x: reference_map.get(x, float(&#39;inf&#39;)))
+
+        target_model.setStringList(current_items)
+        self.generate_r_script()
+        
     def set_model(self, model1, model2):
         self.model1 = model1
         self.model2 = model2
@@ -261,26 +346,41 @@ el.replaceWith(d);
         self.all_columns_model1 = self.get_column_with_dtype(model1)
         self.all_columns_model2 = self.get_column_with_dtype(model2)
 
+    def toggle_r_script_visibility(self):
+        &#34;&#34;&#34;
+        Toggles the visibility of the R script text edit area and updates the toggle button text.
+        &#34;&#34;&#34;
+        is_visible = self.script_box.isVisible()
+        self.script_box.setVisible(not is_visible)
+        if not is_visible:
+            self.toggle_script_button.setIcon(QIcon(&#34;assets/less.svg&#34;))
+        else:
+            self.toggle_script_button.setIcon(QIcon(&#34;assets/more.svg&#34;))
 
     def get_column_with_dtype(self, model):
-        self.columns = [
-            f&#34;{col} [{dtype}]&#34; if dtype == pl.Utf8 else f&#34;{col} [Numeric]&#34;
-            for col, dtype in zip(model.get_data().columns, model.get_data().dtypes)
-        ]
-        return self.columns 
+        &#34;&#34;&#34;
+        Returns a list of columns with simplified data types:
+        String, Numeric, or None.
+        &#34;&#34;&#34;
+        self.columns = []
+        for col, dtype in zip(model.get_data().columns, model.get_data().dtypes):
+            if dtype == pl.Utf8:
+                tipe = &#34;String&#34;
+            elif dtype == pl.Null:
+                tipe = &#34;None&#34;
+            else:
+                tipe = &#34;Numeric&#34;
+            self.columns.append(f&#34;{col} [{tipe}]&#34;)
+        return self.columns
     
-
     def add_dependent_variable(self):
-        # Check if there is already a variable in the dependent_variable axis
         if len(self.dependent_variable_model.stringList()) &gt;= 1:
             QMessageBox.warning(self, &#34;Warning&#34;, &#34;You can only add one variable to the dependent_variable Axis!&#34;)
-            return  # Do not add if one variable is already present
+            return
 
-        # Get all selected indexes from data editor and data output
         selected_indexes = self.data_editor_list.selectedIndexes() + self.data_output_list.selectedIndexes()
         selected_items = [index.data() for index in selected_indexes]
 
-        # Jika tidak ada yang dipilih
         if not selected_items:
             QMessageBox.warning(self, &#34;Warning&#34;, &#34;Please select a variable first!&#34;)
             return
@@ -291,11 +391,10 @@ el.replaceWith(d);
 
         item = selected_items[0]
 
-        if &#34;[String]&#34; in item:
+        if &#34;[String]&#34; in item or &#34;[None]&#34; in item:
             QMessageBox.warning(self, &#34;Warning&#34;, &#34;Selected variable must be of type Numeric.&#34;)
             return
 
-        # Pindahkan item dari data_editor atau data_output
         if item in self.data_editor_model.stringList():
             editor_list = self.data_editor_model.stringList()
             editor_list.remove(item)
@@ -305,23 +404,19 @@ el.replaceWith(d);
             output_list.remove(item)
             self.data_output_model.setStringList(output_list)
 
-        # Masukkan ke dependent_variable_model
         self.dependent_variable_model.setStringList([item])
-
-        # Generate R script setelah variabel ditambahkan
         self.generate_r_script()
+
     
     def add_independent_variables(self):
-
         selected_indexes = self.data_editor_list.selectedIndexes() + self.data_output_list.selectedIndexes()
         selected_items = [index.data() for index in selected_indexes]
         selected_list = self.independent_variable_model.stringList()
 
-        contains_string = any(&#34;[String]&#34; in item for item in selected_items)
-        selected_items = [item for item in selected_items if &#34;[String]&#34; not in item]
+        contains_invalid = any(&#34;[String]&#34; in item or &#34;[None]&#34; in item for item in selected_items)
+        selected_items = [item for item in selected_items if &#34;[String]&#34; not in item and &#34;[None]&#34; not in item]
 
-        
-        if contains_string:
+        if contains_invalid:
             QMessageBox.warning(None, &#34;Warning&#34;, &#34;Selected variables must be of type Numeric.&#34;)
 
         for item in selected_items:
@@ -340,54 +435,50 @@ el.replaceWith(d);
         self.independent_variable_model.setStringList(selected_list)
         self.generate_r_script()
 
-
     def remove_variable(self):
-        # Ambil indeks yang dipilih dari daftar variabel dependent_variable dan independent_variable
+        # Get selected indexes from dependent and independent lists
         selected_dependent_variable_indexes = self.dependent_variable_list.selectedIndexes()
         selected_independent_variable_indexes = self.independent_variable_list.selectedIndexes()
 
-        # Ambil nama variabel yang dipilih
-        selected_dependent_variable_items = [index.data() for index in selected_dependent_variable_indexes]
-        selected_independent_variable_items = [index.data() for index in selected_independent_variable_indexes]
+        # Get selected items
+        selected_items = [index.data() for index in selected_dependent_variable_indexes + selected_independent_variable_indexes]
 
-        # Gabungkan kedua daftar variabel yang dipilih
-        selected_items = selected_dependent_variable_items + selected_independent_variable_items
-
-        # Ambil daftar semua variabel yang sedang dipilih
+        # Get current variable lists
         dependent_variable_list = self.dependent_variable_model.stringList()
         independent_variable_list = self.independent_variable_model.stringList()
+        editor_list = self.data_editor_model.stringList()
+        output_list = self.data_output_model.stringList()
 
-        # Periksa apakah variabel dikembalikan ke data editor atau data output
         for item in selected_items:
-            column_name = item.split(&#39; &#39;)[0]  # Ambil nama kolom sebelum spasi
+            # Check if it comes from model1 or model2 based on column name only (without type)
+            column_name = item.split(&#34; &#34;)[0]
 
-            if column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model1]:
-                editor_list = self.data_editor_model.stringList()
+            if column_name in [col.split(&#34; &#34;)[0] for col in self.all_columns_model1]:
                 if item not in editor_list:
                     editor_list.append(item)
-                    self.data_editor_model.setStringList(editor_list)
-
-            elif column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model2]:
-                output_list = self.data_output_model.stringList()
+            elif column_name in [col.split(&#34; &#34;)[0] for col in self.all_columns_model2]:
                 if item not in output_list:
                     output_list.append(item)
-                    self.data_output_model.setStringList(output_list)
 
-            # Hapus item dari daftar dependent_variable atau independent_variable jika ada
+            # Remove from dependent and independent lists if present
             if item in dependent_variable_list:
                 dependent_variable_list.remove(item)
-
             if item in independent_variable_list:
                 independent_variable_list.remove(item)
+            
+        # Sort ulang agar urutannya konsisten seperti semula
+        editor_list.sort(key=lambda x: self.all_columns_model1.index(x) if x in self.all_columns_model1 else float(&#39;inf&#39;))
+        output_list.sort(key=lambda x: self.all_columns_model2.index(x) if x in self.all_columns_model2 else float(&#39;inf&#39;))
 
-        # Perbarui daftar variabel yang dipilih
+        # Update model-model
+        self.data_editor_model.setStringList(editor_list)
+        self.data_output_model.setStringList(output_list)
         self.dependent_variable_model.setStringList(dependent_variable_list)
         self.independent_variable_model.setStringList(independent_variable_list)
 
-        # Perbarui script R setelah perubahan
+        # Perbarui script
         self.generate_r_script()
 
-    
     def get_selected_dependent_variable(self):
         return [
             item.rsplit(&#34; [String]&#34;, 1)[0].rsplit(&#34; [Numeric]&#34;, 1)[0]
@@ -413,7 +504,7 @@ el.replaceWith(d);
         self.run_button.setText(&#34;Running...&#34;)
         self.icon_label.setVisible(True)
 
-        multicollinearity = Multicollinearity(self.model1, self.model2, self.parent)
+        multicollinearity = Multicollinearity(self.model1, self.model2)
         
         if self.regression_line_checkbox.isChecked():
             multicollinearity.reg_model = True
@@ -425,7 +516,8 @@ el.replaceWith(d);
             QMessageBox.critical(self, &#34;Multicollinearity&#34;, multicollinearity.result)
         else:
             QMessageBox.information(self, &#34;Multicollinearity&#34;, &#34;Exploration has been completed.&#34;)
-        self.parent.add_output(script_text=r_script, result_text=multicollinearity.result)
+        # self.parent.add_output(script_text=r_script, result_text=multicollinearity.result)
+        display_script_and_output(self.parent, r_script, multicollinearity.result)
         self.icon_label.setVisible(False)
         self.run_button.setText(&#34;Run&#34;)
         self.close()
@@ -546,7 +638,7 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.accept"><code class="name flex">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.accept"><code class="name flex">
 <span>def <span class="ident">accept</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -567,7 +659,7 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
     self.run_button.setText(&#34;Running...&#34;)
     self.icon_label.setVisible(True)
 
-    multicollinearity = Multicollinearity(self.model1, self.model2, self.parent)
+    multicollinearity = Multicollinearity(self.model1, self.model2)
     
     if self.regression_line_checkbox.isChecked():
         multicollinearity.reg_model = True
@@ -579,14 +671,15 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
         QMessageBox.critical(self, &#34;Multicollinearity&#34;, multicollinearity.result)
     else:
         QMessageBox.information(self, &#34;Multicollinearity&#34;, &#34;Exploration has been completed.&#34;)
-    self.parent.add_output(script_text=r_script, result_text=multicollinearity.result)
+    # self.parent.add_output(script_text=r_script, result_text=multicollinearity.result)
+    display_script_and_output(self.parent, r_script, multicollinearity.result)
     self.icon_label.setVisible(False)
     self.run_button.setText(&#34;Run&#34;)
     self.close()</code></pre>
 </details>
 <div class="desc"><p>accept(self)</p></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_dependent_variable"><code class="name flex">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_dependent_variable"><code class="name flex">
 <span>def <span class="ident">add_dependent_variable</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -595,16 +688,13 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_dependent_variable(self):
-    # Check if there is already a variable in the dependent_variable axis
     if len(self.dependent_variable_model.stringList()) &gt;= 1:
         QMessageBox.warning(self, &#34;Warning&#34;, &#34;You can only add one variable to the dependent_variable Axis!&#34;)
-        return  # Do not add if one variable is already present
+        return
 
-    # Get all selected indexes from data editor and data output
     selected_indexes = self.data_editor_list.selectedIndexes() + self.data_output_list.selectedIndexes()
     selected_items = [index.data() for index in selected_indexes]
 
-    # Jika tidak ada yang dipilih
     if not selected_items:
         QMessageBox.warning(self, &#34;Warning&#34;, &#34;Please select a variable first!&#34;)
         return
@@ -615,11 +705,10 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 
     item = selected_items[0]
 
-    if &#34;[String]&#34; in item:
+    if &#34;[String]&#34; in item or &#34;[None]&#34; in item:
         QMessageBox.warning(self, &#34;Warning&#34;, &#34;Selected variable must be of type Numeric.&#34;)
         return
 
-    # Pindahkan item dari data_editor atau data_output
     if item in self.data_editor_model.stringList():
         editor_list = self.data_editor_model.stringList()
         editor_list.remove(item)
@@ -629,15 +718,12 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
         output_list.remove(item)
         self.data_output_model.setStringList(output_list)
 
-    # Masukkan ke dependent_variable_model
     self.dependent_variable_model.setStringList([item])
-
-    # Generate R script setelah variabel ditambahkan
     self.generate_r_script()</code></pre>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_independent_variables"><code class="name flex">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_independent_variables"><code class="name flex">
 <span>def <span class="ident">add_independent_variables</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -646,16 +732,14 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_independent_variables(self):
-
     selected_indexes = self.data_editor_list.selectedIndexes() + self.data_output_list.selectedIndexes()
     selected_items = [index.data() for index in selected_indexes]
     selected_list = self.independent_variable_model.stringList()
 
-    contains_string = any(&#34;[String]&#34; in item for item in selected_items)
-    selected_items = [item for item in selected_items if &#34;[String]&#34; not in item]
+    contains_invalid = any(&#34;[String]&#34; in item or &#34;[None]&#34; in item for item in selected_items)
+    selected_items = [item for item in selected_items if &#34;[String]&#34; not in item and &#34;[None]&#34; not in item]
 
-    
-    if contains_string:
+    if contains_invalid:
         QMessageBox.warning(None, &#34;Warning&#34;, &#34;Selected variables must be of type Numeric.&#34;)
 
     for item in selected_items:
@@ -676,7 +760,7 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.closeEvent"><code class="name flex">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.closeEvent"><code class="name flex">
 <span>def <span class="ident">closeEvent</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
@@ -693,7 +777,7 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 </details>
 <div class="desc"><p>Menghapus variabel yang dipilih ketika dialog ditutup.</p></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.generate_r_script"><code class="name flex">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.generate_r_script"><code class="name flex">
 <span>def <span class="ident">generate_r_script</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -733,7 +817,7 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 </details>
 <div class="desc"><p>Function to generate R script for Variance Inflation Factor (VIF) calculation</p></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_column_with_dtype"><code class="name flex">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_column_with_dtype"><code class="name flex">
 <span>def <span class="ident">get_column_with_dtype</span></span>(<span>self, model)</span>
 </code></dt>
 <dd>
@@ -742,15 +826,25 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_column_with_dtype(self, model):
-    self.columns = [
-        f&#34;{col} [{dtype}]&#34; if dtype == pl.Utf8 else f&#34;{col} [Numeric]&#34;
-        for col, dtype in zip(model.get_data().columns, model.get_data().dtypes)
-    ]
-    return self.columns </code></pre>
+    &#34;&#34;&#34;
+    Returns a list of columns with simplified data types:
+    String, Numeric, or None.
+    &#34;&#34;&#34;
+    self.columns = []
+    for col, dtype in zip(model.get_data().columns, model.get_data().dtypes):
+        if dtype == pl.Utf8:
+            tipe = &#34;String&#34;
+        elif dtype == pl.Null:
+            tipe = &#34;None&#34;
+        else:
+            tipe = &#34;Numeric&#34;
+        self.columns.append(f&#34;{col} [{tipe}]&#34;)
+    return self.columns</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>Returns a list of columns with simplified data types:
+String, Numeric, or None.</p></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_dependent_variable"><code class="name flex">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_dependent_variable"><code class="name flex">
 <span>def <span class="ident">get_selected_dependent_variable</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -766,7 +860,7 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_independent_variables"><code class="name flex">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_independent_variables"><code class="name flex">
 <span>def <span class="ident">get_selected_independent_variables</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -782,7 +876,86 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.remove_variable"><code class="name flex">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.handle_drop"><code class="name flex">
+<span>def <span class="ident">handle_drop</span></span>(<span>self, target_widget, items)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_drop(self, target_widget, items):
+    # Peta widget ke model dan daftar kolom asal
+    widget_model_map = {
+        self.data_editor_list: (self.data_editor_model, self.all_columns_model1),
+        self.data_output_list: (self.data_output_model, self.all_columns_model2),
+        self.dependent_variable_list: (self.dependent_variable_model, None),
+        self.independent_variable_list: (self.independent_variable_model, None),
+    }
+
+    if target_widget not in widget_model_map:
+        return
+
+    target_model, allowed_columns = widget_model_map[target_widget]
+    current_items = target_model.stringList()
+
+    # Validasi: hanya 1 variabel untuk dependent
+    if target_widget == self.dependent_variable_list:
+        if len(items) &gt; 1 or len(current_items) &gt;= 1:
+            QMessageBox.warning(self, &#34;Warning&#34;, &#34;You can only add one variable to the dependent_variable Axis!&#34;)
+            return
+
+    filtered_items = []
+    contains_invalid = False
+
+    for item in items:
+        if target_widget in [self.dependent_variable_list, self.independent_variable_list]:
+            # Tolak jika [String] atau [None]
+            if &#34;[String]&#34; in item or &#34;[None]&#34; in item:
+                contains_invalid = True
+                continue
+            filtered_items.append(item)
+        else:
+            # Editor/output hanya cocokkan dengan kolom aslinya
+            column_name = item.split(&#34; &#34;)[0]
+            if allowed_columns and any(column_name == col.split(&#34; &#34;)[0] for col in allowed_columns):
+                filtered_items.append(item)
+
+    # Tampilkan warning kalau ada item tidak valid, tapi tetap proses yang valid
+    if contains_invalid:
+        QMessageBox.warning(self, &#34;Warning&#34;, &#34;Selected variables must be of type Numeric.&#34;)
+
+    # Hapus dari semua model lain
+    for _, (model, _) in widget_model_map.items():
+        if model == target_model:
+            continue
+        other_items = model.stringList()
+        for item in filtered_items:
+            if item in other_items:
+                other_items.remove(item)
+        model.setStringList(other_items)
+
+    # Tambahkan ke target jika belum ada
+    for item in filtered_items:
+        if item not in current_items:
+            current_items.append(item)
+
+    # Urutkan kembali jika editor atau output
+    if target_widget in [self.data_editor_list, self.data_output_list]:
+        if target_widget == self.data_editor_list:
+            original_order = self.all_columns_model1
+        else:
+            original_order = self.all_columns_model2
+
+        reference_map = {col: i for i, col in enumerate(original_order)}
+        current_items = sorted(current_items, key=lambda x: reference_map.get(x, float(&#39;inf&#39;)))
+
+    target_model.setStringList(current_items)
+    self.generate_r_script()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.remove_variable"><code class="name flex">
 <span>def <span class="ident">remove_variable</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -791,54 +964,52 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def remove_variable(self):
-    # Ambil indeks yang dipilih dari daftar variabel dependent_variable dan independent_variable
+    # Get selected indexes from dependent and independent lists
     selected_dependent_variable_indexes = self.dependent_variable_list.selectedIndexes()
     selected_independent_variable_indexes = self.independent_variable_list.selectedIndexes()
 
-    # Ambil nama variabel yang dipilih
-    selected_dependent_variable_items = [index.data() for index in selected_dependent_variable_indexes]
-    selected_independent_variable_items = [index.data() for index in selected_independent_variable_indexes]
+    # Get selected items
+    selected_items = [index.data() for index in selected_dependent_variable_indexes + selected_independent_variable_indexes]
 
-    # Gabungkan kedua daftar variabel yang dipilih
-    selected_items = selected_dependent_variable_items + selected_independent_variable_items
-
-    # Ambil daftar semua variabel yang sedang dipilih
+    # Get current variable lists
     dependent_variable_list = self.dependent_variable_model.stringList()
     independent_variable_list = self.independent_variable_model.stringList()
+    editor_list = self.data_editor_model.stringList()
+    output_list = self.data_output_model.stringList()
 
-    # Periksa apakah variabel dikembalikan ke data editor atau data output
     for item in selected_items:
-        column_name = item.split(&#39; &#39;)[0]  # Ambil nama kolom sebelum spasi
+        # Check if it comes from model1 or model2 based on column name only (without type)
+        column_name = item.split(&#34; &#34;)[0]
 
-        if column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model1]:
-            editor_list = self.data_editor_model.stringList()
+        if column_name in [col.split(&#34; &#34;)[0] for col in self.all_columns_model1]:
             if item not in editor_list:
                 editor_list.append(item)
-                self.data_editor_model.setStringList(editor_list)
-
-        elif column_name in [col.split(&#39; &#39;)[0] for col in self.all_columns_model2]:
-            output_list = self.data_output_model.stringList()
+        elif column_name in [col.split(&#34; &#34;)[0] for col in self.all_columns_model2]:
             if item not in output_list:
                 output_list.append(item)
-                self.data_output_model.setStringList(output_list)
 
-        # Hapus item dari daftar dependent_variable atau independent_variable jika ada
+        # Remove from dependent and independent lists if present
         if item in dependent_variable_list:
             dependent_variable_list.remove(item)
-
         if item in independent_variable_list:
             independent_variable_list.remove(item)
+        
+    # Sort ulang agar urutannya konsisten seperti semula
+    editor_list.sort(key=lambda x: self.all_columns_model1.index(x) if x in self.all_columns_model1 else float(&#39;inf&#39;))
+    output_list.sort(key=lambda x: self.all_columns_model2.index(x) if x in self.all_columns_model2 else float(&#39;inf&#39;))
 
-    # Perbarui daftar variabel yang dipilih
+    # Update model-model
+    self.data_editor_model.setStringList(editor_list)
+    self.data_output_model.setStringList(output_list)
     self.dependent_variable_model.setStringList(dependent_variable_list)
     self.independent_variable_model.setStringList(independent_variable_list)
 
-    # Perbarui script R setelah perubahan
+    # Perbarui script
     self.generate_r_script()</code></pre>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.set_model"><code class="name flex">
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.set_model"><code class="name flex">
 <span>def <span class="ident">set_model</span></span>(<span>self, model1, model2)</span>
 </code></dt>
 <dd>
@@ -856,6 +1027,27 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 </details>
 <div class="desc"></div>
 </dd>
+<dt id="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.toggle_r_script_visibility"><code class="name flex">
+<span>def <span class="ident">toggle_r_script_visibility</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def toggle_r_script_visibility(self):
+    &#34;&#34;&#34;
+    Toggles the visibility of the R script text edit area and updates the toggle button text.
+    &#34;&#34;&#34;
+    is_visible = self.script_box.isVisible()
+    self.script_box.setVisible(not is_visible)
+    if not is_visible:
+        self.toggle_script_button.setIcon(QIcon(&#34;assets/less.svg&#34;))
+    else:
+        self.toggle_script_button.setIcon(QIcon(&#34;assets/more.svg&#34;))</code></pre>
+</details>
+<div class="desc"><p>Toggles the visibility of the R script text edit area and updates the toggle button text.</p></div>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -868,24 +1060,26 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.view.components.exploration" href="index.html">sip-sae.view.components.exploration</a></code></li>
+<li><code><a title="saePisan.view.components.exploration" href="index.html">saePisan.view.components.exploration</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog">MulticollinearityDialog</a></code></h4>
+<h4><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog">MulticollinearityDialog</a></code></h4>
 <ul class="">
-<li><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.accept" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.accept">accept</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_dependent_variable" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_dependent_variable">add_dependent_variable</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_independent_variables" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_independent_variables">add_independent_variables</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.closeEvent" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.closeEvent">closeEvent</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.generate_r_script" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.generate_r_script">generate_r_script</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_column_with_dtype" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_column_with_dtype">get_column_with_dtype</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_dependent_variable" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_dependent_variable">get_selected_dependent_variable</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_independent_variables" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_independent_variables">get_selected_independent_variables</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.remove_variable" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.remove_variable">remove_variable</a></code></li>
-<li><code><a title="sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.set_model" href="#sip-sae.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.set_model">set_model</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.accept" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.accept">accept</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_dependent_variable" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_dependent_variable">add_dependent_variable</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_independent_variables" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.add_independent_variables">add_independent_variables</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.closeEvent" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.closeEvent">closeEvent</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.generate_r_script" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.generate_r_script">generate_r_script</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_column_with_dtype" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_column_with_dtype">get_column_with_dtype</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_dependent_variable" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_dependent_variable">get_selected_dependent_variable</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_independent_variables" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.get_selected_independent_variables">get_selected_independent_variables</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.handle_drop" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.handle_drop">handle_drop</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.remove_variable" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.remove_variable">remove_variable</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.set_model" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.set_model">set_model</a></code></li>
+<li><code><a title="saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.toggle_r_script_visibility" href="#saePisan.view.components.exploration.MulticollinearityDialog.MulticollinearityDialog.toggle_r_script_visibility">toggle_r_script_visibility</a></code></li>
 </ul>
 </li>
 </ul>
@@ -894,7 +1088,7 @@ generate_r_script(self): Generates the R script for Variance Inflation Factor (V
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

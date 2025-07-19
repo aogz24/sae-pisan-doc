@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.service.exploration.SummaryData API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.service.exploration.SummaryData API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.service.exploration.SummaryData</code></h1>
+<h1 class="title">Module <code>saePisan.service.exploration.SummaryData</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -44,7 +44,155 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sip-sae.service.exploration.SummaryData.run_summary_data"><code class="name flex">
+<dt id="saePisan.service.exploration.SummaryData.extract_formatted_multiple"><code class="name flex">
+<span>def <span class="ident">extract_formatted_multiple</span></span>(<span>r_output: str) ‑> tuple[polars.dataframe.frame.DataFrame, polars.dataframe.frame.DataFrame]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_formatted_multiple(r_output: str) -&gt; tuple[pl.DataFrame, pl.DataFrame]:
+    # Clean r_output and split into lines
+    lines = r_output.strip().strip(&#34;[]&#34;).split(&#39;\n&#39;)
+    lines = [line.strip(&#34; &#39;&#34;) for line in lines if line.strip()]
+
+    # Regex for numeric summary (Min., 1st Qu., ..., Max.)
+    pattern_num = r&#39;^\d+\s+([A-Za-z0-9_.\s]+)\s+(Min\.|1st Qu\.|Median|Mean|3rd Qu\.|Max\.|NA\&#39;s)\s*:\s*(&lt;NA&gt;|[-\d.]+)&#39;
+
+    
+    # Regex for string summary (Length, Class, Mode)
+    pattern_char = r&#39;^\d+\s+([A-Za-z0-9_.\s]+)\s+(Length|Class|Mode)\s*:\s*(.*)&#39;
+
+    stat_label_map = {
+        &#34;Min.&#34;: &#34;Minimum&#34;,
+        &#34;1st Qu.&#34;: &#34;Quartil 1&#34;,
+        &#34;Median&#34;: &#34;Median&#34;,
+        &#34;Mean&#34;: &#34;Mean&#34;,
+        &#34;3rd Qu.&#34;: &#34;Quartil 3&#34;,
+        &#34;Max.&#34;: &#34;Maximum&#34;,
+        &#34;NA&#39;s&#34;: &#34;Missing&#34;,
+    }
+
+    stat_order = [&#34;Min.&#34;, &#34;1st Qu.&#34;, &#34;Median&#34;, &#34;Mean&#34;, &#34;3rd Qu.&#34;, &#34;Max.&#34;, &#34;NA&#39;s&#34;]
+    string_keys = [&#34;Length&#34;, &#34;Class&#34;, &#34;Mode&#34;]
+
+    # Save summary results
+    numeric_summary = defaultdict(dict)
+    string_summary = defaultdict(dict)
+
+    for line in lines:
+        if match := re.match(pattern_num, line):
+            var_name = match.group(1).strip()
+            stat = match.group(2)
+            value_str = match.group(3)
+            value = None if value_str == &#34;&lt;NA&gt;&#34; else float(value_str)
+            numeric_summary[var_name][stat] = value
+        elif match := re.match(pattern_char, line):
+            var_name = match.group(1).strip()
+            stat = match.group(2)
+            value = match.group(3).strip()
+            string_summary[var_name][stat] = value
+
+
+    # Create numeric DataFrame
+    num_result = {
+        &#34;Variable Name&#34;: [],
+        &#34;Minimum&#34;: [],
+        &#34;Quartil 1&#34;: [],
+        &#34;Median&#34;: [],
+        &#34;Mean&#34;: [],
+        &#34;Quartil 3&#34;: [],
+        &#34;Maximum&#34;: [],
+        &#34;Missing&#34;: []
+
+    }
+
+    for var in numeric_summary:
+        num_result[&#34;Variable Name&#34;].append(var)
+        for stat in stat_order:
+            num_result[stat_label_map[stat]].append(numeric_summary[var].get(stat, None))
+
+    # Create string DataFrame
+    char_result = {
+        &#34;Variable Name&#34;: [],
+        &#34;Length&#34;: [],
+        &#34;Class&#34;: [],
+        &#34;Mode&#34;: []
+    }
+
+    for var in string_summary:
+        char_result[&#34;Variable Name&#34;].append(var)
+        for key in string_keys:
+            char_result[key].append(string_summary[var].get(key, None))
+
+    return pl.DataFrame(num_result), pl.DataFrame(char_result)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="saePisan.service.exploration.SummaryData.extract_formatted_single"><code class="name flex">
+<span>def <span class="ident">extract_formatted_single</span></span>(<span>r_output: str, r_script: str) ‑> polars.dataframe.frame.DataFrame</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_formatted_single(r_output: str, r_script: str) -&gt; pl.DataFrame:
+
+    # Extract variable name from R script
+    pattern = r&#39;(?&lt;=\(&#34;)(.*?)(?=&#34;\))&#39;
+    variable_name = re.search(pattern, r_script).group(0)
+
+    # Mapping labels
+    mapping = {
+        &#34;Min.&#34;: &#34;Minimum&#34;, 
+        &#34;1st Qu.&#34;: &#34;Quartile 1&#34;,
+        &#34;Median&#34;: &#34;Median&#34;,
+        &#34;Mean&#34;: &#34;Mean&#34;,
+        &#34;3rd Qu.&#34;: &#34;Quartile 3&#34;,
+        &#34;Max.&#34;: &#34;Maximum&#34;,
+        &#34;Length&#34;: &#34;Length&#34;,
+        &#34;Class&#34;: &#34;Class&#34;,
+        &#34;Mode&#34;: &#34;Mode&#34;
+    }
+
+    # Clean and split lines
+    lines = r_output.strip().split(&#39;\n&#39;)
+    lines = [line.strip() for line in lines if line.strip()]
+
+    # Initialize dictionary with Variable Name column
+    data = {&#34;Variable Name&#34;: [variable_name]}
+
+    found_stats = set()
+
+    for line in lines:
+        parts = line.split()
+        if len(parts) &gt;= 3:
+            stat = &#34; &#34;.join(parts[1:-1])
+            value = parts[-1]
+        else:
+            continue
+
+        label = mapping.get(stat, stat)
+        found_stats.add(label)
+
+        try:
+            value = float(value)
+        except ValueError:
+            value = str(value)
+
+        data[label] = [value]
+        
+    if &#34;Length&#34; in data and data[&#34;Length&#34;][0] is not None:
+        data[&#34;Class&#34;] = [&#34;character&#34;]
+        data[&#34;Mode&#34;] = [&#34;character&#34;]
+
+    return pl.DataFrame(data)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="saePisan.service.exploration.SummaryData.run_summary_data"><code class="name flex">
 <span>def <span class="ident">run_summary_data</span></span>(<span>parent)</span>
 </code></dt>
 <dd>
@@ -56,7 +204,7 @@ el.replaceWith(d);
     &#34;&#34;&#34;
     Run data summary using Python (Polars) and R.
     &#34;&#34;&#34;
-    parent.activate_R()  
+    parent.activate_R()
 
     # Get data from model
     df1 = parent.model1.get_data()
@@ -64,25 +212,46 @@ el.replaceWith(d);
 
     # Combine data using Polars
     df = pl.concat([df1, df2], how=&#34;horizontal&#34;)
-    df = df.drop_nulls()  # Remove null data
-
-    # Convert Polars DataFrame to R DataFrame
-    with rpy2polars.converter.context() as cv_ctx:
-        r_df = rpy2polars.converter.py2rpy(df)
-        ro.globalenv[&#39;r_df&#39;] = r_df
+    df = df.filter(~pl.all_horizontal(pl.all().is_null()))
+    df = df.filter(~pl.all_horizontal(pl.all().is_null()))
+    get_data(parent,df)
 
     try:
         # Set data in R
         ro.r(&#39;data &lt;- as.data.frame(r_df)&#39;)
-        # Run R script from parent
+
+        # Execute R script from parent
         ro.r(parent.r_script)
 
-        # Get summary results
-        summary_str = ro.r(&#39;capture.output(print(summary_results))&#39;)
-        summary_output = &#34;\n&#34;.join(summary_str)
+        # Create summary_table in R
+        ro.r(&#39;&#39;&#39;
+            if (is.matrix(summary_results)) {
+                summary_table &lt;- as.data.frame(summary_results)
+            } else if (is.atomic(summary_results)) {
+                summary_table &lt;- data.frame(stat = names(summary_results), value = as.numeric(summary_results))
+            }
+        &#39;&#39;&#39;)
 
-        # Save summary results to parent.result
-        parent.result = str(summary_output)
+        # Get the number of rows and columns from the summary_table in R
+        ncol = int(ro.r(&#39;ncol(summary_table)&#39;)[0])
+
+        # Get the output summary_table as a string
+        summary_str = ro.r(&#39;capture.output(print(summary_table))&#39;)
+        summary_str_joined = &#34;\n&#34;.join(summary_str)
+        print(&#34;[DEBUG] Summary String:&#34;, summary_str_joined)
+        parent.result = {}
+
+        if ncol == 2 :
+            summary_table = extract_formatted_single(summary_str_joined, parent.r_script)
+            parent.result[&#34;Summary Table&#34;] = summary_table
+        else:
+            # Use extract_summary for multi-variable data
+            numeric_df, string_df = extract_formatted_multiple(summary_str_joined)
+
+            if numeric_df.shape[0] &gt; 0:
+                parent.result[&#34;Summary Table (Numeric)&#34;] = numeric_df
+            if string_df.shape[0] &gt; 0:
+                parent.result[&#34;Summary Table (Character)&#34;] = string_df
 
     except Exception as e:
         parent.result = str(e)
@@ -102,19 +271,21 @@ el.replaceWith(d);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.service.exploration" href="index.html">sip-sae.service.exploration</a></code></li>
+<li><code><a title="saePisan.service.exploration" href="index.html">saePisan.service.exploration</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sip-sae.service.exploration.SummaryData.run_summary_data" href="#sip-sae.service.exploration.SummaryData.run_summary_data">run_summary_data</a></code></li>
+<li><code><a title="saePisan.service.exploration.SummaryData.extract_formatted_multiple" href="#saePisan.service.exploration.SummaryData.extract_formatted_multiple">extract_formatted_multiple</a></code></li>
+<li><code><a title="saePisan.service.exploration.SummaryData.extract_formatted_single" href="#saePisan.service.exploration.SummaryData.extract_formatted_single">extract_formatted_single</a></code></li>
+<li><code><a title="saePisan.service.exploration.SummaryData.run_summary_data" href="#saePisan.service.exploration.SummaryData.run_summary_data">run_summary_data</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

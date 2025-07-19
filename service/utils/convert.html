@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.service.utils.convert API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.service.utils.convert API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.service.utils.convert</code></h1>
+<h1 class="title">Module <code>saePisan.service.utils.convert</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -44,24 +44,25 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sip-sae.service.utils.convert.get_data"><code class="name flex">
-<span>def <span class="ident">get_data</span></span>(<span>parent)</span>
+<dt id="saePisan.service.utils.convert.get_data"><code class="name flex">
+<span>def <span class="ident">get_data</span></span>(<span>parent, df=None)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_data(parent):
+<pre><code class="python">def get_data(parent, df=None):
     &#34;&#34;&#34;
-    Retrieves data from the parent model, processes it, and converts it to an R dataframe.
+    Retrieves data from the parent model or uses the provided dataframe, processes it, and converts it to an R dataframe.
     Args:
         parent: An object that contains a model with a `get_data` method.
+        df: A pandas dataframe to be used instead of retrieving data from the parent model. Default is None.
     Returns:
         None. The resulting R dataframe is stored in the R global environment as &#39;r_df&#39;.
     Process:
         1. Imports necessary modules from `rpy2` and `rpy2_arrow.polars`.
-        2. Retrieves data from the parent model.
+        2. Retrieves data from the parent model or uses the provided dataframe.
         3. Replaces spaces in column names with underscores.
         4. Drops columns with a high percentage of null values (threshold: 30%).
         5. Converts the dataframe to a pandas dataframe if columns are dropped.
@@ -71,30 +72,33 @@ el.replaceWith(d);
     
     import rpy2.robjects as ro
     import rpy2_arrow.polars as rpy2polars
-    df = parent.model.get_data()
-    df.columns = [col.replace(&#39; &#39;, &#39;_&#39;) for col in df.columns]
+    
+    if df is None:
+        df = parent.model.get_data()
     
     null_threshold = 0.3 * len(df)
     cols_to_drop = [col for col in df.columns if df[col].null_count() &gt;= null_threshold]
-    if len(cols_to_drop)&gt;0:
+    if len(cols_to_drop) &gt; 0:
         df_pandas = df.to_pandas()
         df = pl.from_pandas(df_pandas)
     with rpy2polars.converter.context() as cv_ctx:
         r_df = cv_ctx.py2rpy(df)
         ro.globalenv[&#39;r_df&#39;] = r_df</code></pre>
 </details>
-<div class="desc"><p>Retrieves data from the parent model, processes it, and converts it to an R dataframe.</p>
+<div class="desc"><p>Retrieves data from the parent model or uses the provided dataframe, processes it, and converts it to an R dataframe.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>parent</code></strong></dt>
-<dd>An object that contains a model with a <code><a title="sip-sae.service.utils.convert.get_data" href="#sip-sae.service.utils.convert.get_data">get_data()</a></code> method.</dd>
+<dd>An object that contains a model with a <code><a title="saePisan.service.utils.convert.get_data" href="#saePisan.service.utils.convert.get_data">get_data()</a></code> method.</dd>
+<dt><strong><code>df</code></strong></dt>
+<dd>A pandas dataframe to be used instead of retrieving data from the parent model. Default is None.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>None. The resulting R dataframe is stored in the R global environment as 'r_df'.</p>
 <h2 id="process">Process</h2>
 <ol>
 <li>Imports necessary modules from <code>rpy2</code> and <code>rpy2_arrow.polars</code>.</li>
-<li>Retrieves data from the parent model.</li>
+<li>Retrieves data from the parent model or uses the provided dataframe.</li>
 <li>Replaces spaces in column names with underscores.</li>
 <li>Drops columns with a high percentage of null values (threshold: 30%).</li>
 <li>Converts the dataframe to a pandas dataframe if columns are dropped.</li>
@@ -114,19 +118,19 @@ el.replaceWith(d);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.service.utils" href="index.html">sip-sae.service.utils</a></code></li>
+<li><code><a title="saePisan.service.utils" href="index.html">saePisan.service.utils</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sip-sae.service.utils.convert.get_data" href="#sip-sae.service.utils.convert.get_data">get_data</a></code></li>
+<li><code><a title="saePisan.service.utils.convert.get_data" href="#saePisan.service.utils.convert.get_data">get_data</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

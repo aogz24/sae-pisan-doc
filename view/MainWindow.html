@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
-<title>sip-sae.view.MainWindow API documentation</title>
+<meta name="generator" content="pdoc3 0.11.6">
+<title>saePisan.view.MainWindow API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sip-sae.view.MainWindow</code></h1>
+<h1 class="title">Module <code>saePisan.view.MainWindow</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,7 +46,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sip-sae.view.MainWindow.MainWindow"><code class="flex name class">
+<dt id="saePisan.view.MainWindow.MainWindow"><code class="flex name class">
 <span>class <span class="ident">MainWindow</span></span>
 </code></dt>
 <dd>
@@ -145,23 +145,31 @@ el.replaceWith(d);
         
         super().__init__()
 
-        self.setWindowTitle(&#34;SAE Pisan: Small Area Estimation Programming for Statistical Analysis v1.0.0&#34;)
+        self.setWindowTitle(&#34;saePisan: Small Area Estimation Programming for Statistical Analysis v1.4.0&#34;)
         columns = [f&#34;Column {i+1}&#34; for i in range(100)]
-        self.data1 = pl.DataFrame({col: [&#34;&#34;] * 100 for col in columns})
+        self.data1 = pl.DataFrame({col: [None] * 100 for col in columns})
         self.data2 = pl.DataFrame({
-            &#34;Estimated Value&#34;: [&#34;&#34;] * 100,
-            &#34;Standar Error&#34;: [&#34;&#34;] * 100,
-            &#34;CV&#34;: [&#34;&#34;] * 100
+            &#34;Estimated Value&#34;: [None] * 100,
+            &#34;Standar Error&#34;: [None] * 100,
+            &#34;RSE (%)&#34;: [None] * 100
         })
 
         # Model untuk Sheet 2
         self.model1 = TableModel(self.data1)
         self.model2 = TableModel(self.data2)
         self.path = os.path.join(os.path.dirname(__file__), &#39;..&#39;)
-        self.font_size = 14
+        self.font_size = 12
+        self.set_font_size(self.font_size)
+        self.data = []
 
         # Inisialisasi UI
         self.init_ui()
+
+        # Set up autosave timer
+        self.autosave_interval = 60000  # 60 seconds
+        self.autosave_timer = QTimer(self)
+        self.autosave_timer.timeout.connect(self.autosave_data)
+        self.autosave_timer.start(self.autosave_interval)
         self.showMaximized()
 
     def init_ui(self):
@@ -283,11 +291,21 @@ el.replaceWith(d);
 
         # Membuat menu File -&gt; Load dan Save
         self.file_menu = self.menu_bar.addMenu(&#34;File&#34;)
-
+        
+        self.recent_data = QAction(&#34;Open Recent data&#34;, self)
+        self.recent_data.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_D))
+        self.recent_data.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;recentdata.svg&#39;)))
+        self.recent_data.setStatusTip(&#34;Ctrl+D&#34;)
+        
         self.load_action = QAction(&#34;Load File&#34;, self)
         self.load_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_O))
         self.load_action.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;open.svg&#39;)))
         self.load_action.setStatusTip(&#34;Ctrl+O&#34;)
+        
+        self.load_secondary_data = QAction(&#34;Load File for Secondary Data&#34;, self)
+        self.load_secondary_data.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_2))
+        self.load_secondary_data.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;secondary.svg&#39;)))
+        self.load_secondary_data.setStatusTip(&#34;Ctrl+2&#34;)
         
         self.save_action = QAction(&#34;Save Data&#34;, self)
         self.save_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_S))
@@ -304,15 +322,17 @@ el.replaceWith(d);
         self.save_output_pdf.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;savepdf.svg&#39;)))
         self.save_output_pdf.setStatusTip(&#34;Ctrl+P&#34;)
 
+        self.file_menu.addAction(self.recent_data)
         self.file_menu.addAction(self.load_action)
+        self.file_menu.addAction(self.load_secondary_data)
         self.file_menu.addAction(self.save_action)
         self.file_menu.addAction(self.save_data_output_action)
         self.file_menu.addAction(self.save_output_pdf)
 
         # Menu &#34;Exploration&#34;
-        self.menu_exploration = self.menu_bar.addMenu(&#34;Exploration&#34;)
+        self.menu_exploration = self.menu_bar.addMenu(&#34;Pre-Modeling&#34;)
 
-        self.action_summary_data = QAction(&#34;Summary Data&#34;, self)
+        self.action_summary_data = QAction(&#34;Data Summary&#34;, self)
         self.action_summary_data.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;summary.svg&#39;)))
         self.action_summary_data.triggered.connect(self.open_summary_data_dialog_lazy)
 
@@ -387,12 +407,14 @@ el.replaceWith(d);
 
         # Submenu &#34;Pseudo&#34;
         menu_pseudo = QMenu(&#34;Pseudo&#34;, self)
+        menu_pseudo.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;pseudo.svg&#39;)))
         action_eblup_pseudo = QAction(&#34;EBLUP&#34;, self)
         action_eblup_pseudo.triggered.connect(self.show_modellig_sae_pseudo_dialog_lazy)
         menu_pseudo.addAction(action_eblup_pseudo)
 
         # Submenu &#34;Projection&#34;
         menu_projection = QMenu(&#34;Projection&#34;, self)
+        menu_projection.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;projection.svg&#39;)))
         action_projection = QAction(&#34;Projection&#34;, self)
         action_projection.triggered.connect(self.show_projection_variabel_dialog_lazy)
         menu_projection.addAction(action_projection)
@@ -419,6 +441,17 @@ el.replaceWith(d);
         action_about_info.triggered.connect(self.open_about_dialog)
         action_about_info.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;about.svg&#39;)))
         menu_about.addAction(action_about_info)
+        
+        action_header_icon_info = QAction(&#34;Header Icon Info&#34;, self)
+        action_header_icon_info.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;information.svg&#39;)))
+        action_header_icon_info.triggered.connect(self.show_header_icon_info)
+        menu_about.addAction(action_header_icon_info)
+        
+        # Add R Packages Used menu
+        action_r_packages_info = QAction(&#34;R Packages Used&#34;, self)
+        action_r_packages_info.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;Rinfo.svg&#39;)))
+        action_r_packages_info.triggered.connect(self.show_r_packages_info)
+        menu_about.addAction(action_r_packages_info)
         
 
         # Tool Bar
@@ -493,6 +526,7 @@ el.replaceWith(d);
         self.actionSetting.setText(&#34;Setting&#34;)
         self.actionSetting.triggered.connect(self.change_font_size)
         self.toolBar.addAction(self.actionSetting)
+        
 
         # Menu &#34;Settings&#34;
         menu_settings = self.menu_bar.addMenu(&#34;Settings&#34;)
@@ -527,7 +561,7 @@ el.replaceWith(d);
             update_display_font_size: Updates the sample text&#39;s font size based on the selected size in the combo box.
         &#34;&#34;&#34;
         
-        sizes = {&#34;Small&#34;: 10, &#34;Medium&#34;: 14, &#34;Big&#34;: 22}
+        sizes = {&#34;Small&#34;: 10, &#34;Medium&#34;: 12, &#34;Big&#34;: 16}
         items = list(sizes.keys())
 
         dialog = QDialog(self)
@@ -589,7 +623,8 @@ el.replaceWith(d);
         if os.path.exists(stylesheet_path):
             with open(stylesheet_path, &#39;r&#39;) as file:
                 stylesheet = file.read()
-                stylesheet = stylesheet.replace(&#34;font-size: 14px;&#34;, f&#34;font-size: {size}px;&#34;)
+                # stylesheet = stylesheet.replace(&#34;font-size: 12px;&#34;, f&#34;font-size: {size}px;&#34;)
+                stylesheet = stylesheet.replace(&#34;__FONT_SIZE__&#34;, f&#34;{size}px&#34;)
                 return stylesheet
         else:
             print(f&#34;Stylesheet tidak ditemukan di {stylesheet_path}&#34;)
@@ -1354,7 +1389,229 @@ el.replaceWith(d);
         if action == delete_action:
             self.remove_output(card_frame)
         elif action == copy_image_action:
-            self.copy_output_image(card_frame)</code></pre>
+            self.copy_output_image(card_frame)
+
+    def autosave_data(self):
+        &#34;&#34;&#34;
+        Save the current state of data1, data2 (as parquet), and output (as JSON) to temporary files.
+        &#34;&#34;&#34;
+        app_data_dir = os.path.join(os.getenv(&#34;APPDATA&#34;), &#34;saePisan&#34;)
+        os.makedirs(app_data_dir, exist_ok=True)
+        temp_dir = os.path.join(app_data_dir, &#39;file-data&#39;)
+        os.makedirs(temp_dir, exist_ok=True)
+        # Save data1 and data2 as parquet
+        data1_path = os.path.join(temp_dir, &#39;sae_pisan_data1.parquet&#39;)
+        data2_path = os.path.join(temp_dir, &#39;sae_pisan_data2.parquet&#39;)
+        self.model1.get_data().write_parquet(data1_path)
+        self.model2.get_data().write_parquet(data2_path)
+        # Save output as JSON
+        output_path = os.path.join(temp_dir, &#39;sae_pisan_output.json&#39;)
+        import numpy as np
+
+        def make_json_serializable(obj):
+            if isinstance(obj, dict):
+                return {k: make_json_serializable(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [make_json_serializable(v) for v in obj]
+            elif isinstance(obj, np.ndarray):
+                return obj.tolist()
+            elif hasattr(obj, &#39;tolist&#39;):
+                return obj.tolist()
+            elif isinstance(obj, (int, float, str, type(None), bool)):
+                return obj
+            else:
+                return str(obj)
+
+        serializable_data = make_json_serializable(self.data)
+        data = {
+            &#39;timestamp&#39;: datetime.datetime.now().isoformat(),
+            &#39;output&#39;: serializable_data
+        }
+        with open(output_path, &#39;w&#39;) as file:
+            json.dump(data, file)
+        
+        # ?? delete image wasnt used
+        temp_img_dir = os.path.join(temp_dir, &#39;temp&#39;)
+        if os.path.exists(temp_img_dir):
+            used_images = set()
+            for output in serializable_data:
+                result = output.get(&#34;result&#34;, {})
+                plot_path = result.get(&#34;Plot&#34;)
+                if plot_path and isinstance(plot_path, str):
+                    used_images.add(os.path.abspath(plot_path))
+            for output in self.data:
+                result = output.get(&#34;result&#34;, {})
+                plot_paths = result.get(&#34;Plot&#34;)
+                if isinstance(plot_paths, list):
+                    for p in plot_paths:
+                        used_images.add(os.path.abspath(p))
+                elif isinstance(plot_paths, str):
+                    used_images.add(os.path.abspath(plot_paths))
+            # Hapus file di temp yang tidak digunakan
+            for fname in os.listdir(temp_img_dir):
+                fpath = os.path.abspath(os.path.join(temp_img_dir, fname))
+                if fpath not in used_images:
+                    try:
+                        os.remove(fpath)
+                    except Exception:
+                        pass
+        if self.isActiveWindow():
+            self.show_toast()
+        
+
+    def load_temp_data(self):
+        &#34;&#34;&#34;
+        Load data1 and data2 from parquet, and output from JSON, if they exist.
+        &#34;&#34;&#34;
+        app_path = os.path.join(os.getenv(&#34;APPDATA&#34;), &#34;saePisan&#34;)
+        temp_dir = os.path.join(app_path, &#39;file-data&#39;)
+        data1_path = os.path.join(temp_dir, &#39;sae_pisan_data1.parquet&#39;)
+        data2_path = os.path.join(temp_dir, &#39;sae_pisan_data2.parquet&#39;)
+        output_path = os.path.join(temp_dir, &#39;sae_pisan_output.json&#39;)
+        if os.path.exists(data1_path) and os.path.exists(data2_path) and os.path.exists(output_path):
+            reply = QMessageBox.question(self, &#39;Load Temporary Data&#39;,
+                                         &#39;Temporary data was found. Do you want to load it?&#39;,
+                                         QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                                         QMessageBox.StandardButton.No)
+            if reply == QMessageBox.StandardButton.Yes:
+                self.data1 = pl.read_parquet(data1_path)
+                self.data2 = pl.read_parquet(data2_path)
+                self.model1.set_data(self.data1)
+                self.model2.set_data(self.data2)
+                self.update_table(1, self.model1)
+                self.update_table(2, self.model2)
+                with open(output_path, &#39;r&#39;) as file:
+                    data = json.load(file)
+                    self.set_output_data(data.get(&#39;output&#39;, []), timestamp=data.get(&#39;timestamp&#39;))
+        else:
+            QMessageBox.warning(self, &#39;No Recent Data&#39;, &#39;No recent data file was found.&#39;)
+
+    def set_output_data(parent, output_data, timestamp=None):
+        &#34;&#34;&#34;
+        Menampilkan kembali output card dari data hasil get_output_data.
+        &#34;&#34;&#34;
+        for output in output_data:
+            r_script = output.get(&#34;r_script&#34;, &#34;&#34;)
+            results = output.get(&#34;result&#34;, &#34;&#34;)
+            for key, value in results.items():
+                if isinstance(value, dict):
+                    df = pl.DataFrame(value)
+                    results[key] = df
+                else:
+                    results[key] = value
+            if &#34;Plot&#34; in results:
+                display_script_and_output(parent, r_script, results, plot_paths=results[&#34;Plot&#34;], timestamps=timestamp)
+            else:
+                display_script_and_output(parent, r_script, results, plot_paths=None, timestamps=timestamp)
+        
+    def show_header_icon_info(self):
+        &#34;&#34;&#34;
+        Show a dialog explaining the meaning of header icons in the data table.
+        &#34;&#34;&#34;
+        msg = (
+            &#34;&lt;b&gt;Header Icon Legend:&lt;/b&gt;&lt;br&gt;&lt;br&gt;&#34;
+            &#34;&lt;div style=&#39;display:flex; flex-direction:column; gap:8px;&#39;&gt;&#34;
+            &#34;&lt;div&gt;&lt;img src=&#39;assets/nominal.svg&#39; width=&#39;24&#39; height=&#39;24&#39; style=&#39;vertical-align:middle;&#39;&gt; &lt;b&gt;Nominal/String&lt;/b&gt;&lt;/div&gt;&#34;
+            &#34;&lt;div&gt;&lt;img src=&#39;assets/null.svg&#39; width=&#39;24&#39; height=&#39;24&#39; style=&#39;vertical-align:middle;&#39;&gt; &lt;b&gt;Null/Empty&lt;/b&gt;&lt;/div&gt;&#34;
+            &#34;&lt;div&gt;&lt;img src=&#39;assets/numeric.svg&#39; width=&#39;24&#39; height=&#39;24&#39; style=&#39;vertical-align:middle;&#39;&gt; &lt;b&gt;Numeric&lt;/b&gt;&lt;/div&gt;&#34;
+            &#34;&lt;/div&gt;&lt;br&gt;&#34;
+            &#34;&lt;div style=&#39;max-width:350px;&#39;&gt;&#34;
+            &#34;These icons indicate the data type of each column in the table. &#34;
+            &#34;Nominal/String columns are represented by the nominal icon, &#34;
+            &#34;Null/Empty columns are represented by the null icon, and &#34;
+            &#34;Numeric columns are represented by the numeric icon.&#34;
+            &#34;&lt;/div&gt;&#34;
+        )
+        QMessageBox.information(self, &#34;Header Icon Info&#34;, msg)
+    
+    def show_r_packages_info(self):
+        &#34;&#34;&#34;
+        Show a dialog listing the R packages used and their versions in a single table with 6 columns (3 pairs of Package/Version side by side).
+        &#34;&#34;&#34;
+        try:
+            import rpy2.robjects as ro
+            packages = [
+                &#34;sae&#34;, &#34;arrow&#34;, &#34;sae.projection&#34;, &#34;emdi&#34;, &#34;xgboost&#34;, &#34;LiblineaR&#34;,
+                &#34;kernlab&#34;, &#34;GGally&#34;, &#34;ggplot2&#34;, &#34;ggcorrplot&#34;, &#34;car&#34;, &#34;nortest&#34;,
+                &#34;tidyr&#34;, &#34;carData&#34;, &#34;dplyr&#34;, &#34;tseries&#34;, &#34;FSelector&#34;, &#34;rjags&#34;, &#34;saeHB&#34;
+            ]
+            versions = []
+            for pkg in packages:
+                try:
+                    ver = ro.r(f&#34;as.character(packageVersion(&#39;{pkg}&#39;))&#34;)[0]
+                except Exception:
+                    ver = &#34;Not Installed&#34;
+                versions.append((pkg, ver))
+
+            # Arrange into 3 columns (each column is Package/Version pair)
+            n_cols = 3
+            n_rows = (len(versions) + n_cols - 1) // n_cols
+            table_cells = []
+            for i in range(n_rows):
+                row = []
+                for j in range(n_cols):
+                    idx = i + j * n_rows
+                    if idx &lt; len(versions):
+                        row.extend(versions[idx])
+                    else:
+                        row.extend((&#34;&#34;, &#34;&#34;))
+                table_cells.append(row)
+
+            msg = &#34;&lt;b&gt;R Packages Used:&lt;/b&gt;&lt;br&gt;&lt;br&gt;&#34;
+            msg += &#34;&lt;table style=&#39;border-collapse:collapse;font-size:13px;&#39;&gt;&#34;
+            # Header
+            msg += &#34;&lt;tr style=&#39;background-color:#f2f2f2;&#39;&gt;&#34;
+            for i in range(n_cols):
+                msg += &#34;&lt;th style=&#39;border:1px solid #bbb; padding:6px 16px;&#39;&gt;Package&lt;/th&gt;&#34;
+                msg += &#34;&lt;th style=&#39;border:1px solid #bbb; padding:6px 16px;&#39;&gt;Version&lt;/th&gt;&#34;
+            msg += &#34;&lt;/tr&gt;&#34;
+            # Rows
+            for row in table_cells:
+                msg += &#34;&lt;tr&gt;&#34;
+                for cell in row:
+                    msg += f&#34;&lt;td style=&#39;border:1px solid #bbb; padding:6px 16px;&#39;&gt;{cell}&lt;/td&gt;&#34;
+                msg += &#34;&lt;/tr&gt;&#34;
+            msg += &#34;&lt;/table&gt;&#34;
+        except Exception as e:
+            msg = f&#34;Could not retrieve R package versions.&lt;br&gt;Error: {e}&#34;
+        QMessageBox.information(self, &#34;R Packages Used&#34;, msg)
+            
+    def show_toast(self):
+        toast = CustomToast(
+            parent=self,
+            title=&#34;Saved&#34;,
+            text=&#34;Data, Data Output, and Output was saved&#34;,
+            duration=3000,
+            position=&#34;top-right&#34;
+        )
+        toast.set_border_radius(8)
+        toast.show()
+    
+    def closeEvent(self, event):
+        &#34;&#34;&#34;Handle the close event to show a confirmation dialog.&#34;&#34;&#34;
+        reply = QMessageBox.question(self, &#39;Confirm Exit&#39;,
+                                     &#39;Are you sure you want to exit?&#39;,
+                                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                                     QMessageBox.StandardButton.No)
+        if reply == QMessageBox.StandardButton.Yes:
+            self.autosave_data()
+            import rpy2.robjects as ro
+            if &#39;saeHB&#39; in ro.r(&#39;loadedNamespaces()&#39;):
+                ro.r(&#39;detach(&#34;package:saeHB&#34;, unload=TRUE)&#39;)
+            if &#39;rjags&#39; in ro.r(&#39;loadedNamespaces()&#39;):
+                ro.r(&#34;unloadNamespace(&#39;rjags&#39;)&#34;)
+            
+            #to kill the process
+            import os
+            import psutil
+
+            current_system_pid = os.getpid()
+
+            ThisSystem = psutil.Process(current_system_pid)
+            ThisSystem.terminate()
+            event.accept()
+        else:
+            event.ignore()</code></pre>
 </details>
 <div class="desc"><p>Main application window for SAE Pisan: Small Area Estimation Programming for Statistical Analysis.</p>
 <h2 id="attributes">Attributes</h2>
@@ -1480,7 +1737,7 @@ and UI components.</p>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="sip-sae.view.MainWindow.MainWindow.add_column"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.add_column"><code class="name flex">
 <span>def <span class="ident">add_column</span></span>(<span>self, sheet_number)</span>
 </code></dt>
 <dd>
@@ -1500,7 +1757,7 @@ and UI components.</p>
 </details>
 <div class="desc"><p>Sinkronisasi data ketika kolom baru ditambahkan di SpreadsheetWidget.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.add_output"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.add_output"><code class="name flex">
 <span>def <span class="ident">add_output</span></span>(<span>self, script_text, result_text=None, plot_paths=None, error_text=None)</span>
 </code></dt>
 <dd>
@@ -1625,7 +1882,7 @@ and UI components.</p>
 </details>
 <div class="desc"><p>Add output to the layout in the form of a card</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.add_row"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.add_row"><code class="name flex">
 <span>def <span class="ident">add_row</span></span>(<span>self, sheet_number)</span>
 </code></dt>
 <dd>
@@ -1644,7 +1901,84 @@ and UI components.</p>
 </details>
 <div class="desc"><p>Sinkronisasi data ketika baris baru ditambahkan di SpreadsheetWidget.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.change_font_size"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.autosave_data"><code class="name flex">
+<span>def <span class="ident">autosave_data</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def autosave_data(self):
+    &#34;&#34;&#34;
+    Save the current state of data1, data2 (as parquet), and output (as JSON) to temporary files.
+    &#34;&#34;&#34;
+    app_data_dir = os.path.join(os.getenv(&#34;APPDATA&#34;), &#34;saePisan&#34;)
+    os.makedirs(app_data_dir, exist_ok=True)
+    temp_dir = os.path.join(app_data_dir, &#39;file-data&#39;)
+    os.makedirs(temp_dir, exist_ok=True)
+    # Save data1 and data2 as parquet
+    data1_path = os.path.join(temp_dir, &#39;sae_pisan_data1.parquet&#39;)
+    data2_path = os.path.join(temp_dir, &#39;sae_pisan_data2.parquet&#39;)
+    self.model1.get_data().write_parquet(data1_path)
+    self.model2.get_data().write_parquet(data2_path)
+    # Save output as JSON
+    output_path = os.path.join(temp_dir, &#39;sae_pisan_output.json&#39;)
+    import numpy as np
+
+    def make_json_serializable(obj):
+        if isinstance(obj, dict):
+            return {k: make_json_serializable(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [make_json_serializable(v) for v in obj]
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        elif hasattr(obj, &#39;tolist&#39;):
+            return obj.tolist()
+        elif isinstance(obj, (int, float, str, type(None), bool)):
+            return obj
+        else:
+            return str(obj)
+
+    serializable_data = make_json_serializable(self.data)
+    data = {
+        &#39;timestamp&#39;: datetime.datetime.now().isoformat(),
+        &#39;output&#39;: serializable_data
+    }
+    with open(output_path, &#39;w&#39;) as file:
+        json.dump(data, file)
+    
+    # ?? delete image wasnt used
+    temp_img_dir = os.path.join(temp_dir, &#39;temp&#39;)
+    if os.path.exists(temp_img_dir):
+        used_images = set()
+        for output in serializable_data:
+            result = output.get(&#34;result&#34;, {})
+            plot_path = result.get(&#34;Plot&#34;)
+            if plot_path and isinstance(plot_path, str):
+                used_images.add(os.path.abspath(plot_path))
+        for output in self.data:
+            result = output.get(&#34;result&#34;, {})
+            plot_paths = result.get(&#34;Plot&#34;)
+            if isinstance(plot_paths, list):
+                for p in plot_paths:
+                    used_images.add(os.path.abspath(p))
+            elif isinstance(plot_paths, str):
+                used_images.add(os.path.abspath(plot_paths))
+        # Hapus file di temp yang tidak digunakan
+        for fname in os.listdir(temp_img_dir):
+            fpath = os.path.abspath(os.path.join(temp_img_dir, fname))
+            if fpath not in used_images:
+                try:
+                    os.remove(fpath)
+                except Exception:
+                    pass
+    if self.isActiveWindow():
+        self.show_toast()</code></pre>
+</details>
+<div class="desc"><p>Save the current state of data1, data2 (as parquet), and output (as JSON) to temporary files.</p></div>
+</dd>
+<dt id="saePisan.view.MainWindow.MainWindow.change_font_size"><code class="name flex">
 <span>def <span class="ident">change_font_size</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1674,7 +2008,7 @@ and UI components.</p>
         update_display_font_size: Updates the sample text&#39;s font size based on the selected size in the combo box.
     &#34;&#34;&#34;
     
-    sizes = {&#34;Small&#34;: 10, &#34;Medium&#34;: 14, &#34;Big&#34;: 22}
+    sizes = {&#34;Small&#34;: 10, &#34;Medium&#34;: 12, &#34;Big&#34;: 16}
     items = list(sizes.keys())
 
     dialog = QDialog(self)
@@ -1747,7 +2081,43 @@ to reflect the selected font size.</p>
 <h2 id="methods">Methods</h2>
 <p>update_display_font_size: Updates the sample text's font size based on the selected size in the combo box.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.copy_output_image"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.closeEvent"><code class="name flex">
+<span>def <span class="ident">closeEvent</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def closeEvent(self, event):
+    &#34;&#34;&#34;Handle the close event to show a confirmation dialog.&#34;&#34;&#34;
+    reply = QMessageBox.question(self, &#39;Confirm Exit&#39;,
+                                 &#39;Are you sure you want to exit?&#39;,
+                                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                                 QMessageBox.StandardButton.No)
+    if reply == QMessageBox.StandardButton.Yes:
+        self.autosave_data()
+        import rpy2.robjects as ro
+        if &#39;saeHB&#39; in ro.r(&#39;loadedNamespaces()&#39;):
+            ro.r(&#39;detach(&#34;package:saeHB&#34;, unload=TRUE)&#39;)
+        if &#39;rjags&#39; in ro.r(&#39;loadedNamespaces()&#39;):
+            ro.r(&#34;unloadNamespace(&#39;rjags&#39;)&#34;)
+        
+        #to kill the process
+        import os
+        import psutil
+
+        current_system_pid = os.getpid()
+
+        ThisSystem = psutil.Process(current_system_pid)
+        ThisSystem.terminate()
+        event.accept()
+    else:
+        event.ignore()</code></pre>
+</details>
+<div class="desc"><p>Handle the close event to show a confirmation dialog.</p></div>
+</dd>
+<dt id="saePisan.view.MainWindow.MainWindow.copy_output_image"><code class="name flex">
 <span>def <span class="ident">copy_output_image</span></span>(<span>self, card_frame)</span>
 </code></dt>
 <dd>
@@ -1778,7 +2148,7 @@ to reflect the selected font size.</p>
 </details>
 <div class="desc"><p>Menyalin gambar output ke clipboard</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.copy_selection"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.copy_selection"><code class="name flex">
 <span>def <span class="ident">copy_selection</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1796,7 +2166,7 @@ to reflect the selected font size.</p>
 </details>
 <div class="desc"><p>Copy selected cells to clipboard.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.edit_data_type"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.edit_data_type"><code class="name flex">
 <span>def <span class="ident">edit_data_type</span></span>(<span>self, column_index)</span>
 </code></dt>
 <dd>
@@ -1822,7 +2192,7 @@ to reflect the selected font size.</p>
 </details>
 <div class="desc"><p>Edit the data type of the column at the given index.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.group_by_row"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.group_by_row"><code class="name flex">
 <span>def <span class="ident">group_by_row</span></span>(<span>self, selection)</span>
 </code></dt>
 <dd>
@@ -1841,7 +2211,7 @@ to reflect the selected font size.</p>
 </details>
 <div class="desc"><p>Group selected indexes by row.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.init_ui"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.init_ui"><code class="name flex">
 <span>def <span class="ident">init_ui</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1968,11 +2338,21 @@ to reflect the selected font size.</p>
 
     # Membuat menu File -&gt; Load dan Save
     self.file_menu = self.menu_bar.addMenu(&#34;File&#34;)
-
+    
+    self.recent_data = QAction(&#34;Open Recent data&#34;, self)
+    self.recent_data.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_D))
+    self.recent_data.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;recentdata.svg&#39;)))
+    self.recent_data.setStatusTip(&#34;Ctrl+D&#34;)
+    
     self.load_action = QAction(&#34;Load File&#34;, self)
     self.load_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_O))
     self.load_action.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;open.svg&#39;)))
     self.load_action.setStatusTip(&#34;Ctrl+O&#34;)
+    
+    self.load_secondary_data = QAction(&#34;Load File for Secondary Data&#34;, self)
+    self.load_secondary_data.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_2))
+    self.load_secondary_data.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;secondary.svg&#39;)))
+    self.load_secondary_data.setStatusTip(&#34;Ctrl+2&#34;)
     
     self.save_action = QAction(&#34;Save Data&#34;, self)
     self.save_action.setShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_S))
@@ -1989,15 +2369,17 @@ to reflect the selected font size.</p>
     self.save_output_pdf.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;savepdf.svg&#39;)))
     self.save_output_pdf.setStatusTip(&#34;Ctrl+P&#34;)
 
+    self.file_menu.addAction(self.recent_data)
     self.file_menu.addAction(self.load_action)
+    self.file_menu.addAction(self.load_secondary_data)
     self.file_menu.addAction(self.save_action)
     self.file_menu.addAction(self.save_data_output_action)
     self.file_menu.addAction(self.save_output_pdf)
 
     # Menu &#34;Exploration&#34;
-    self.menu_exploration = self.menu_bar.addMenu(&#34;Exploration&#34;)
+    self.menu_exploration = self.menu_bar.addMenu(&#34;Pre-Modeling&#34;)
 
-    self.action_summary_data = QAction(&#34;Summary Data&#34;, self)
+    self.action_summary_data = QAction(&#34;Data Summary&#34;, self)
     self.action_summary_data.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;summary.svg&#39;)))
     self.action_summary_data.triggered.connect(self.open_summary_data_dialog_lazy)
 
@@ -2072,12 +2454,14 @@ to reflect the selected font size.</p>
 
     # Submenu &#34;Pseudo&#34;
     menu_pseudo = QMenu(&#34;Pseudo&#34;, self)
+    menu_pseudo.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;pseudo.svg&#39;)))
     action_eblup_pseudo = QAction(&#34;EBLUP&#34;, self)
     action_eblup_pseudo.triggered.connect(self.show_modellig_sae_pseudo_dialog_lazy)
     menu_pseudo.addAction(action_eblup_pseudo)
 
     # Submenu &#34;Projection&#34;
     menu_projection = QMenu(&#34;Projection&#34;, self)
+    menu_projection.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;projection.svg&#39;)))
     action_projection = QAction(&#34;Projection&#34;, self)
     action_projection.triggered.connect(self.show_projection_variabel_dialog_lazy)
     menu_projection.addAction(action_projection)
@@ -2104,6 +2488,17 @@ to reflect the selected font size.</p>
     action_about_info.triggered.connect(self.open_about_dialog)
     action_about_info.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;about.svg&#39;)))
     menu_about.addAction(action_about_info)
+    
+    action_header_icon_info = QAction(&#34;Header Icon Info&#34;, self)
+    action_header_icon_info.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;information.svg&#39;)))
+    action_header_icon_info.triggered.connect(self.show_header_icon_info)
+    menu_about.addAction(action_header_icon_info)
+    
+    # Add R Packages Used menu
+    action_r_packages_info = QAction(&#34;R Packages Used&#34;, self)
+    action_r_packages_info.setIcon(QIcon(os.path.join(os.path.dirname(__file__), &#39;..&#39;, &#39;assets&#39;, &#39;Rinfo.svg&#39;)))
+    action_r_packages_info.triggered.connect(self.show_r_packages_info)
+    menu_about.addAction(action_r_packages_info)
     
 
     # Tool Bar
@@ -2178,6 +2573,7 @@ to reflect the selected font size.</p>
     self.actionSetting.setText(&#34;Setting&#34;)
     self.actionSetting.triggered.connect(self.change_font_size)
     self.toolBar.addAction(self.actionSetting)
+    
 
     # Menu &#34;Settings&#34;
     menu_settings = self.menu_bar.addMenu(&#34;Settings&#34;)
@@ -2233,7 +2629,7 @@ and sets up the toolbar with various actions and icons.</p>
 <li>The main window is resized to a default size of 800x600.</li>
 </ul></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.keyPressEvent"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.keyPressEvent"><code class="name flex">
 <span>def <span class="ident">keyPressEvent</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
@@ -2256,7 +2652,7 @@ and sets up the toolbar with various actions and icons.</p>
 </details>
 <div class="desc"><p>Handle keyboard shortcuts for copy, paste, undo, and redo.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.load_stylesheet_with_font_size"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.load_stylesheet_with_font_size"><code class="name flex">
 <span>def <span class="ident">load_stylesheet_with_font_size</span></span>(<span>self, size)</span>
 </code></dt>
 <dd>
@@ -2272,7 +2668,8 @@ and sets up the toolbar with various actions and icons.</p>
     if os.path.exists(stylesheet_path):
         with open(stylesheet_path, &#39;r&#39;) as file:
             stylesheet = file.read()
-            stylesheet = stylesheet.replace(&#34;font-size: 14px;&#34;, f&#34;font-size: {size}px;&#34;)
+            # stylesheet = stylesheet.replace(&#34;font-size: 12px;&#34;, f&#34;font-size: {size}px;&#34;)
+            stylesheet = stylesheet.replace(&#34;__FONT_SIZE__&#34;, f&#34;{size}px&#34;)
             return stylesheet
     else:
         print(f&#34;Stylesheet tidak ditemukan di {stylesheet_path}&#34;)
@@ -2280,7 +2677,44 @@ and sets up the toolbar with various actions and icons.</p>
 </details>
 <div class="desc"><p>Memuat stylesheet dan mengganti ukuran font global.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_about_dialog"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.load_temp_data"><code class="name flex">
+<span>def <span class="ident">load_temp_data</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_temp_data(self):
+    &#34;&#34;&#34;
+    Load data1 and data2 from parquet, and output from JSON, if they exist.
+    &#34;&#34;&#34;
+    app_path = os.path.join(os.getenv(&#34;APPDATA&#34;), &#34;saePisan&#34;)
+    temp_dir = os.path.join(app_path, &#39;file-data&#39;)
+    data1_path = os.path.join(temp_dir, &#39;sae_pisan_data1.parquet&#39;)
+    data2_path = os.path.join(temp_dir, &#39;sae_pisan_data2.parquet&#39;)
+    output_path = os.path.join(temp_dir, &#39;sae_pisan_output.json&#39;)
+    if os.path.exists(data1_path) and os.path.exists(data2_path) and os.path.exists(output_path):
+        reply = QMessageBox.question(self, &#39;Load Temporary Data&#39;,
+                                     &#39;Temporary data was found. Do you want to load it?&#39;,
+                                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                                     QMessageBox.StandardButton.No)
+        if reply == QMessageBox.StandardButton.Yes:
+            self.data1 = pl.read_parquet(data1_path)
+            self.data2 = pl.read_parquet(data2_path)
+            self.model1.set_data(self.data1)
+            self.model2.set_data(self.data2)
+            self.update_table(1, self.model1)
+            self.update_table(2, self.model2)
+            with open(output_path, &#39;r&#39;) as file:
+                data = json.load(file)
+                self.set_output_data(data.get(&#39;output&#39;, []), timestamp=data.get(&#39;timestamp&#39;))
+    else:
+        QMessageBox.warning(self, &#39;No Recent Data&#39;, &#39;No recent data file was found.&#39;)</code></pre>
+</details>
+<div class="desc"><p>Load data1 and data2 from parquet, and output from JSON, if they exist.</p></div>
+</dd>
+<dt id="saePisan.view.MainWindow.MainWindow.open_about_dialog"><code class="name flex">
 <span>def <span class="ident">open_about_dialog</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2302,7 +2736,7 @@ and sets up the toolbar with various actions and icons.</p>
 This method creates an instance of the AboutDialog class, passing the
 current instance as the parent, and then executes the dialog.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_box_plot_dialog"><code class="name flex">
 <span>def <span class="ident">open_box_plot_dialog</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2328,7 +2762,7 @@ and then displays the dialog.</p>
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_box_plot_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">open_box_plot_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2353,7 +2787,7 @@ This method checks if the 'show_box_plot_dialog' attribute exists.
 If it does not, it initializes 'show_box_plot_dialog' with an instance
 of BoxPlotDialog. Then, it calls the method to open the box plot dialog.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_correlation_matrix_dialog"><code class="name flex">
 <span>def <span class="ident">open_correlation_matrix_dialog</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2377,7 +2811,7 @@ This method sets the model data for the correlation matrix dialog
 and then displays the dialog to the user.
 The models used are <code>self.model1</code> and <code>self.model2</code>.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_correlation_matrix_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">open_correlation_matrix_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2407,7 +2841,7 @@ If not, it initializes the dialog. Then, it opens the dialog.</p>
 <dd>The correlation matrix dialog instance.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_histogram_dialog"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_histogram_dialog"><code class="name flex">
 <span>def <span class="ident">open_histogram_dialog</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2429,7 +2863,7 @@ If not, it initializes the dialog. Then, it opens the dialog.</p>
 This method sets the models for the histogram dialog using <code>self.model1</code> and <code>self.model2</code>,
 and then displays the histogram dialog.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_histogram_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_histogram_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">open_histogram_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2454,7 +2888,7 @@ This method checks if the histogram dialog has already been created.
 If not, it initializes the HistogramDialog and assigns it to the
 'show_histogram_dialog' attribute. Then, it opens the histogram dialog.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_line_plot_dialog"><code class="name flex">
 <span>def <span class="ident">open_line_plot_dialog</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2480,7 +2914,7 @@ and <code>self.model2</code>, and then displays the dialog.</p>
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_line_plot_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">open_line_plot_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2505,7 +2939,7 @@ This method checks if the 'show_line_plot_dialog' attribute exists.
 If it does not, it initializes 'show_line_plot_dialog' with an instance
 of LinePlotDialog. Then, it calls the method to open the line plot dialog.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_multicollinearity_dialog"><code class="name flex">
 <span>def <span class="ident">open_multicollinearity_dialog</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2527,7 +2961,7 @@ of LinePlotDialog. Then, it calls the method to open the line plot dialog.</p></
 This method sets the models for the multicollinearity dialog using
 <code>self.model1</code> and <code>self.model2</code>, and then displays the dialog.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_multicollinearity_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">open_multicollinearity_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2556,7 +2990,7 @@ Then, it opens the multicollinearity dialog.</p>
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_normality_test_dialog"><code class="name flex">
 <span>def <span class="ident">open_normality_test_dialog</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2582,7 +3016,7 @@ It uses <code>self.model1</code> and <code>self.model2</code> as the models to b
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_normality_test_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">open_normality_test_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2607,7 +3041,7 @@ This method checks if the normality test dialog has already been created.
 If not, it initializes the dialog and then opens it. If the dialog has
 already been created, it simply opens the existing instance.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_scatter_plot_dialog"><code class="name flex">
 <span>def <span class="ident">open_scatter_plot_dialog</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2629,7 +3063,7 @@ already been created, it simply opens the existing instance.</p></div>
 This method sets the models for the scatter plot dialog using
 <code>self.model1</code> and <code>self.model2</code>, and then displays the dialog.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_scatter_plot_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">open_scatter_plot_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2661,7 +3095,7 @@ the dialog is only created when needed, potentially saving resources.</p>
 <dd>The scatter plot dialog instance.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_summary_data_dialog"><code class="name flex">
 <span>def <span class="ident">open_summary_data_dialog</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2687,7 +3121,7 @@ It uses <code>self.model1</code> and <code>self.model2</code> as the models to b
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_summary_data_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">open_summary_data_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2712,7 +3146,7 @@ This method checks if the 'show_summary_data_dialog' attribute exists.
 If it does not exist, it initializes it with an instance of SummaryDataDialog.
 Then, it calls the 'open_summary_data_dialog' method to open the dialog.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_variable_selection_dialog"><code class="name flex">
 <span>def <span class="ident">open_variable_selection_dialog</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2734,7 +3168,7 @@ Then, it calls the 'open_summary_data_dialog' method to open the dialog.</p></di
 This method sets the model for the variable selection dialog using
 <code>self.model1</code> and <code>self.model2</code>, and then displays the dialog.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.open_variable_selection_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">open_variable_selection_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2761,7 +3195,7 @@ exists. If it does not, it initializes it with an instance of
 VariableSelectionDialog. Then, it calls the method to open the
 variable selection dialog.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.paste_selection"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.paste_selection"><code class="name flex">
 <span>def <span class="ident">paste_selection</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2784,7 +3218,7 @@ variable selection dialog.</p></div>
 </details>
 <div class="desc"><p>Paste clipboard content to selected cells.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.redo_action"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.redo_action"><code class="name flex">
 <span>def <span class="ident">redo_action</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2798,7 +3232,7 @@ variable selection dialog.</p></div>
 </details>
 <div class="desc"><p>Redo the last undone action.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.remove_output"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.remove_output"><code class="name flex">
 <span>def <span class="ident">remove_output</span></span>(<span>self, card_frame)</span>
 </code></dt>
 <dd>
@@ -2823,7 +3257,7 @@ variable selection dialog.</p></div>
 </details>
 <div class="desc"><p>Menghapus output dari layout</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.rename_column"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.rename_column"><code class="name flex">
 <span>def <span class="ident">rename_column</span></span>(<span>self, column_index)</span>
 </code></dt>
 <dd>
@@ -2841,7 +3275,7 @@ variable selection dialog.</p></div>
 </details>
 <div class="desc"><p>Rename the column at the given index.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.set_font_size"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.set_font_size"><code class="name flex">
 <span>def <span class="ident">set_font_size</span></span>(<span>self, size)</span>
 </code></dt>
 <dd>
@@ -2868,7 +3302,35 @@ variable selection dialog.</p></div>
 </dl>
 <p>This method updates the stylesheet of the main window with the specified font size.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.set_path"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.set_output_data"><code class="name flex">
+<span>def <span class="ident">set_output_data</span></span>(<span>parent, output_data, timestamp=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_output_data(parent, output_data, timestamp=None):
+    &#34;&#34;&#34;
+    Menampilkan kembali output card dari data hasil get_output_data.
+    &#34;&#34;&#34;
+    for output in output_data:
+        r_script = output.get(&#34;r_script&#34;, &#34;&#34;)
+        results = output.get(&#34;result&#34;, &#34;&#34;)
+        for key, value in results.items():
+            if isinstance(value, dict):
+                df = pl.DataFrame(value)
+                results[key] = df
+            else:
+                results[key] = value
+        if &#34;Plot&#34; in results:
+            display_script_and_output(parent, r_script, results, plot_paths=results[&#34;Plot&#34;], timestamps=timestamp)
+        else:
+            display_script_and_output(parent, r_script, results, plot_paths=None, timestamps=timestamp)</code></pre>
+</details>
+<div class="desc"><p>Menampilkan kembali output card dari data hasil get_output_data.</p></div>
+</dd>
+<dt id="saePisan.view.MainWindow.MainWindow.set_path"><code class="name flex">
 <span>def <span class="ident">set_path</span></span>(<span>self, path)</span>
 </code></dt>
 <dd>
@@ -2892,7 +3354,7 @@ variable selection dialog.</p></div>
 <dd>The path to be set.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.show_compute_variable_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_compute_variable_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">show_compute_variable_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2924,7 +3386,7 @@ the model and shows the dialog.</p>
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.show_context_menu"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_context_menu"><code class="name flex">
 <span>def <span class="ident">show_context_menu</span></span>(<span>self, pos, card_frame)</span>
 </code></dt>
 <dd>
@@ -2946,7 +3408,7 @@ the model and shows the dialog.</p>
 </details>
 <div class="desc"><p>Menampilkan menu klik kanan di setiap output</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.show_header_context_menu"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_header_context_menu"><code class="name flex">
 <span>def <span class="ident">show_header_context_menu</span></span>(<span>self, pos)</span>
 </code></dt>
 <dd>
@@ -2989,7 +3451,37 @@ the model and shows the dialog.</p>
 </details>
 <div class="desc"><p>Show context menu for header.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_header_icon_info"><code class="name flex">
+<span>def <span class="ident">show_header_icon_info</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_header_icon_info(self):
+    &#34;&#34;&#34;
+    Show a dialog explaining the meaning of header icons in the data table.
+    &#34;&#34;&#34;
+    msg = (
+        &#34;&lt;b&gt;Header Icon Legend:&lt;/b&gt;&lt;br&gt;&lt;br&gt;&#34;
+        &#34;&lt;div style=&#39;display:flex; flex-direction:column; gap:8px;&#39;&gt;&#34;
+        &#34;&lt;div&gt;&lt;img src=&#39;assets/nominal.svg&#39; width=&#39;24&#39; height=&#39;24&#39; style=&#39;vertical-align:middle;&#39;&gt; &lt;b&gt;Nominal/String&lt;/b&gt;&lt;/div&gt;&#34;
+        &#34;&lt;div&gt;&lt;img src=&#39;assets/null.svg&#39; width=&#39;24&#39; height=&#39;24&#39; style=&#39;vertical-align:middle;&#39;&gt; &lt;b&gt;Null/Empty&lt;/b&gt;&lt;/div&gt;&#34;
+        &#34;&lt;div&gt;&lt;img src=&#39;assets/numeric.svg&#39; width=&#39;24&#39; height=&#39;24&#39; style=&#39;vertical-align:middle;&#39;&gt; &lt;b&gt;Numeric&lt;/b&gt;&lt;/div&gt;&#34;
+        &#34;&lt;/div&gt;&lt;br&gt;&#34;
+        &#34;&lt;div style=&#39;max-width:350px;&#39;&gt;&#34;
+        &#34;These icons indicate the data type of each column in the table. &#34;
+        &#34;Nominal/String columns are represented by the nominal icon, &#34;
+        &#34;Null/Empty columns are represented by the null icon, and &#34;
+        &#34;Numeric columns are represented by the numeric icon.&#34;
+        &#34;&lt;/div&gt;&#34;
+    )
+    QMessageBox.information(self, &#34;Header Icon Info&#34;, msg)</code></pre>
+</details>
+<div class="desc"><p>Show a dialog explaining the meaning of header icons in the data table.</p></div>
+</dd>
+<dt id="saePisan.view.MainWindow.MainWindow.show_modeling_saeHB_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">show_modeling_saeHB_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3023,7 +3515,7 @@ sets its model to <code>self.model1</code>, and then shows the dialog.</p>
 <dd>The model to be set in the dialog.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_normal_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_modeling_saeHB_normal_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">show_modeling_saeHB_normal_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3061,7 +3553,7 @@ Then, it shows the dialog.</p>
 <dd>The model to be set in the dialog.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.show_modeling_sae_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_modeling_sae_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">show_modeling_sae_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3091,7 +3583,7 @@ display the dialog.</p>
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.show_modeling_sae_unit_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_modeling_sae_unit_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">show_modeling_sae_unit_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3125,7 +3617,7 @@ Then, it sets the model for the dialog and shows it.</p>
 <dd>The model to be set in the dialog.</dd>
 </dl></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.show_modellig_sae_pseudo_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_modellig_sae_pseudo_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">show_modellig_sae_pseudo_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3157,7 +3649,7 @@ and displays the dialog.</p>
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.show_output"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_output"><code class="name flex">
 <span>def <span class="ident">show_output</span></span>(<span>self, title, content)</span>
 </code></dt>
 <dd>
@@ -3173,7 +3665,7 @@ and displays the dialog.</p>
 </details>
 <div class="desc"><p>Display output in the Output tab</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.show_projection_variabel_dialog_lazy"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_projection_variabel_dialog_lazy"><code class="name flex">
 <span>def <span class="ident">show_projection_variabel_dialog_lazy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3216,7 +3708,90 @@ showing the dialog are met. If they are, it displays the dialog.</p>
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.undo_action"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.show_r_packages_info"><code class="name flex">
+<span>def <span class="ident">show_r_packages_info</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_r_packages_info(self):
+    &#34;&#34;&#34;
+    Show a dialog listing the R packages used and their versions in a single table with 6 columns (3 pairs of Package/Version side by side).
+    &#34;&#34;&#34;
+    try:
+        import rpy2.robjects as ro
+        packages = [
+            &#34;sae&#34;, &#34;arrow&#34;, &#34;sae.projection&#34;, &#34;emdi&#34;, &#34;xgboost&#34;, &#34;LiblineaR&#34;,
+            &#34;kernlab&#34;, &#34;GGally&#34;, &#34;ggplot2&#34;, &#34;ggcorrplot&#34;, &#34;car&#34;, &#34;nortest&#34;,
+            &#34;tidyr&#34;, &#34;carData&#34;, &#34;dplyr&#34;, &#34;tseries&#34;, &#34;FSelector&#34;, &#34;rjags&#34;, &#34;saeHB&#34;
+        ]
+        versions = []
+        for pkg in packages:
+            try:
+                ver = ro.r(f&#34;as.character(packageVersion(&#39;{pkg}&#39;))&#34;)[0]
+            except Exception:
+                ver = &#34;Not Installed&#34;
+            versions.append((pkg, ver))
+
+        # Arrange into 3 columns (each column is Package/Version pair)
+        n_cols = 3
+        n_rows = (len(versions) + n_cols - 1) // n_cols
+        table_cells = []
+        for i in range(n_rows):
+            row = []
+            for j in range(n_cols):
+                idx = i + j * n_rows
+                if idx &lt; len(versions):
+                    row.extend(versions[idx])
+                else:
+                    row.extend((&#34;&#34;, &#34;&#34;))
+            table_cells.append(row)
+
+        msg = &#34;&lt;b&gt;R Packages Used:&lt;/b&gt;&lt;br&gt;&lt;br&gt;&#34;
+        msg += &#34;&lt;table style=&#39;border-collapse:collapse;font-size:13px;&#39;&gt;&#34;
+        # Header
+        msg += &#34;&lt;tr style=&#39;background-color:#f2f2f2;&#39;&gt;&#34;
+        for i in range(n_cols):
+            msg += &#34;&lt;th style=&#39;border:1px solid #bbb; padding:6px 16px;&#39;&gt;Package&lt;/th&gt;&#34;
+            msg += &#34;&lt;th style=&#39;border:1px solid #bbb; padding:6px 16px;&#39;&gt;Version&lt;/th&gt;&#34;
+        msg += &#34;&lt;/tr&gt;&#34;
+        # Rows
+        for row in table_cells:
+            msg += &#34;&lt;tr&gt;&#34;
+            for cell in row:
+                msg += f&#34;&lt;td style=&#39;border:1px solid #bbb; padding:6px 16px;&#39;&gt;{cell}&lt;/td&gt;&#34;
+            msg += &#34;&lt;/tr&gt;&#34;
+        msg += &#34;&lt;/table&gt;&#34;
+    except Exception as e:
+        msg = f&#34;Could not retrieve R package versions.&lt;br&gt;Error: {e}&#34;
+    QMessageBox.information(self, &#34;R Packages Used&#34;, msg)</code></pre>
+</details>
+<div class="desc"><p>Show a dialog listing the R packages used and their versions in a single table with 6 columns (3 pairs of Package/Version side by side).</p></div>
+</dd>
+<dt id="saePisan.view.MainWindow.MainWindow.show_toast"><code class="name flex">
+<span>def <span class="ident">show_toast</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_toast(self):
+    toast = CustomToast(
+        parent=self,
+        title=&#34;Saved&#34;,
+        text=&#34;Data, Data Output, and Output was saved&#34;,
+        duration=3000,
+        position=&#34;top-right&#34;
+    )
+    toast.set_border_radius(8)
+    toast.show()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="saePisan.view.MainWindow.MainWindow.undo_action"><code class="name flex">
 <span>def <span class="ident">undo_action</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3230,7 +3805,7 @@ showing the dialog are met. If they are, it displays the dialog.</p>
 </details>
 <div class="desc"><p>Undo the last action.</p></div>
 </dd>
-<dt id="sip-sae.view.MainWindow.MainWindow.update_table"><code class="name flex">
+<dt id="saePisan.view.MainWindow.MainWindow.update_table"><code class="name flex">
 <span>def <span class="ident">update_table</span></span>(<span>self, sheet_number, model)</span>
 </code></dt>
 <dd>
@@ -3278,62 +3853,69 @@ showing the dialog are met. If they are, it displays the dialog.</p>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sip-sae.view" href="index.html">sip-sae.view</a></code></li>
+<li><code><a title="saePisan.view" href="index.html">saePisan.view</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sip-sae.view.MainWindow.MainWindow" href="#sip-sae.view.MainWindow.MainWindow">MainWindow</a></code></h4>
+<h4><code><a title="saePisan.view.MainWindow.MainWindow" href="#saePisan.view.MainWindow.MainWindow">MainWindow</a></code></h4>
 <ul class="">
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.add_column" href="#sip-sae.view.MainWindow.MainWindow.add_column">add_column</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.add_output" href="#sip-sae.view.MainWindow.MainWindow.add_output">add_output</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.add_row" href="#sip-sae.view.MainWindow.MainWindow.add_row">add_row</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.change_font_size" href="#sip-sae.view.MainWindow.MainWindow.change_font_size">change_font_size</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.copy_output_image" href="#sip-sae.view.MainWindow.MainWindow.copy_output_image">copy_output_image</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.copy_selection" href="#sip-sae.view.MainWindow.MainWindow.copy_selection">copy_selection</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.edit_data_type" href="#sip-sae.view.MainWindow.MainWindow.edit_data_type">edit_data_type</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.group_by_row" href="#sip-sae.view.MainWindow.MainWindow.group_by_row">group_by_row</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.init_ui" href="#sip-sae.view.MainWindow.MainWindow.init_ui">init_ui</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.keyPressEvent" href="#sip-sae.view.MainWindow.MainWindow.keyPressEvent">keyPressEvent</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.load_stylesheet_with_font_size" href="#sip-sae.view.MainWindow.MainWindow.load_stylesheet_with_font_size">load_stylesheet_with_font_size</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_about_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_about_dialog">open_about_dialog</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog">open_box_plot_dialog</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_box_plot_dialog_lazy">open_box_plot_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog">open_correlation_matrix_dialog</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_correlation_matrix_dialog_lazy">open_correlation_matrix_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_histogram_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_histogram_dialog">open_histogram_dialog</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_histogram_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_histogram_dialog_lazy">open_histogram_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog">open_line_plot_dialog</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_line_plot_dialog_lazy">open_line_plot_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog">open_multicollinearity_dialog</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_multicollinearity_dialog_lazy">open_multicollinearity_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog">open_normality_test_dialog</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_normality_test_dialog_lazy">open_normality_test_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog">open_scatter_plot_dialog</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_scatter_plot_dialog_lazy">open_scatter_plot_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog">open_summary_data_dialog</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_summary_data_dialog_lazy">open_summary_data_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog" href="#sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog">open_variable_selection_dialog</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.open_variable_selection_dialog_lazy">open_variable_selection_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.paste_selection" href="#sip-sae.view.MainWindow.MainWindow.paste_selection">paste_selection</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.redo_action" href="#sip-sae.view.MainWindow.MainWindow.redo_action">redo_action</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.remove_output" href="#sip-sae.view.MainWindow.MainWindow.remove_output">remove_output</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.rename_column" href="#sip-sae.view.MainWindow.MainWindow.rename_column">rename_column</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.set_font_size" href="#sip-sae.view.MainWindow.MainWindow.set_font_size">set_font_size</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.set_path" href="#sip-sae.view.MainWindow.MainWindow.set_path">set_path</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_compute_variable_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_compute_variable_dialog_lazy">show_compute_variable_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_context_menu" href="#sip-sae.view.MainWindow.MainWindow.show_context_menu">show_context_menu</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_header_context_menu" href="#sip-sae.view.MainWindow.MainWindow.show_header_context_menu">show_header_context_menu</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_dialog_lazy">show_modeling_saeHB_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_normal_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_modeling_saeHB_normal_dialog_lazy">show_modeling_saeHB_normal_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_modeling_sae_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_modeling_sae_dialog_lazy">show_modeling_sae_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_modeling_sae_unit_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_modeling_sae_unit_dialog_lazy">show_modeling_sae_unit_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_modellig_sae_pseudo_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_modellig_sae_pseudo_dialog_lazy">show_modellig_sae_pseudo_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_output" href="#sip-sae.view.MainWindow.MainWindow.show_output">show_output</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.show_projection_variabel_dialog_lazy" href="#sip-sae.view.MainWindow.MainWindow.show_projection_variabel_dialog_lazy">show_projection_variabel_dialog_lazy</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.undo_action" href="#sip-sae.view.MainWindow.MainWindow.undo_action">undo_action</a></code></li>
-<li><code><a title="sip-sae.view.MainWindow.MainWindow.update_table" href="#sip-sae.view.MainWindow.MainWindow.update_table">update_table</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.add_column" href="#saePisan.view.MainWindow.MainWindow.add_column">add_column</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.add_output" href="#saePisan.view.MainWindow.MainWindow.add_output">add_output</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.add_row" href="#saePisan.view.MainWindow.MainWindow.add_row">add_row</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.autosave_data" href="#saePisan.view.MainWindow.MainWindow.autosave_data">autosave_data</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.change_font_size" href="#saePisan.view.MainWindow.MainWindow.change_font_size">change_font_size</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.closeEvent" href="#saePisan.view.MainWindow.MainWindow.closeEvent">closeEvent</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.copy_output_image" href="#saePisan.view.MainWindow.MainWindow.copy_output_image">copy_output_image</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.copy_selection" href="#saePisan.view.MainWindow.MainWindow.copy_selection">copy_selection</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.edit_data_type" href="#saePisan.view.MainWindow.MainWindow.edit_data_type">edit_data_type</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.group_by_row" href="#saePisan.view.MainWindow.MainWindow.group_by_row">group_by_row</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.init_ui" href="#saePisan.view.MainWindow.MainWindow.init_ui">init_ui</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.keyPressEvent" href="#saePisan.view.MainWindow.MainWindow.keyPressEvent">keyPressEvent</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.load_stylesheet_with_font_size" href="#saePisan.view.MainWindow.MainWindow.load_stylesheet_with_font_size">load_stylesheet_with_font_size</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.load_temp_data" href="#saePisan.view.MainWindow.MainWindow.load_temp_data">load_temp_data</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_about_dialog" href="#saePisan.view.MainWindow.MainWindow.open_about_dialog">open_about_dialog</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_box_plot_dialog" href="#saePisan.view.MainWindow.MainWindow.open_box_plot_dialog">open_box_plot_dialog</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_box_plot_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.open_box_plot_dialog_lazy">open_box_plot_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_correlation_matrix_dialog" href="#saePisan.view.MainWindow.MainWindow.open_correlation_matrix_dialog">open_correlation_matrix_dialog</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_correlation_matrix_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.open_correlation_matrix_dialog_lazy">open_correlation_matrix_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_histogram_dialog" href="#saePisan.view.MainWindow.MainWindow.open_histogram_dialog">open_histogram_dialog</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_histogram_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.open_histogram_dialog_lazy">open_histogram_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_line_plot_dialog" href="#saePisan.view.MainWindow.MainWindow.open_line_plot_dialog">open_line_plot_dialog</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_line_plot_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.open_line_plot_dialog_lazy">open_line_plot_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_multicollinearity_dialog" href="#saePisan.view.MainWindow.MainWindow.open_multicollinearity_dialog">open_multicollinearity_dialog</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_multicollinearity_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.open_multicollinearity_dialog_lazy">open_multicollinearity_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_normality_test_dialog" href="#saePisan.view.MainWindow.MainWindow.open_normality_test_dialog">open_normality_test_dialog</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_normality_test_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.open_normality_test_dialog_lazy">open_normality_test_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_scatter_plot_dialog" href="#saePisan.view.MainWindow.MainWindow.open_scatter_plot_dialog">open_scatter_plot_dialog</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_scatter_plot_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.open_scatter_plot_dialog_lazy">open_scatter_plot_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_summary_data_dialog" href="#saePisan.view.MainWindow.MainWindow.open_summary_data_dialog">open_summary_data_dialog</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_summary_data_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.open_summary_data_dialog_lazy">open_summary_data_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_variable_selection_dialog" href="#saePisan.view.MainWindow.MainWindow.open_variable_selection_dialog">open_variable_selection_dialog</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.open_variable_selection_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.open_variable_selection_dialog_lazy">open_variable_selection_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.paste_selection" href="#saePisan.view.MainWindow.MainWindow.paste_selection">paste_selection</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.redo_action" href="#saePisan.view.MainWindow.MainWindow.redo_action">redo_action</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.remove_output" href="#saePisan.view.MainWindow.MainWindow.remove_output">remove_output</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.rename_column" href="#saePisan.view.MainWindow.MainWindow.rename_column">rename_column</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.set_font_size" href="#saePisan.view.MainWindow.MainWindow.set_font_size">set_font_size</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.set_output_data" href="#saePisan.view.MainWindow.MainWindow.set_output_data">set_output_data</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.set_path" href="#saePisan.view.MainWindow.MainWindow.set_path">set_path</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_compute_variable_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.show_compute_variable_dialog_lazy">show_compute_variable_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_context_menu" href="#saePisan.view.MainWindow.MainWindow.show_context_menu">show_context_menu</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_header_context_menu" href="#saePisan.view.MainWindow.MainWindow.show_header_context_menu">show_header_context_menu</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_header_icon_info" href="#saePisan.view.MainWindow.MainWindow.show_header_icon_info">show_header_icon_info</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_modeling_saeHB_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.show_modeling_saeHB_dialog_lazy">show_modeling_saeHB_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_modeling_saeHB_normal_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.show_modeling_saeHB_normal_dialog_lazy">show_modeling_saeHB_normal_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_modeling_sae_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.show_modeling_sae_dialog_lazy">show_modeling_sae_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_modeling_sae_unit_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.show_modeling_sae_unit_dialog_lazy">show_modeling_sae_unit_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_modellig_sae_pseudo_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.show_modellig_sae_pseudo_dialog_lazy">show_modellig_sae_pseudo_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_output" href="#saePisan.view.MainWindow.MainWindow.show_output">show_output</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_projection_variabel_dialog_lazy" href="#saePisan.view.MainWindow.MainWindow.show_projection_variabel_dialog_lazy">show_projection_variabel_dialog_lazy</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_r_packages_info" href="#saePisan.view.MainWindow.MainWindow.show_r_packages_info">show_r_packages_info</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.show_toast" href="#saePisan.view.MainWindow.MainWindow.show_toast">show_toast</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.undo_action" href="#saePisan.view.MainWindow.MainWindow.undo_action">undo_action</a></code></li>
+<li><code><a title="saePisan.view.MainWindow.MainWindow.update_table" href="#saePisan.view.MainWindow.MainWindow.update_table">update_table</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3342,7 +3924,7 @@ showing the dialog are met. If they are, it displays the dialog.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>
